@@ -178,7 +178,7 @@ const FacilityForm = () => {
   return (
     <div
       ref={formRef}
-      className="w-full max-w-4xl mx-auto font-['Montserrat',sans-serif] text-[#422D0B] p-4 sm:p-6 selection:bg-[#FFA800] selection:text-white"
+      className="w-full max-w-4xl mx-auto font-sans text-[#422D0B] p-4 sm:p-6 selection:bg-[#FFA800] selection:text-[#422D0B]"
     >
       {/* Top Header */}
       <div
@@ -200,7 +200,7 @@ const FacilityForm = () => {
         <button
           type="button"
           onClick={() => navigate("/facility")}
-          className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#FFFBF5] text-[#422D0B] border border-[#E8DDCB] hover:border-[#FFA800] font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 group"
+          className="self-start sm:self-auto px-4 py-2.5 bg-[#FFFBF5] hover:bg-[#FFC24A]/20 text-[#422D0B] border border-[#E8DDCB] hover:border-[#FFA800] font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 group cursor-pointer"
         >
           <svg
             className="w-4 h-4 text-[#FFA800] group-hover:-translate-x-1 transition-transform"
@@ -245,7 +245,7 @@ const FacilityForm = () => {
         {/* SECTION 1: General Information */}
         <div
           ref={addToRefs}
-          className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
+          className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
         >
           <div className="flex items-center gap-2 border-b border-[#E8DDCB]/60 pb-3">
             <span className="w-6 h-6 rounded-lg bg-[#FFA800]/20 text-[#422D0B] font-extrabold text-xs flex items-center justify-center">
@@ -269,7 +269,7 @@ const FacilityForm = () => {
                 value={formData.facilityName}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
             </div>
 
@@ -283,7 +283,7 @@ const FacilityForm = () => {
                 value={formData.facilityType}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all cursor-pointer"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all cursor-pointer"
               >
                 <option value="BIOCHAR">Biochar Processing</option>
                 <option value="BIOGAS">Biogas Plant</option>
@@ -306,7 +306,7 @@ const FacilityForm = () => {
                 value={formData.acceptedWasteTypes}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
               <p className="text-[10px] text-[#967A53]">
                 Separate multiple materials using commas.
@@ -318,7 +318,7 @@ const FacilityForm = () => {
         {/* SECTION 2: Processing Capacity */}
         <div
           ref={addToRefs}
-          className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
+          className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
         >
           <div className="flex items-center gap-2 border-b border-[#E8DDCB]/60 pb-3">
             <span className="w-6 h-6 rounded-lg bg-[#FFA800]/20 text-[#422D0B] font-extrabold text-xs flex items-center justify-center">
@@ -342,7 +342,7 @@ const FacilityForm = () => {
                 value={formData.capacity}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
             </div>
 
@@ -354,7 +354,7 @@ const FacilityForm = () => {
                 name="capacityUnit"
                 value={formData.capacityUnit}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all cursor-pointer"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all cursor-pointer"
               >
                 <option value="TON_PER_DAY">Tonnes / Day</option>
                 <option value="KG_PER_DAY">Kilograms / Day</option>
@@ -366,7 +366,7 @@ const FacilityForm = () => {
         {/* SECTION 3: Location Details */}
         <div
           ref={addToRefs}
-          className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
+          className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
         >
           <div className="flex items-center justify-between border-b border-[#E8DDCB]/60 pb-3">
             <div className="flex items-center gap-2">
@@ -382,7 +382,7 @@ const FacilityForm = () => {
               type="button"
               onClick={handleDetectLocation}
               disabled={isLocating}
-              className="px-3 py-1.5 bg-[#FFFBF5] hover:bg-[#FFA800]/20 text-[#422D0B] border border-[#E8DDCB] rounded-lg text-[11px] font-bold transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-white hover:bg-[#FFC24A]/20 text-[#422D0B] border border-[#E8DDCB] rounded-lg text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <svg className="w-3.5 h-3.5 text-[#FFA800]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -403,7 +403,7 @@ const FacilityForm = () => {
                 placeholder="Plot / Street / Industrial Area"
                 value={formData.address}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
             </div>
 
@@ -415,7 +415,7 @@ const FacilityForm = () => {
                 placeholder="City Name"
                 value={formData.city}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
             </div>
 
@@ -427,7 +427,7 @@ const FacilityForm = () => {
                 placeholder="State"
                 value={formData.state}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
             </div>
 
@@ -439,7 +439,7 @@ const FacilityForm = () => {
                 placeholder="PIN Code"
                 value={formData.pincode}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
             </div>
 
@@ -456,7 +456,7 @@ const FacilityForm = () => {
                   onChange={handleChange}
                   step="any"
                   required
-                  className="w-full px-3 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] transition-all placeholder:text-[#967A53]/60"
+                  className="w-full px-3 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] transition-all placeholder:text-[#967A53]/60"
                 />
               </div>
 
@@ -472,7 +472,7 @@ const FacilityForm = () => {
                   onChange={handleChange}
                   step="any"
                   required
-                  className="w-full px-3 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] transition-all placeholder:text-[#967A53]/60"
+                  className="w-full px-3 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] transition-all placeholder:text-[#967A53]/60"
                 />
               </div>
             </div>
@@ -482,7 +482,7 @@ const FacilityForm = () => {
         {/* SECTION 4: Pricing Model */}
         <div
           ref={addToRefs}
-          className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
+          className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow space-y-5"
         >
           <div className="flex items-center gap-2 border-b border-[#E8DDCB]/60 pb-3">
             <span className="w-6 h-6 rounded-lg bg-[#FFA800]/20 text-[#422D0B] font-extrabold text-xs flex items-center justify-center">
@@ -503,7 +503,7 @@ const FacilityForm = () => {
                 value={formData.pricing}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all cursor-pointer"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all cursor-pointer"
               >
                 <option value="BUY_WASTE">Buy Waste (We pay generator)</option>
                 <option value="FREE_TREATMENT">Free Treatment (Zero cost)</option>
@@ -525,7 +525,7 @@ const FacilityForm = () => {
                 min="0"
                 value={formData.pricePerUnit}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60"
               />
             </div>
 
@@ -539,10 +539,23 @@ const FacilityForm = () => {
                 value={formData.description}
                 onChange={handleChange}
                 rows="4"
-                className="w-full px-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60 resize-none"
+                className="w-full px-4 py-3 bg-white border border-[#E8DDCB] rounded-xl text-xs font-medium text-[#422D0B] focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all placeholder:text-[#967A53]/60 resize-none"
               />
             </div>
           </div>
+        </div>
+
+        {/* SECTION 5: Sustainable Operational Guarantee */}
+        <div
+          ref={addToRefs}
+          className="p-4 bg-[#FFC24A]/10 border border-[#FFA800]/30 rounded-2xl text-xs text-[#422D0B] space-y-1"
+        >
+          <span className="font-extrabold uppercase tracking-widest text-[10px] text-[#FFA800] block">
+            Verification Protocol
+          </span>
+          <p className="text-[#967A53] leading-relaxed">
+            By completing this registration, you confirm that your facility adheres to statutory local environmental standards for organic waste recovery and processing traceabilities.
+          </p>
         </div>
 
         {/* Submit Action Bar */}
@@ -550,7 +563,7 @@ const FacilityForm = () => {
           <button
             type="button"
             onClick={() => navigate("/facility")}
-            className="w-full sm:w-auto px-6 py-3 bg-white hover:bg-[#FFFBF5] text-[#422D0B] border border-[#E8DDCB] font-bold text-xs rounded-xl shadow-sm transition-all"
+            className="w-full sm:w-auto px-6 py-3 bg-[#FFFBF5] hover:bg-[#FFC24A]/10 text-[#422D0B] border border-[#E8DDCB] font-bold text-xs rounded-xl shadow-sm transition-all cursor-pointer"
           >
             Cancel
           </button>
@@ -558,7 +571,7 @@ const FacilityForm = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full sm:w-auto px-8 py-3 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 active:scale-95"
+            className="w-full sm:w-auto px-8 py-3 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 active:scale-95 cursor-pointer"
           >
             {loading ? (
               <>

@@ -45,11 +45,13 @@ const WasteDetailsPage = () => {
     if (!loading && !error && waste) {
       const ctx = gsap.context(() => {
         // Header entrance
-        gsap.fromTo(
-          headerRef.current,
-          { opacity: 0, y: -15 },
-          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
-        );
+        if (headerRef.current) {
+          gsap.fromTo(
+            headerRef.current,
+            { opacity: 0, y: -15 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+          );
+        }
 
         // Content cards stagger entrance
         if (contentSectionsRef.current?.children) {
@@ -93,9 +95,9 @@ const WasteDetailsPage = () => {
   // Loading State UI
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] flex flex-col items-center justify-center p-6 text-[#1E332B]">
-        <div className="w-12 h-12 border-4 border-[#E6EDE8] border-t-[#143B36] rounded-full animate-spin mb-4" />
-        <p className="text-xs font-bold uppercase tracking-widest text-[#63786E] animate-pulse">
+      <div className="min-h-screen bg-[#0C1C18] font-['Plus_Jakarta_Sans',sans-serif] flex flex-col items-center justify-center p-6 text-[#F4F6F0]">
+        <div className="w-12 h-12 border-4 border-[#235349] border-t-[#73A892] rounded-full animate-spin mb-4" />
+        <p className="text-xs font-bold uppercase tracking-widest text-[#8EA097] animate-pulse">
           Retrieving Waste Batch Details...
         </p>
       </div>
@@ -105,21 +107,21 @@ const WasteDetailsPage = () => {
   // Error State UI
   if (error) {
     return (
-      <div className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-6 text-[#1E332B]">
-        <div className="max-w-md w-full bg-white border border-red-200 rounded-2xl p-6 text-center space-y-4 shadow-[0px_1px_3px_rgba(0,0,0,0.03)]">
-          <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+      <div className="min-h-screen bg-[#0C1C18] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-6 text-[#F4F6F0]">
+        <div className="max-w-md w-full bg-[#143B36] border border-red-500/30 rounded-2xl p-6 text-center space-y-4 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
+          <div className="w-12 h-12 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center mx-auto text-xl font-bold border border-red-500/20">
             ✕
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-red-900">
+            <h3 className="text-base font-bold text-red-200">
               Unable to Load Batch
             </h3>
-            <p className="text-xs text-[#63786E] leading-relaxed">{error}</p>
+            <p className="text-xs text-[#8EA097] leading-relaxed">{error}</p>
           </div>
           <button
             type="button"
             onClick={handleBack}
-            className="w-full py-2.5 px-4 bg-[#143B36] hover:bg-[#0D2925] text-white font-semibold text-xs rounded-xl transition-all shadow-xs active:scale-95 cursor-pointer"
+            className="w-full py-2.5 px-4 bg-[#1E5247] hover:bg-[#2D6B4E] text-[#F4F6F0] font-semibold text-xs rounded-xl border border-[#2D6B4E] transition-all shadow-xs active:scale-95 cursor-pointer"
           >
             Back to My Waste
           </button>
@@ -131,23 +133,23 @@ const WasteDetailsPage = () => {
   // Not Found State UI
   if (!waste) {
     return (
-      <div className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-6 text-[#1E332B]">
-        <div className="max-w-md w-full bg-white border border-[#E6EDE8] rounded-2xl p-6 text-center space-y-4 shadow-[0px_1px_3px_rgba(0,0,0,0.03)]">
-          <div className="w-12 h-12 bg-[#F4F6F0] border border-[#E6EDE8] text-[#143B36] rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+      <div className="min-h-screen bg-[#0C1C18] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-6 text-[#F4F6F0]">
+        <div className="max-w-md w-full bg-[#143B36] border border-[#235349] rounded-2xl p-6 text-center space-y-4 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
+          <div className="w-12 h-12 bg-[#0C1C18] border border-[#235349] text-[#73A892] rounded-full flex items-center justify-center mx-auto text-xl font-bold">
             ?
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-[#1E332B]">
+            <h3 className="text-base font-bold text-[#F4F6F0]">
               Waste Batch Not Found
             </h3>
-            <p className="text-xs text-[#63786E] leading-relaxed">
+            <p className="text-xs text-[#8EA097] leading-relaxed">
               The requested waste batch record does not exist or has been removed.
             </p>
           </div>
           <button
             type="button"
             onClick={handleBack}
-            className="w-full py-2.5 px-4 bg-[#143B36] hover:bg-[#0D2925] text-white font-semibold text-xs rounded-xl transition-all shadow-xs active:scale-95 cursor-pointer"
+            className="w-full py-2.5 px-4 bg-[#1E5247] hover:bg-[#2D6B4E] text-[#F4F6F0] font-semibold text-xs rounded-xl border border-[#2D6B4E] transition-all shadow-xs active:scale-95 cursor-pointer"
           >
             Back to My Waste
           </button>
@@ -159,20 +161,26 @@ const WasteDetailsPage = () => {
   return (
     <div
       ref={pageRef}
-      className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] p-4 sm:p-[28px] selection:bg-[#143B36] selection:text-white"
+      className="min-h-screen bg-[#0C1C18] font-['Plus_Jakarta_Sans',sans-serif] text-[#F4F6F0] p-4 sm:p-[28px] selection:bg-[#2D6B4E] selection:text-white relative"
     >
-      <div className="max-w-4xl mx-auto space-y-6">
+      {/* Background Decorative Ambient Glows */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#2D6B4E]/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 -right-40 w-96 h-96 bg-[#143B36]/30 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-4xl mx-auto space-y-6 relative z-10">
         {/* Navigation & Page Header */}
         <header
           ref={headerRef}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8EFEA] pb-5"
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#143B36] pb-5"
         >
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleBack}
-                className="text-[#63786E] hover:text-[#1E332B] text-xs font-semibold transition-colors flex items-center gap-1 group cursor-pointer"
+                className="text-[#8EA097] hover:text-[#F4F6F0] text-xs font-semibold transition-colors flex items-center gap-1 group cursor-pointer"
               >
                 <svg
                   className="w-4 h-4 text-[#73A892] group-hover:-translate-x-1 transition-transform"
@@ -189,13 +197,13 @@ const WasteDetailsPage = () => {
                 </svg>
                 <span>My Waste</span>
               </button>
-              <span className="text-[#DFE6E1]">•</span>
+              <span className="text-[#235349]">•</span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#8EA097]">
                 Batch Profile
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E332B] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F4F6F0] tracking-tight">
               {waste?.wasteType ? `${waste.wasteType} Batch` : "Waste Details"}
             </h1>
           </div>
@@ -203,10 +211,10 @@ const WasteDetailsPage = () => {
           <button
             type="button"
             onClick={handleBack}
-            className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#F4F6F0] text-[#1E332B] border border-[#E6EDE8] hover:border-[#73A892] font-semibold text-xs rounded-xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
+            className="self-start sm:self-auto px-4 py-2.5 bg-[#143B36] hover:bg-[#1E5247] text-[#F4F6F0] border border-[#235349] hover:border-[#2D6B4E] font-semibold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
           >
             <svg
-              className="w-3.5 h-3.5 text-[#63786E]"
+              className="w-3.5 h-3.5 text-[#73A892]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -228,25 +236,25 @@ const WasteDetailsPage = () => {
           <WasteStatus status={waste.status} />
 
           {/* Details Overview Card */}
-          <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 sm:p-8 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#E4EFE9]/50 rounded-bl-full pointer-events-none" />
+          <div className="bg-[#143B36] border border-[#235349] rounded-2xl p-6 sm:p-8 shadow-[0px_4px_24px_rgba(10,28,24,0.4)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#1E5247]/40 rounded-bl-full pointer-events-none blur-xl" />
             <WasteDetails waste={waste} />
           </div>
 
           {/* Facility Matchmaking Action Card (If Active) */}
           {waste.status !== "CANCELLED" && waste.status !== "PROCESSED" && (
-            <div className="bg-white border border-[#E6EDE8] hover:border-[#73A892] rounded-2xl p-6 sm:p-8 shadow-[0px_1px_3px_rgba(0,0,0,0.03)] transition-all relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 group">
+            <div className="bg-[#143B36] border border-[#235349] hover:border-[#2D6B4E] rounded-2xl p-6 sm:p-8 shadow-[0px_4px_24px_rgba(10,28,24,0.4)] transition-all relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 group">
               <div className="space-y-2 max-w-xl">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#73A892] animate-ping" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#8EA097]">
                     AI Recommended Action
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#1E332B]">
+                <h3 className="text-lg font-bold text-[#F4F6F0]">
                   Find Processing Facility
                 </h3>
-                <p className="text-xs text-[#63786E] leading-relaxed">
+                <p className="text-xs text-[#8EA097] leading-relaxed">
                   Discover top suitable biomass processing plants based on waste
                   composition, transport distance, capacity limits, and operational
                   status.
@@ -256,11 +264,11 @@ const WasteDetailsPage = () => {
               <button
                 type="button"
                 onClick={handleNavigateToMatches}
-                className="px-6 py-3 bg-[#143B36] hover:bg-[#0D2925] text-white font-semibold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95 cursor-pointer"
+                className="px-6 py-3 bg-[#1E5247] hover:bg-[#2D6B4E] text-[#F4F6F0] font-semibold text-xs rounded-xl border border-[#2D6B4E] shadow-sm transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95 cursor-pointer"
               >
                 <span>Find Matching Facilities</span>
                 <svg
-                  className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform"
+                  className="w-4 h-4 text-[#73A892] group-hover:translate-x-1 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

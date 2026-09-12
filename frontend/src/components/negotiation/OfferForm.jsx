@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { submitOffer } from "../../services/negotiationService";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const OfferForm = ({ negotiationId, onUpdate }) => {
   const [amount, setAmount] = useState("");
@@ -12,28 +15,85 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
 
   // Animation Refs
   const cardRef = useRef(null);
+  const headerRef = useRef(null);
+  const formRef = useRef(null);
   const alertRef = useRef(null);
+  const staticDetailsRef = useRef(null);
 
-  // GSAP Entrance Animation
+  // GSAP Entrance & ScrollTrigger Animation
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardRef.current,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
-      );
-    }, cardRef);
+    if (cardRef.current) {
+      const ctx = gsap.context(() => {
+        // Scroll-driven card reveal
+        gsap.fromTo(
+          cardRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: cardRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
 
-    return () => ctx.revert();
+        // Header Reveal
+        if (headerRef.current) {
+          gsap.fromTo(
+            headerRef.current,
+            { opacity: 0, x: -15 },
+            { opacity: 1, x: 0, duration: 0.5, ease: "power2.out", delay: 0.15 }
+          );
+        }
+
+        // Form Fields Stagger
+        if (formRef.current?.children) {
+          gsap.fromTo(
+            formRef.current.children,
+            { opacity: 0, y: 15 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              stagger: 0.08,
+              ease: "power2.out",
+              delay: 0.25,
+            }
+          );
+        }
+
+        // Static Info Cards Animation
+        if (staticDetailsRef.current?.children) {
+          gsap.fromTo(
+            staticDetailsRef.current.children,
+            { opacity: 0, y: 10 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              stagger: 0.08,
+              ease: "power2.out",
+              delay: 0.4,
+            }
+          );
+        }
+      }, cardRef);
+
+      return () => ctx.revert();
+    }
   }, []);
 
-  // Animate Error/Success Alerts on Change
+  // Animate Error/Success Alerts on State Change
   useEffect(() => {
     if ((error || success) && alertRef.current) {
       gsap.fromTo(
         alertRef.current,
         { opacity: 0, y: -8, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.5)" }
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "back.out(1.5)" }
       );
     }
   }, [error, success]);
@@ -77,20 +137,23 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
   return (
     <div
       ref={cardRef}
-      className="bg-[#FAFBF9] border border-[#E1E6DE] hover:border-[#73A892] rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300 font-['Plus_Jakarta_Sans',sans-serif] text-[#162925] relative overflow-hidden"
+      className="bg-[#0B1A12] border border-[#1B382B] hover:border-[#10B981]/50 rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 font-['Montserrat',sans-serif] text-[#E2F1E7] relative overflow-hidden space-y-6"
     >
-      {/* Decorative Warm Accent Blur */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-[#7A9E8D]/10 rounded-bl-full pointer-events-none" />
+      {/* Decorative Dark Forest Green Glow */}
+      <div className="absolute top-0 right-0 w-36 h-36 bg-[#10B981]/10 rounded-bl-full pointer-events-none blur-2xl" />
 
       {/* Header */}
-      <div className="space-y-1 mb-6 border-b border-[#E1E6DE] pb-4">
+      <div
+        ref={headerRef}
+        className="space-y-1 border-b border-[#1B382B] pb-4"
+      >
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#204E4A] animate-pulse" />
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6B7D76]">
+          <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6E9B82]">
             Submit Counter / New Deal
           </span>
         </div>
-        <h3 className="text-xl font-black text-[#162925] tracking-tight">
+        <h3 className="text-xl font-black text-[#E2F1E7] tracking-tight">
           Make an Offer
         </h3>
       </div>
@@ -99,10 +162,10 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
       {error && (
         <div
           ref={alertRef}
-          className="mb-5 p-3.5 bg-[#FDF2F2] border border-[#F8D7DA] rounded-xl text-xs font-bold text-[#A94442] flex items-center gap-2.5"
+          className="p-3.5 bg-[#EF4444]/15 border border-[#EF4444]/30 rounded-xl text-xs font-bold text-[#F87171] flex items-center gap-2.5 shadow-sm"
         >
           <svg
-            className="w-4 h-4 text-[#A94442] shrink-0"
+            className="w-4 h-4 text-[#F87171] shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -121,10 +184,10 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
       {success && (
         <div
           ref={alertRef}
-          className="mb-5 p-3.5 bg-[#D8EEDF] border border-[#C2E3CD] rounded-xl text-xs font-bold text-[#1E5E38] flex items-center gap-2.5"
+          className="p-3.5 bg-[#10B981]/15 border border-[#10B981]/30 rounded-xl text-xs font-bold text-[#34D399] flex items-center gap-2.5 shadow-sm"
         >
           <svg
-            className="w-4 h-4 text-[#1E5E38] shrink-0"
+            className="w-4 h-4 text-[#34D399] shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -141,14 +204,14 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
       )}
 
       {/* Offer Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5" ref={formRef}>
         {/* Amount Input */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#6B7D76]">
-            Offer Amount <span className="text-[#204E4A]">*</span>
+          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#6E9B82]">
+            Offer Amount <span className="text-[#10B981]">*</span>
           </label>
-          <div className="relative rounded-xl overflow-hidden shadow-xs">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#6B7D76] font-black text-sm">
+          <div className="relative rounded-xl overflow-hidden shadow-inner">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#6E9B82] font-black text-sm">
               ₹
             </div>
             <input
@@ -159,22 +222,25 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
-              className="w-full pl-8 pr-4 py-3 bg-white border border-[#E1E6DE] focus:border-[#204E4A] focus:ring-2 focus:ring-[#204E4A]/20 focus:bg-white rounded-xl text-sm font-extrabold text-[#162925] placeholder-[#94A39D] outline-none transition-all"
+              className="w-full pl-8 pr-4 py-3 bg-[#132A1D] border border-[#1B382B] focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 rounded-xl text-sm font-extrabold text-[#E2F1E7] placeholder-[#6E9B82]/50 outline-none transition-all"
             />
           </div>
         </div>
 
         {/* Message Input */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#6B7D76]">
-            Message or Terms <span className="text-[10px] lowercase font-normal">(optional)</span>
+          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#6E9B82]">
+            Message or Terms{" "}
+            <span className="text-[10px] lowercase font-normal">
+              (optional)
+            </span>
           </label>
           <textarea
             placeholder="Add relevant transport details, validity notes, or processing preferences..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows="3"
-            className="w-full p-3.5 bg-white border border-[#E1E6DE] focus:border-[#204E4A] focus:ring-2 focus:ring-[#204E4A]/20 focus:bg-white rounded-xl text-xs font-semibold text-[#162925] placeholder-[#94A39D] outline-none transition-all resize-none"
+            className="w-full p-3.5 bg-[#132A1D] border border-[#1B382B] focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 rounded-xl text-xs font-semibold text-[#E2F1E7] placeholder-[#6E9B82]/50 outline-none transition-all resize-none"
           />
         </div>
 
@@ -182,18 +248,18 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 px-6 bg-[#143B36] hover:bg-[#0E2C28] disabled:bg-[#E1E6DE] disabled:text-[#94A39D] text-[#FAFBF9] font-extrabold text-xs rounded-xl shadow-none hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:active:scale-100 disabled:cursor-not-allowed"
+          className="w-full py-3.5 px-6 bg-[#10B981] hover:bg-[#059669] disabled:bg-[#132A1D] disabled:text-[#6E9B82] text-[#0B1A12] font-black text-xs rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:active:scale-100 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-[#0B1A12] border-t-transparent rounded-full animate-spin" />
               <span>Submitting Offer...</span>
             </>
           ) : (
             <>
               <span>Submit Offer</span>
               <svg
-                className="w-4 h-4 text-[#FAFBF9]"
+                className="w-4 h-4 text-[#0B1A12]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -209,6 +275,32 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
           )}
         </button>
       </form>
+
+      {/* Static Info Parameters */}
+      <div className="pt-2 border-t border-[#1B382B] space-y-2">
+        <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#6E9B82]">
+          Offer Rules & Policies
+        </p>
+
+        <div
+          ref={staticDetailsRef}
+          className="grid grid-cols-2 gap-2 text-xs"
+        >
+          <div className="bg-[#132A1D]/60 border border-[#1B382B] p-2.5 rounded-xl flex flex-col justify-between">
+            <span className="text-[10px] font-bold text-[#6E9B82] uppercase">
+              Min Counter Increment
+            </span>
+            <span className="font-extrabold text-[#E2F1E7]">₹1.00</span>
+          </div>
+
+          <div className="bg-[#132A1D]/60 border border-[#1B382B] p-2.5 rounded-xl flex flex-col justify-between">
+            <span className="text-[10px] font-bold text-[#6E9B82] uppercase">
+              Offer Expiry
+            </span>
+            <span className="font-extrabold text-[#E2F1E7]">48 Hours</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

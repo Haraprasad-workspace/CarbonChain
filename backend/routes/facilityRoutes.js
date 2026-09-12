@@ -42,7 +42,7 @@ router.get(
 
 router.get(
     "/:id",
-    roleMiddleware("FACILITY"),
+    roleMiddleware("FACILITY", "ADMIN"),
     getFacility
 );
 

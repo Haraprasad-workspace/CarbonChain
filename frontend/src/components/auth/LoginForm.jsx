@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import gsap from "gsap";
 import useAuth from "../../hooks/useAuth";
 
 const LoginForm = () => {
@@ -14,11 +15,36 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // GSAP Animation Refs
+  const cardRef = useRef(null);
+  const alertRef = useRef(null);
+
+  // Initial Entrance Animation
+  useEffect(() => {
+    gsap.fromTo(
+      cardRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+    );
+  }, []);
+
+  // Alert Box Pop Motion
+  useEffect(() => {
+    if (error && alertRef.current) {
+      gsap.fromTo(
+        alertRef.current,
+        { opacity: 0, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" }
+      );
+    }
+  }, [error]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
@@ -76,12 +102,18 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-full max-w-md bg-[#FAFBF9] border border-[#E1E6DE] rounded-2xl shadow-sm p-6 transition-all">
+    <div
+      ref={cardRef}
+      className="w-full max-w-md bg-[#0B1610]/80 backdrop-blur-xl border border-[rgba(16,185,129,0.2)] rounded-2xl p-6 text-[#ECFDF5] shadow-[0_20px_25px_-5px_rgba(2,44,34,0.7)] font-sans relative overflow-hidden transition-all"
+    >
+      {/* Radial Green Ambient Glow */}
+      <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none" />
+
       {/* Header & Branding */}
-      <div className="flex flex-col items-center mb-5">
-        <div className="w-10 h-10 rounded-xl bg-[#D2E7D6] flex items-center justify-center shadow-none mb-2">
+      <div className="flex flex-col items-center mb-6 relative z-10">
+        <div className="w-11 h-11 rounded-xl bg-[#022C22] border border-[rgba(16,185,129,0.3)] flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.15)] mb-3">
           <svg
-            className="w-5 h-5 text-[#204E4A]"
+            className="w-5 h-5 text-[#34D399]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -94,28 +126,31 @@ const LoginForm = () => {
             />
           </svg>
         </div>
-        <h2 className="text-xl font-bold tracking-tight text-[#162925]">
+        <h2 className="text-xl font-bold tracking-tight text-[#ECFDF5]">
           Welcome to CarbonChain
         </h2>
-        <p className="text-xs text-[#6B7D76] mt-0.5 font-medium">
+        <p className="text-xs text-[#A7F3D0]/70 mt-1 font-medium text-center">
           Sign in to access your circular carbon dashboard
         </p>
       </div>
 
       {/* Error Alert Box */}
       {error && (
-        <div className="mb-4 p-3 rounded-xl bg-[#FDF2F2] border border-[#F8D7DA] text-[#A94442] text-xs font-medium flex items-center gap-2">
-          <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <div
+          ref={alertRef}
+          className="mb-5 p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-300 text-xs font-medium flex items-center gap-2.5 backdrop-blur-md"
+        >
+          <svg className="w-4 h-4 shrink-0 text-red-400" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
           <span>{error}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
         {/* Email Input */}
         <div>
-          <label className="block text-[11px] font-semibold text-[#162925] uppercase tracking-wider mb-1.5">
+          <label className="block text-[11px] font-semibold text-[#A7F3D0] uppercase tracking-wider mb-2">
             Email Address
           </label>
           <input
@@ -125,14 +160,14 @@ const LoginForm = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-3.5 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
+            className="w-full px-4 py-3 text-sm bg-[#12221A] text-[#ECFDF5] placeholder-[#065F46] border border-[rgba(16,185,129,0.25)] rounded-xl focus:outline-none focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all shadow-inner"
           />
         </div>
 
         {/* Password Input */}
         <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-[11px] font-semibold text-[#162925] uppercase tracking-wider">
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-[11px] font-semibold text-[#A7F3D0] uppercase tracking-wider">
               Password
             </label>
           </div>
@@ -143,7 +178,7 @@ const LoginForm = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full px-3.5 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
+            className="w-full px-4 py-3 text-sm bg-[#12221A] text-[#ECFDF5] placeholder-[#065F46] border border-[rgba(16,185,129,0.25)] rounded-xl focus:outline-none focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all shadow-inner"
           />
         </div>
 
@@ -151,11 +186,11 @@ const LoginForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-[#143B36] hover:bg-[#0E2C28] text-[#FAFBF9] font-bold text-sm rounded-xl transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-1"
+          className="w-full py-3.5 px-4 bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#34D399] hover:to-[#10B981] text-[#050B07] font-bold text-sm rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all duration-300 transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2 cursor-pointer"
         >
           {loading ? (
             <>
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-[#050B07] border-t-transparent rounded-full animate-spin" />
               <span>Authenticating...</span>
             </>
           ) : (
@@ -165,10 +200,10 @@ const LoginForm = () => {
       </form>
 
       {/* Footer Link */}
-      <div className="mt-5 text-center border-t border-[#E1E6DE] pt-4">
-        <p className="text-xs text-[#6B7D76]">
+      <div className="mt-6 text-center border-t border-[rgba(16,185,129,0.15)] pt-4 relative z-10">
+        <p className="text-xs text-[#A7F3D0]/70">
           Don't have an account?{" "}
-          <Link to="/register" className="font-semibold text-[#143B36] hover:text-[#204E4A] transition-colors">
+          <Link to="/register" className="font-semibold text-[#34D399] hover:text-[#10B981] transition-colors">
             Register Stakeholder Account
           </Link>
         </p>

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Auth Pages
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import Home from "../pages/Home" ;
 import Verification from "../pages/auth/Verification";
 
 // Generator Pages
@@ -48,6 +49,11 @@ const AppRoutes = () => {
                 <Route
                     path="/register"
                     element={<Register />}
+                />
+
+                <Route
+                    path="/"
+                    element={<Home />}
                 />
 
                 <Route

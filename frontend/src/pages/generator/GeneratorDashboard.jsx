@@ -110,30 +110,39 @@ const GeneratorDashboard = () => {
     return (
         <div
             ref={pageRef}
-            className="min-h-screen bg-gray-50 px-4 py-8 md:px-8"
+            className="min-h-screen bg-[#0C1C18] text-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] px-4 py-8 md:px-8 selection:bg-[#2D6B4E] selection:text-white relative"
         >
-            <div className="max-w-7xl mx-auto">
+            {/* Background Decorative Ambient Glows */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#2D6B4E]/10 rounded-full blur-3xl" />
+                <div className="absolute top-1/2 -right-40 w-96 h-96 bg-[#143B36]/30 rounded-full blur-3xl" />
+            </div>
+
+            <div className="max-w-7xl mx-auto relative z-10">
 
                 {/* ==================== HEADER ==================== */}
 
-                <header className="dashboard-item flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-10">
+                <header className="dashboard-item flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-10 pb-6 border-b border-[#143B36]">
                     <div>
-                        <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
-                            CarbonChain
-                        </p>
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="w-2 h-2 rounded-full bg-[#73A892] animate-pulse" />
+                            <p className="text-xs font-semibold text-[#8EA097] uppercase tracking-wider">
+                                CarbonChain Network
+                            </p>
+                        </div>
 
-                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+                        <h1 className="text-3xl md:text-4xl font-extrabold text-[#F4F6F0] tracking-tight">
                             Generator Dashboard
                         </h1>
 
-                        <p className="text-gray-500 mt-2">
+                        <p className="text-sm text-[#8EA097] mt-1">
                             Welcome back, {user?.name || "Waste Generator"}.
                         </p>
                     </div>
 
                     <button
                         onClick={handleLogout}
-                        className="px-5 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 font-semibold hover:bg-gray-100 transition"
+                        className="px-5 py-2.5 rounded-xl border border-[#235349] bg-[#143B36] text-[#F4F6F0] text-sm font-semibold hover:bg-[#1E5247] transition shadow-sm cursor-pointer"
                     >
                         Logout
                     </button>
@@ -142,25 +151,25 @@ const GeneratorDashboard = () => {
 
                 {/* ==================== PROFILE ==================== */}
 
-                <section className="dashboard-item bg-white rounded-2xl border border-gray-200 p-6 mb-8">
+                <section className="dashboard-item bg-[#143B36] rounded-2xl border border-[#235349] p-6 mb-8 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
                         <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                            <p className="text-xs text-[#8EA097] uppercase tracking-wider font-medium">
                                 Account
                             </p>
 
-                            <h2 className="text-xl font-bold text-gray-900 mt-1">
+                            <h2 className="text-xl font-bold text-[#F4F6F0] mt-1">
                                 {user?.organization || user?.name || "Waste Generator"}
                             </h2>
 
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-sm text-[#8EA097] mt-1">
                                 {user?.email || "No email available"}
                             </p>
                         </div>
 
-                        <div className="px-4 py-2 rounded-full bg-green-50 text-green-700 text-sm font-semibold">
-                            Waste Generator
+                        <div className="px-4 py-1.5 rounded-full bg-[#1E5247] border border-[#2D6B4E] text-[#73A892] text-xs font-semibold self-start md:self-auto">
+                            ✓ Verified Waste Generator
                         </div>
 
                     </div>
@@ -171,11 +180,11 @@ const GeneratorDashboard = () => {
 
                 <section className="mb-10">
                     <div className="dashboard-item mb-5">
-                        <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                        <p className="text-xs font-semibold text-[#8EA097] uppercase tracking-wider">
                             Workspace
                         </p>
 
-                        <h2 className="text-2xl font-bold text-gray-900 mt-1">
+                        <h2 className="text-2xl font-bold text-[#F4F6F0] mt-1 tracking-tight">
                             Manage Your Waste
                         </h2>
                     </div>
@@ -186,22 +195,25 @@ const GeneratorDashboard = () => {
                             <button
                                 key={action.title}
                                 onClick={() => navigate(action.path)}
-                                className="dashboard-item text-left bg-white rounded-2xl border border-gray-200 p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                                className="dashboard-item text-left bg-[#143B36] rounded-2xl border border-[#235349] p-6 hover:-translate-y-1 hover:border-[#2D6B4E] hover:shadow-[0px_8px_30px_rgba(10,28,24,0.6)] transition-all duration-300 cursor-pointer flex flex-col justify-between"
                             >
-                                <div className="text-3xl mb-5">
-                                    {action.icon}
+                                <div>
+                                    <div className="w-12 h-12 rounded-xl bg-[#1E5247] border border-[#2D6B4E] flex items-center justify-center text-2xl mb-5 shadow-inner">
+                                        {action.icon}
+                                    </div>
+
+                                    <h3 className="text-lg font-bold text-[#F4F6F0]">
+                                        {action.title}
+                                    </h3>
+
+                                    <p className="text-sm text-[#8EA097] mt-2 leading-relaxed">
+                                        {action.description}
+                                    </p>
                                 </div>
 
-                                <h3 className="text-lg font-bold text-gray-900">
-                                    {action.title}
-                                </h3>
-
-                                <p className="text-sm text-gray-500 mt-2 leading-relaxed">
-                                    {action.description}
-                                </p>
-
-                                <div className="mt-5 text-sm font-semibold text-gray-700">
-                                    Open →
+                                <div className="mt-6 text-xs font-semibold text-[#73A892] flex items-center gap-1.5">
+                                    <span>Open</span>
+                                    <span>→</span>
                                 </div>
                             </button>
                         ))}
@@ -212,14 +224,14 @@ const GeneratorDashboard = () => {
 
                 {/* ==================== WORKFLOW ==================== */}
 
-                <section className="dashboard-item bg-white rounded-2xl border border-gray-200 p-6 md:p-8 mb-10">
+                <section className="dashboard-item bg-[#143B36] rounded-2xl border border-[#235349] p-6 md:p-8 mb-10 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
 
                     <div className="mb-8">
-                        <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                        <p className="text-xs font-semibold text-[#8EA097] uppercase tracking-wider">
                             Workflow
                         </p>
 
-                        <h2 className="text-2xl font-bold text-gray-900 mt-1">
+                        <h2 className="text-2xl font-bold text-[#F4F6F0] mt-1 tracking-tight">
                             From Waste to Carbon Value
                         </h2>
                     </div>
@@ -229,19 +241,21 @@ const GeneratorDashboard = () => {
                         {workflow.map((item) => (
                             <div
                                 key={item.step}
-                                className="relative"
+                                className="relative bg-[#0C1C18]/40 border border-[#235349]/60 rounded-xl p-4 flex flex-col justify-between"
                             >
-                                <p className="text-sm font-bold text-gray-300">
-                                    {item.step}
-                                </p>
+                                <div>
+                                    <span className="text-xs font-extrabold text-[#73A892] bg-[#1E5247] px-2 py-0.5 rounded border border-[#2D6B4E]">
+                                        {item.step}
+                                    </span>
 
-                                <h3 className="font-bold text-gray-900 mt-2">
-                                    {item.title}
-                                </h3>
+                                    <h3 className="font-bold text-[#F4F6F0] mt-3 text-base">
+                                        {item.title}
+                                    </h3>
 
-                                <p className="text-sm text-gray-500 mt-1">
-                                    {item.description}
-                                </p>
+                                    <p className="text-xs text-[#8EA097] mt-1 leading-relaxed">
+                                        {item.description}
+                                    </p>
+                                </div>
                             </div>
                         ))}
 
@@ -251,28 +265,27 @@ const GeneratorDashboard = () => {
 
                 {/* ==================== SUPPORT ==================== */}
 
-                <section className="dashboard-item bg-gray-900 rounded-2xl p-7 md:p-8 text-white">
+                <section className="dashboard-item bg-[#143B36] border border-[#235349] rounded-2xl p-7 md:p-8 text-[#F4F6F0] shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
 
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
                         <div>
-                            <p className="text-sm text-gray-400 uppercase tracking-wider">
+                            <p className="text-xs text-[#8EA097] uppercase tracking-wider font-semibold">
                                 CarbonChain Support
                             </p>
 
-                            <h2 className="text-xl font-bold mt-2">
+                            <h2 className="text-xl font-bold mt-1 text-[#F4F6F0]">
                                 Need help managing your waste?
                             </h2>
 
-                            <p className="text-gray-400 text-sm mt-2">
-                                Register, negotiate, transport and measure your
-                                waste in one connected platform.
+                            <p className="text-[#8EA097] text-sm mt-1">
+                                Register, negotiate, transport and measure your waste in one connected platform.
                             </p>
                         </div>
 
                         <button
                             onClick={() => navigate("/verification")}
-                            className="px-5 py-3 rounded-xl bg-white text-gray-900 font-semibold hover:bg-gray-100 transition"
+                            className="px-5 py-3 rounded-xl bg-[#73A892] text-[#0C1C18] text-sm font-bold hover:bg-[#85B8A2] active:bg-[#62947F] transition shadow-sm cursor-pointer whitespace-nowrap"
                         >
                             Check Verification →
                         </button>

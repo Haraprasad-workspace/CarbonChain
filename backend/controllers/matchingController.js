@@ -79,7 +79,20 @@ const findMatches = async (req, res) => {
                 }
             );
         }
+        console.log("Waste Type:", wasteBatch.wasteType);
+        console.log("Waste Location:", wasteBatch.location);
 
+        console.log("Facilities Found:", facilities.length);
+
+        facilities.forEach((facility) => {
+            console.log({
+                name: facility.facilityName,
+                acceptedWasteTypes: facility.acceptedWasteTypes,
+                status: facility.operationalStatus,
+                verification: facility.verificationStatus,
+                location: facility.location
+            });
+        });
         res.status(200).json({
             count: matches.length,
             matches
@@ -134,11 +147,14 @@ const getWasteMatches = async (req, res) => {
 
 
 // Accept a facility match
+// Accept a facility match and start negotiation
 const acceptMatch = async (req, res) => {
     try {
         const match = await WasteMatch.findById(
             req.params.matchId
-        ).populate("wasteBatch");
+        )
+            .populate("wasteBatch")
+            .populate("facility");
 
         if (!match) {
             return res.status(404).json({
@@ -155,13 +171,59 @@ const acceptMatch = async (req, res) => {
             });
         }
 
-        match.status = "ACCEPTED";
+        if (match.status === "ACCEPTED") {
+            return res.status(400).json({
+                message: "This facility match is already accepted"
+            });
+        }
 
+        // Accept the facility match
+        match.status = "ACCEPTED";
         await match.save();
 
+        // Import Negotiation model
+        const Negotiation = require("../models/Negotiation");
+
+        // Check if negotiation already exists
+        let negotiation = await Negotiation.findOne({
+            wasteBatch: match.wasteBatch._id,
+            facility: match.facility._id
+        });
+
+        // Create negotiation
+        if (!negotiation) {
+            const initialOffer =
+                match.wasteBatch.askingPrice || 0;
+
+            negotiation = await Negotiation.create({
+                wasteBatch: match.wasteBatch._id,
+                facility: match.facility._id,
+                generator: match.wasteBatch.generator,
+                currentOffer: initialOffer,
+                offers: [
+                    {
+                        sender: req.user.id,
+                        amount: initialOffer,
+                        message: "Initial offer from waste generator",
+                        status: "PENDING"
+                    }
+                ],
+                status: "ACTIVE"
+            });
+        }
+
+        // Update waste status
+        await WasteBatch.findByIdAndUpdate(
+            match.wasteBatch._id,
+            {
+                status: "NEGOTIATED"
+            }
+        );
+
         res.status(200).json({
-            message: "Facility match accepted",
-            match
+            message: "Facility accepted and negotiation started",
+            match,
+            negotiation
         });
 
     } catch (error) {

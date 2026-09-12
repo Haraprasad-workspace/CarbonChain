@@ -29,7 +29,7 @@ const Payments = () => {
     }, []);
 
     useEffect(() => {
-        if (!loading) {
+        if (!loading && pageRef.current) {
             gsap.fromTo(
                 pageRef.current,
                 {
@@ -63,61 +63,70 @@ const Payments = () => {
     return (
         <div
             ref={pageRef}
-            className="min-h-screen bg-gray-50 px-4 py-8 md:px-8"
+            className="min-h-screen bg-[#0C1C18] text-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] px-4 py-8 md:px-8 selection:bg-[#2D6B4E] selection:text-white relative"
         >
-            <div className="max-w-7xl mx-auto">
+            {/* Background Decorative Ambient Glows */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#2D6B4E]/10 rounded-full blur-3xl" />
+                <div className="absolute top-1/2 -right-40 w-96 h-96 bg-[#143B36]/30 rounded-full blur-3xl" />
+            </div>
+
+            <div className="max-w-7xl mx-auto relative z-10">
 
                 {/* Header */}
-                <div className="mb-8">
+                <div className="mb-8 border-b border-[#143B36] pb-6">
                     <button
                         onClick={() => window.history.back()}
-                        className="text-sm text-gray-500 hover:text-gray-900 mb-4"
+                        className="text-xs font-semibold text-[#8EA097] hover:text-[#F4F6F0] mb-4 flex items-center gap-1.5 transition cursor-pointer"
                     >
-                        ← Back
+                        <span>←</span> Back
                     </button>
 
-                    <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
-                        CarbonChain
-                    </p>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="w-2 h-2 rounded-full bg-[#73A892] animate-pulse" />
+                        <p className="text-xs font-semibold text-[#8EA097] uppercase tracking-wider">
+                            CarbonChain Financials
+                        </p>
+                    </div>
 
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-[#F4F6F0] tracking-tight mt-1">
                         Payments
                     </h1>
 
-                    <p className="text-gray-500 mt-2">
-                        Manage your waste transaction payments.
+                    <p className="text-sm text-[#8EA097] mt-1">
+                        Manage your waste transaction payments and earnings.
                     </p>
                 </div>
 
                 {/* Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
 
-                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                        <p className="text-sm text-gray-500">
+                    <div className="bg-[#143B36] rounded-2xl border border-[#235349] p-6 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
+                        <p className="text-xs font-semibold text-[#8EA097] uppercase tracking-wider">
                             Total Transactions
                         </p>
 
-                        <p className="text-3xl font-bold text-gray-900 mt-2">
+                        <p className="text-3xl font-bold text-[#F4F6F0] mt-2">
                             {payments.length}
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                        <p className="text-sm text-gray-500">
+                    <div className="bg-[#143B36] rounded-2xl border border-[#235349] p-6 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
+                        <p className="text-xs font-semibold text-[#8EA097] uppercase tracking-wider">
                             Total Paid
                         </p>
 
-                        <p className="text-3xl font-bold text-green-600 mt-2">
+                        <p className="text-3xl font-bold text-[#73A892] mt-2">
                             ₹{totalPaid.toLocaleString("en-IN")}
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                        <p className="text-sm text-gray-500">
+                    <div className="bg-[#143B36] rounded-2xl border border-[#235349] p-6 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
+                        <p className="text-xs font-semibold text-[#8EA097] uppercase tracking-wider">
                             Pending Amount
                         </p>
 
-                        <p className="text-3xl font-bold text-yellow-600 mt-2">
+                        <p className="text-3xl font-bold text-[#FFC24A] mt-2">
                             ₹{pendingAmount.toLocaleString("en-IN")}
                         </p>
                     </div>
@@ -125,7 +134,9 @@ const Payments = () => {
                 </div>
 
                 {/* Payment List */}
-                <PaymentList />
+                <div className="bg-[#143B36] rounded-2xl border border-[#235349] p-6 sm:p-8 shadow-[0px_4px_24px_rgba(10,28,24,0.4)]">
+                    <PaymentList />
+                </div>
             </div>
         </div>
     );

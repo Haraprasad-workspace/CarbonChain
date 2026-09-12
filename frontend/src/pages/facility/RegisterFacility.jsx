@@ -50,23 +50,29 @@ const RegisterFacility = () => {
   return (
     <div
       ref={pageRef}
-      className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] text-[#422D0B] p-4 sm:p-8 selection:bg-[#FFA800] selection:text-white"
+      className="min-h-screen bg-[#0C1C18] font-['Plus_Jakarta_Sans',sans-serif] text-[#F4F6F0] p-4 sm:p-8 selection:bg-[#2D6B4E] selection:text-white relative"
     >
-      <div className="max-w-4xl mx-auto space-y-6">
+      {/* Background Decorative Ambient Glows */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#2D6B4E]/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 -right-40 w-96 h-96 bg-[#143B36]/30 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-4xl mx-auto space-y-6 relative z-10">
         {/* Navigation & Header Section */}
         <header
           ref={headerRef}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DDCB] pb-6"
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#143B36] pb-6"
         >
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleBack}
-                className="text-[#967A53] hover:text-[#422D0B] text-xs font-bold transition-colors flex items-center gap-1 group cursor-pointer"
+                className="text-[#8EA097] hover:text-[#F4F6F0] text-xs font-bold transition-colors flex items-center gap-1 group cursor-pointer"
               >
                 <svg
-                  className="w-4 h-4 text-[#FFA800] group-hover:-translate-x-1 transition-transform"
+                  className="w-4 h-4 text-[#73A892] group-hover:-translate-x-1 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -80,13 +86,13 @@ const RegisterFacility = () => {
                 </svg>
                 <span>Dashboard</span>
               </button>
-              <span className="text-[#E8DDCB]">•</span>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+              <span className="text-[#235349]">•</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8EA097]">
                 Facility Onboarding
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-black text-[#422D0B] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#F4F6F0] tracking-tight">
               Register New Facility
             </h1>
           </div>
@@ -94,10 +100,10 @@ const RegisterFacility = () => {
           <button
             type="button"
             onClick={handleBack}
-            className="self-start sm:self-auto px-4 py-2 bg-white hover:bg-[#FFFBF5] text-[#422D0B] border border-[#E8DDCB] hover:border-[#FFA800] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
+            className="self-start sm:self-auto px-4 py-2.5 bg-[#143B36] hover:bg-[#1E5247] text-[#F4F6F0] border border-[#235349] hover:border-[#2D6B4E] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
           >
             <svg
-              className="w-3.5 h-3.5 text-[#967A53]"
+              className="w-3.5 h-3.5 text-[#8EA097]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -116,10 +122,10 @@ const RegisterFacility = () => {
         {/* Facility Registration Form Container */}
         <main
           ref={formWrapperRef}
-          className="bg-white border border-[#E8DDCB] rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden"
+          className="bg-[#143B36] border border-[#235349] rounded-2xl p-6 sm:p-8 shadow-[0px_4px_24px_rgba(10,28,24,0.4)] relative overflow-hidden"
         >
           {/* Subtle Decorative Accent Glow */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFA800]/5 rounded-bl-full pointer-events-none" />
+          <div className="absolute top-0 right-0 w-36 h-36 bg-[#1E5247]/30 rounded-bl-full pointer-events-none blur-2xl" />
 
           <FacilityForm />
         </main>

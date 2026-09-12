@@ -13,21 +13,24 @@ const WasteStatus = ({ status }) => {
   const currentIndex = statusSteps.indexOf(status);
 
   return (
-    <div className="w-full bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] space-y-6">
+    <div className="w-full bg-[#0B1610] border border-[rgba(16,185,129,0.15)] rounded-2xl p-6 shadow-[0_4px_24px_-4px_rgba(2,44,34,0.6)] backdrop-blur-[16px] font-['Montserrat',sans-serif] text-[#ECFDF5] space-y-6">
       
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#E8EFEA] pb-4">
+      <div className="flex items-center justify-between border-b border-[rgba(16,185,129,0.15)] pb-4">
         <div>
-          <h3 className="text-base font-extrabold text-[#1E332B] tracking-tight">
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#065F46]">
+            Lifecycle Tracker
+          </span>
+          <h3 className="text-base font-black text-[#ECFDF5] tracking-tight mt-0.5">
             Waste Lifecycle Status
           </h3>
-          <p className="text-xs text-[#63786E] mt-0.5">
+          <p className="text-xs text-[#A7F3D0]/70 mt-0.5 font-medium">
             Real-time tracking of waste batch progression
           </p>
         </div>
 
         {isCancelled && (
-          <span className="px-3 py-1 bg-red-50 text-red-700 border border-red-200 rounded-full text-xs font-semibold tracking-wider uppercase">
+          <span className="px-3 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 rounded-full text-xs font-bold tracking-wider uppercase shadow-[0_0_10px_rgba(244,63,94,0.15)]">
             Batch Cancelled
           </span>
         )}
@@ -35,13 +38,13 @@ const WasteStatus = ({ status }) => {
 
       {/* Cancelled State Banner */}
       {isCancelled ? (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 text-red-800 text-xs">
-          <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center font-bold text-red-700 shrink-0">
+        <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center gap-3 text-rose-400 text-xs shadow-[0_0_10px_rgba(244,63,94,0.15)]">
+          <div className="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center font-black text-rose-400 shrink-0">
             ✕
           </div>
           <div>
             <p className="font-bold">This batch has been cancelled</p>
-            <p className="text-red-600">
+            <p className="text-rose-400/80 font-medium">
               The lifecycle process was terminated before completion.
             </p>
           </div>
@@ -64,10 +67,10 @@ const WasteStatus = ({ status }) => {
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                       isCurrent
-                        ? "bg-[#143B36] text-white ring-4 ring-[#143B36]/15 shadow-sm scale-110"
+                        ? "bg-[#10B981] text-[#050B07] ring-4 ring-[#10B981]/20 shadow-[0_0_15px_rgba(16,185,129,0.4)] scale-110 font-black"
                         : isCompleted
-                        ? "bg-[#D8EEDF] text-[#1E5E38] border border-[#D8EEDF]"
-                        : "bg-[#F4F6F0] border border-[#DFE6E1] text-[#8EA097]"
+                        ? "bg-[#12221A] text-[#34D399] border border-[#10B981]/40"
+                        : "bg-[#12221A] border border-[rgba(16,185,129,0.15)] text-[#A7F3D0]/40"
                     }`}
                   >
                     {isCompleted ? (
@@ -75,7 +78,7 @@ const WasteStatus = ({ status }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     ) : isCurrent ? (
-                      <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#050B07] animate-pulse" />
                     ) : (
                       index + 1
                     )}
@@ -84,17 +87,17 @@ const WasteStatus = ({ status }) => {
                   {/* Step Label */}
                   <div className="space-y-0.5">
                     <p
-                      className={`text-[11px] font-bold uppercase leading-tight ${
+                      className={`text-[11px] font-bold uppercase tracking-wide leading-tight ${
                         isCurrent
-                          ? "text-[#143B36]"
+                          ? "text-[#34D399]"
                           : isCompleted
-                          ? "text-[#1E332B]"
-                          : "text-[#8EA097]"
+                          ? "text-[#ECFDF5]"
+                          : "text-[#A7F3D0]/40"
                       }`}
                     >
                       {step.replaceAll("_", " ")}
                     </p>
-                    <p className="text-[10px] text-[#8EA097]">
+                    <p className="text-[10px] text-[#A7F3D0]/60 font-medium">
                       {isCompleted ? "Completed" : isCurrent ? "Active Step" : "Pending"}
                     </p>
                   </div>

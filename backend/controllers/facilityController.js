@@ -87,12 +87,10 @@ const getMyFacilities = async (req, res) => {
 
 
 // Get Single Facility
+// Get Single Facility
 const getFacility = async (req, res) => {
     try {
-        const facility = await Facility.findOne({
-            _id: req.params.id,
-            owner: req.user.id
-        });
+        const facility = await Facility.findById(req.params.id);
 
         if (!facility) {
             return res.status(404).json({

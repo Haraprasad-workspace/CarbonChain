@@ -17,38 +17,38 @@ const WasteCard = ({ waste, onUpdate }) => {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-        "Failed to cancel waste batch."
+          "Failed to cancel waste batch."
       );
     }
   };
 
-  // Helper badge color variants based on waste batch status
+  // Helper badge color variants based on waste batch status (CarbonChain theme)
   const getStatusBadgeStyle = (status) => {
     switch (status) {
       case "REGISTERED":
-        return "bg-[#FDEED9] text-[#875218] border-[#FDEED9]";
+        return "bg-[#FFA800]/10 text-[#FFA800] border-[#FFA800]/30 shadow-[0_0_10px_rgba(255,168,0,0.15)]";
       case "MATCHED":
-        return "bg-[#DBEBF7] text-[#2B6CB0] border-[#DBEBF7]";
+        return "bg-sky-500/10 text-sky-300 border-sky-500/30 shadow-[0_0_10px_rgba(14,165,233,0.15)]";
       case "COLLECTED":
       case "COMPLETED":
-        return "bg-[#D8EEDF] text-[#1E5E38] border-[#D8EEDF]";
+        return "bg-[#10B981]/10 text-[#34D399] border-[#10B981]/30 shadow-[0_0_10px_rgba(16,185,129,0.15)]";
       case "CANCELLED":
-        return "bg-red-50 text-red-700 border-red-200";
+        return "bg-rose-500/10 text-rose-400 border-rose-500/30 shadow-[0_0_10px_rgba(244,63,94,0.15)]";
       default:
-        return "bg-[#E8ECE9] text-[#4F6358] border-[#E8ECE9]";
+        return "bg-[#12221A] text-[#A7F3D0]/70 border-[rgba(16,185,129,0.15)]";
     }
   };
 
   return (
-    <div className="bg-white border border-[#E6EDE8] rounded-2xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] hover:border-[#73A892] transition-all duration-200 overflow-hidden flex flex-col justify-between font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="bg-[#0B1610] border border-[rgba(16,185,129,0.15)] rounded-2xl shadow-[0_4px_16px_-2px_rgba(2,44,34,0.5)] hover:border-[#10B981]/40 transition-all duration-200 overflow-hidden flex flex-col justify-between font-['Montserrat',sans-serif] text-[#ECFDF5] backdrop-blur-[16px]">
       {/* Top Header & Status */}
-      <div className="p-5 border-b border-[#E8EFEA] space-y-3">
+      <div className="p-5 border-b border-[rgba(16,185,129,0.15)] space-y-3 bg-[#12221A]/40">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-lg font-bold text-[#1E332B] capitalize leading-snug">
+          <h3 className="text-lg font-bold text-[#ECFDF5] capitalize leading-snug tracking-tight">
             {waste.wasteType}
           </h3>
           <span
-            className={`px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wider border uppercase shrink-0 ${getStatusBadgeStyle(
+            className={`px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider border uppercase shrink-0 ${getStatusBadgeStyle(
               waste.status
             )}`}
           >
@@ -57,8 +57,8 @@ const WasteCard = ({ waste, onUpdate }) => {
         </div>
 
         {/* Quantity Tag */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#F4F6F0] border border-[#E6EDE8] rounded-lg text-xs font-semibold text-[#1E332B]">
-          <svg className="w-3.5 h-3.5 text-[#143B36]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#12221A] border border-[rgba(16,185,129,0.2)] rounded-xl text-xs font-bold text-[#34D399] shadow-xs">
+          <svg className="w-3.5 h-3.5 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
           </svg>
           <span>
@@ -68,20 +68,20 @@ const WasteCard = ({ waste, onUpdate }) => {
       </div>
 
       {/* Details Grid */}
-      <div className="p-5 space-y-2.5 text-xs text-[#63786E] flex-1">
+      <div className="p-5 space-y-3 text-xs text-[#A7F3D0]/80 flex-1 font-medium">
         <div className="flex justify-between items-center py-0.5">
-          <span className="font-semibold text-[#1E332B]">Quality:</span>
-          <span className="text-[#1E332B]">{waste.quality || "Not specified"}</span>
+          <span className="font-extrabold text-[#065F46] uppercase tracking-wider text-[10px]">Quality:</span>
+          <span className="text-[#ECFDF5] font-bold">{waste.quality || "Not specified"}</span>
         </div>
 
         <div className="flex justify-between items-center py-0.5">
-          <span className="font-semibold text-[#1E332B]">Location:</span>
-          <span className="text-[#1E332B]">{waste.location?.city || "Not specified"}</span>
+          <span className="font-extrabold text-[#065F46] uppercase tracking-wider text-[10px]">Location:</span>
+          <span className="text-[#ECFDF5] font-bold">{waste.location?.city || "Not specified"}</span>
         </div>
 
         <div className="flex justify-between items-center py-0.5">
-          <span className="font-semibold text-[#1E332B]">Available Date:</span>
-          <span className="text-[#1E332B]">
+          <span className="font-extrabold text-[#065F46] uppercase tracking-wider text-[10px]">Available Date:</span>
+          <span className="text-[#ECFDF5] font-bold">
             {waste.availabilityDate
               ? new Date(waste.availabilityDate).toLocaleDateString()
               : "N/A"}
@@ -89,14 +89,14 @@ const WasteCard = ({ waste, onUpdate }) => {
         </div>
 
         <div className="flex justify-between items-center py-0.5">
-          <span className="font-semibold text-[#1E332B]">Pricing Terms:</span>
-          <span className="text-[#1E332B] uppercase font-medium">{waste.pricingType}</span>
+          <span className="font-extrabold text-[#065F46] uppercase tracking-wider text-[10px]">Pricing Terms:</span>
+          <span className="text-[#34D399] uppercase font-bold tracking-wider">{waste.pricingType}</span>
         </div>
 
         {waste.askingPrice !== undefined && (
-          <div className="flex justify-between items-center py-1 border-t border-[#E8EFEA] mt-2">
-            <span className="font-bold text-[#1E332B]">Asking Price:</span>
-            <span className="text-sm font-extrabold text-[#143B36]">
+          <div className="flex justify-between items-center py-2.5 border-t border-[rgba(16,185,129,0.15)] mt-3">
+            <span className="font-extrabold text-[#065F46] uppercase tracking-wider text-[10px]">Asking Price:</span>
+            <span className="text-base font-black text-[#34D399]">
               ₹{waste.askingPrice}
             </span>
           </div>
@@ -104,10 +104,10 @@ const WasteCard = ({ waste, onUpdate }) => {
       </div>
 
       {/* Action Footer */}
-      <div className="p-4 bg-[#F4F6F0] border-t border-[#E8EFEA] flex items-center justify-between gap-3">
+      <div className="p-4 bg-[#12221A]/60 border-t border-[rgba(16,185,129,0.15)] flex items-center justify-between gap-3">
         <button
           onClick={() => navigate(`/generator/waste/${waste._id}`)}
-          className="flex-1 py-2.5 px-4 bg-white hover:bg-[#E4EFE9] text-[#1E3B30] border border-[#DFE6E1] hover:border-[#73A892] font-semibold text-xs rounded-xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] transition-all text-center cursor-pointer"
+          className="flex-1 py-2.5 px-4 bg-[#12221A] hover:bg-[#10B981] text-[#ECFDF5] hover:text-[#050B07] border border-[rgba(16,185,129,0.3)] hover:border-[#10B981] font-extrabold text-xs rounded-xl shadow-xs transition-all duration-200 text-center cursor-pointer"
         >
           View Details
         </button>
@@ -115,7 +115,7 @@ const WasteCard = ({ waste, onUpdate }) => {
         {["REGISTERED", "MATCHED"].includes(waste.status) && (
           <button
             onClick={handleCancel}
-            className="py-2.5 px-4 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold text-xs rounded-xl transition-all cursor-pointer"
+            className="py-2.5 px-4 bg-rose-500/10 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/30 font-extrabold text-xs rounded-xl transition-all duration-200 cursor-pointer shadow-xs"
           >
             Cancel
           </button>

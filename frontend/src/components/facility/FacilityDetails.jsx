@@ -18,12 +18,12 @@ const FacilityDetails = ({ facility }) => {
   };
 
   return (
-    <div className="space-y-6 font-['Montserrat',sans-serif] text-[#422D0B]">
+    <div className="space-y-6 font-sans text-[#422D0B]">
       {/* Header Banner */}
-      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5">
           <div className="space-y-2">
-            <span className="inline-block px-3 py-1 bg-[#FFFBF5] border border-[#E8DDCB] rounded-full text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+            <span className="inline-block px-3 py-1 bg-[#FFC24A]/20 border border-[#FFA800]/30 rounded-full text-[10px] font-extrabold uppercase tracking-widest text-[#422D0B]">
               {formatText(facility.facilityType)}
             </span>
 
@@ -48,8 +48,18 @@ const FacilityDetails = ({ facility }) => {
         </div>
       </div>
 
+      {/* Overview & Impact Statement */}
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-sm space-y-3">
+        <h2 className="text-xs font-extrabold uppercase tracking-widest text-[#967A53]">
+          Facility Overview & Environmental Role
+        </h2>
+        <p className="text-xs text-[#967A53] leading-relaxed">
+          This facility is registered within our sustainable bio-waste management network. It serves as a regional processing unit converting organic residue and agriculture waste into verified carbon offsets, reducing landfill methane emissions and powering circular eco-initiatives.
+        </p>
+      </div>
+
       {/* Operational Status */}
-      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs space-y-5">
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">
         <div className="flex items-center gap-2 border-b border-[#E8DDCB] pb-4">
           <span className="w-2 h-2 rounded-full bg-[#FFA800] animate-pulse" />
           <h2 className="text-xs font-extrabold uppercase tracking-widest text-[#967A53]">
@@ -71,7 +81,7 @@ const FacilityDetails = ({ facility }) => {
         </div>
 
         {facility.verificationStatus === "PENDING" && (
-          <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl px-4 py-3 text-xs text-[#967A53] flex items-center gap-2">
+          <div className="bg-[#FFC24A]/10 border border-[#FFA800]/30 rounded-2xl px-4 py-3 text-xs text-[#422D0B] flex items-center gap-2">
             <span className="text-[#FFA800]">⌛</span>
             <span>
               Facility verification is currently under review by compliance managers.
@@ -81,7 +91,7 @@ const FacilityDetails = ({ facility }) => {
       </div>
 
       {/* Facility Information */}
-      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-sm">
         <SectionTitle title="Facility Information" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -126,7 +136,7 @@ const FacilityDetails = ({ facility }) => {
       </div>
 
       {/* Location */}
-      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-sm">
         <SectionTitle title="Facility Location" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -163,7 +173,7 @@ const FacilityDetails = ({ facility }) => {
       </div>
 
       {/* Accepted Waste Types */}
-      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
         <SectionTitle title="Accepted Waste Types" />
 
         {facility.acceptedWasteTypes?.length > 0 ? (
@@ -171,7 +181,7 @@ const FacilityDetails = ({ facility }) => {
             {facility.acceptedWasteTypes.map((waste, index) => (
               <span
                 key={`${waste}-${index}`}
-                className="px-3.5 py-2 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] shadow-2xs"
+                className="px-3.5 py-2 bg-white border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] shadow-sm"
               >
                 {waste}
               </span>
@@ -182,6 +192,16 @@ const FacilityDetails = ({ facility }) => {
             No accepted waste types specified.
           </p>
         )}
+
+        {/* Processing Guarantee Info */}
+        <div className="p-4 bg-[#FFC24A]/10 border border-[#FFA800]/20 rounded-2xl text-xs text-[#422D0B] space-y-1">
+          <p className="font-extrabold uppercase tracking-wider text-[10px] text-[#FFA800]">
+            Processing Standard Compliance
+          </p>
+          <p className="text-[#967A53]">
+            All logged waste batches dispatched to this site are processed according to strict ecological guidelines to guarantee full audit compliance and precise carbon offset calculations.
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -203,7 +223,7 @@ const InfoBox = ({ label, value, active = false }) => {
       className={`rounded-2xl border p-4 transition-all ${
         active
           ? "bg-emerald-50/60 border-emerald-200"
-          : "bg-[#FFFBF5] border-[#E8DDCB]"
+          : "bg-white border-[#E8DDCB]"
       }`}
     >
       <span className="block text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
@@ -219,7 +239,7 @@ const InfoBox = ({ label, value, active = false }) => {
 
 const InfoRow = ({ label, value }) => {
   return (
-    <div className="bg-[#FFFBF5] border border-[#E8DDCB]/70 rounded-2xl p-4">
+    <div className="bg-white border border-[#E8DDCB]/70 rounded-2xl p-4">
       <span className="block text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
         {label}
       </span>

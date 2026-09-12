@@ -94,7 +94,7 @@ const MatchList = ({ wasteId }) => {
 
   if (loading) {
     return (
-      <div className="min-h-[350px] flex flex-col items-center justify-center">
+      <div className="min-h-[350px] flex flex-col items-center justify-center font-['Montserrat',sans-serif]">
         <div className="w-10 h-10 border-4 border-[#E8DDCB] border-t-[#FFA800] rounded-full animate-spin mb-4" />
 
         <p className="text-xs font-extrabold uppercase tracking-widest text-[#967A53]">
@@ -123,7 +123,7 @@ const MatchList = ({ wasteId }) => {
             </span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-black mt-1">
+          <h2 className="text-xl sm:text-2xl font-black mt-1 text-[#422D0B]">
             Recommended Facilities
           </h2>
 
@@ -136,15 +136,15 @@ const MatchList = ({ wasteId }) => {
           type="button"
           onClick={handleFindMatches}
           disabled={finding}
-          className="px-4 py-2.5 bg-[#FFA800] hover:bg-[#FFC24A] disabled:opacity-60 text-[#422D0B] rounded-xl text-xs font-extrabold transition-all active:scale-95"
+          className="px-4 py-2.5 bg-[#FFA800] hover:bg-[#FFC24A] disabled:opacity-60 text-[#422D0B] rounded-xl text-xs font-extrabold transition-all active:scale-95 cursor-pointer shadow-xs"
         >
           {finding ? "Finding..." : "Find Best Matches"}
         </button>
       </div>
 
-      {/* Error */}
+      {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
+        <div className="bg-red-50/80 border border-red-200 rounded-2xl p-4">
           <p className="text-xs font-bold text-red-700">
             {error}
           </p>
@@ -152,17 +152,17 @@ const MatchList = ({ wasteId }) => {
           <button
             type="button"
             onClick={fetchMatches}
-            className="mt-2 text-xs font-extrabold text-red-800 underline"
+            className="mt-2 text-xs font-extrabold text-red-800 underline cursor-pointer"
           >
             Try Again
           </button>
         </div>
       )}
 
-      {/* Empty */}
+      {/* Empty State */}
       {matches.length === 0 ? (
-        <div className="bg-white border border-[#E8DDCB] rounded-2xl p-10 text-center">
-          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#FFFBF5] border border-[#E8DDCB] flex items-center justify-center text-[#FFA800]">
+        <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-10 text-center">
+          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-white border border-[#E8DDCB] flex items-center justify-center text-[#FFA800] shadow-xs">
             <svg
               className="w-7 h-7"
               fill="none"
@@ -178,7 +178,7 @@ const MatchList = ({ wasteId }) => {
             </svg>
           </div>
 
-          <h3 className="text-base font-extrabold">
+          <h3 className="text-base font-extrabold text-[#422D0B]">
             No Matches Found
           </h3>
 
@@ -190,14 +190,14 @@ const MatchList = ({ wasteId }) => {
             type="button"
             onClick={handleFindMatches}
             disabled={finding}
-            className="mt-5 px-4 py-2 bg-[#FFA800] hover:bg-[#FFC24A] rounded-xl text-xs font-extrabold"
+            className="mt-5 px-4 py-2.5 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] rounded-xl text-xs font-extrabold shadow-xs transition-all cursor-pointer"
           >
             {finding ? "Searching..." : "Search Again"}
           </button>
         </div>
       ) : (
         <>
-          {/* Results */}
+          {/* Results Summary Bar */}
           <div className="flex items-center justify-between">
             <p className="text-xs font-extrabold text-[#967A53] uppercase tracking-wider">
               {matches.length}{" "}
@@ -207,13 +207,13 @@ const MatchList = ({ wasteId }) => {
             <button
               type="button"
               onClick={() => navigate(`/generator/waste/${wasteId}`)}
-              className="text-xs font-extrabold text-[#FFA800] hover:underline"
+              className="text-xs font-extrabold text-[#FFA800] hover:text-[#FFC24A] hover:underline cursor-pointer"
             >
               Back to Waste
             </button>
           </div>
 
-          {/* Match Cards */}
+          {/* Match Cards List */}
           <div
             ref={cardsRef}
             className="grid grid-cols-1 gap-4"

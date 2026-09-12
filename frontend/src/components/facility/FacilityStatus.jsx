@@ -2,57 +2,65 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 const FacilityStatus = ({
-  operationalStatus,
-  verificationStatus
+  operationalStatus = "ACTIVE",
+  verificationStatus = "VERIFIED",
+  lastAuditDate = "2026-03-10",
+  complianceScore = "98.4%",
+  onActionClick
 }) => {
   const containerRef = useRef(null);
   const badgeSectionRef = useRef(null);
   const calloutRef = useRef(null);
+  const metricsRef = useRef(null);
 
   const operationalLabels = {
-    ACTIVE: "Active",
-    FULL: "At Full Capacity",
-    TEMPORARILY_CLOSED: "Temporarily Closed",
-    INACTIVE: "Inactive"
+    ACTIVE: "Active Node",
+    FULL: "At Maximum Capacity",
+    TEMPORARILY_CLOSED: "Maintenance Offline",
+    INACTIVE: "Decommissioned"
   };
 
   const verificationLabels = {
-    PENDING: "Verification Pending",
-    VERIFIED: "Verified",
-    REJECTED: "Verification Rejected"
+    PENDING: "Audit Pending",
+    VERIFIED: "Verified Node",
+    REJECTED: "Audit Rejected"
   };
 
-  // Status Styling Configuration
+  // Status Styling Configuration for Dark Forest Palette
   const getOperationalStyle = (status) => {
     switch (status) {
       case "ACTIVE":
         return {
-          bg: "bg-emerald-50",
-          border: "border-emerald-200",
-          text: "text-emerald-900",
-          dot: "bg-emerald-500",
+          bg: "bg-[#022C22]/80",
+          border: "border-[#10B981]/40",
+          text: "text-[#34D399]",
+          dot: "bg-[#10B981]",
+          glow: "rgba(16, 185, 129, 0.2)"
         };
       case "FULL":
         return {
-          bg: "bg-amber-50",
-          border: "border-amber-200",
-          text: "text-amber-900",
-          dot: "bg-amber-500",
+          bg: "bg-[#12221A]",
+          border: "border-[#D97706]/40",
+          text: "text-[#F59E0B]",
+          dot: "bg-[#F59E0B]",
+          glow: "rgba(245, 158, 11, 0.2)"
         };
       case "TEMPORARILY_CLOSED":
       case "INACTIVE":
         return {
-          bg: "bg-orange-50",
-          border: "border-orange-200",
-          text: "text-orange-900",
-          dot: "bg-orange-500",
+          bg: "bg-[#12221A]",
+          border: "border-red-500/40",
+          text: "text-red-400",
+          dot: "bg-red-500",
+          glow: "rgba(239, 68, 68, 0.2)"
         };
       default:
         return {
-          bg: "bg-gray-50",
-          border: "border-gray-200",
-          text: "text-gray-800",
-          dot: "bg-gray-400",
+          bg: "bg-[#0B1610]",
+          border: "border-[rgba(16,185,129,0.15)]",
+          text: "text-[#A7F3D0]",
+          dot: "bg-[#047857]",
+          glow: "transparent"
         };
     }
   };
@@ -61,31 +69,35 @@ const FacilityStatus = ({
     switch (status) {
       case "VERIFIED":
         return {
-          bg: "bg-emerald-50",
-          border: "border-emerald-200",
-          text: "text-emerald-800",
+          bg: "bg-[#022C22]/80",
+          border: "border-[#10B981]/40",
+          text: "text-[#34D399]",
           icon: "✓",
+          badgeBg: "bg-[#10B981]/10"
         };
       case "PENDING":
         return {
-          bg: "bg-[#FFFBF5]",
-          border: "border-[#E8DDCB]",
-          text: "text-[#967A53]",
+          bg: "bg-[#12221A]",
+          border: "border-[#D97706]/40",
+          text: "text-[#F59E0B]",
           icon: "⏳",
+          badgeBg: "bg-[#D97706]/10"
         };
       case "REJECTED":
         return {
-          bg: "bg-red-50",
-          border: "border-red-200",
-          text: "text-red-800",
+          bg: "bg-red-950/30",
+          border: "border-red-500/40",
+          text: "text-red-400",
           icon: "✕",
+          badgeBg: "bg-red-500/10"
         };
       default:
         return {
-          bg: "bg-gray-50",
-          border: "border-gray-200",
-          text: "text-gray-700",
+          bg: "bg-[#0B1610]",
+          border: "border-[rgba(16,185,129,0.15)]",
+          text: "text-[#A7F3D0]",
           icon: "•",
+          badgeBg: "bg-[#0B1610]"
         };
     }
   };
@@ -95,22 +107,30 @@ const FacilityStatus = ({
     const ctx = gsap.context(() => {
       gsap.fromTo(
         badgeSectionRef.current?.children,
-        { opacity: 0, scale: 0.9, y: 10 },
+        { opacity: 0, scale: 0.95, y: 12 },
         {
           opacity: 1,
           scale: 1,
           y: 0,
-          duration: 0.4,
+          duration: 0.5,
           stagger: 0.1,
-          ease: "back.out(1.5)",
+          ease: "power3.out",
         }
       );
+
+      if (metricsRef.current) {
+        gsap.fromTo(
+          metricsRef.current,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.6, delay: 0.15, ease: "power3.out" }
+        );
+      }
 
       if (calloutRef.current) {
         gsap.fromTo(
           calloutRef.current,
-          { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, duration: 0.5, delay: 0.2, ease: "power2.out" }
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.6, delay: 0.25, ease: "power3.out" }
         );
       }
     }, containerRef);
@@ -124,132 +144,169 @@ const FacilityStatus = ({
   return (
     <div
       ref={containerRef}
-      className="bg-white border border-[#E8DDCB] rounded-2xl p-5 shadow-sm font-['Montserrat',sans-serif] text-[#422D0B] space-y-4"
+      className="bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-2xl p-5 shadow-[0_4px_12px_-2px_rgba(2,44,34,0.5)] font-['Montserrat',sans-serif] text-[#ECFDF5] space-y-4 backdrop-blur-md"
     >
       {/* Title Header */}
-      <div className="flex items-center justify-between border-b border-[#E8DDCB]/60 pb-3">
-        <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#967A53] flex items-center gap-2">
-          <svg
-            className="w-4 h-4 text-[#FFA800]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          Facility Operational Status
+      <div className="flex items-center justify-between border-b border-[rgba(16,185,129,0.15)] pb-3">
+        <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#A7F3D0] flex items-center gap-2 font-['Fira_Code',monospace]">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]" />
+          </span>
+          Hub Operational Protocol
         </h3>
+        <span className="text-[10px] font-bold text-[#047857] font-['Fira_Code',monospace]">
+          ID: CC-NODE-{Math.floor(1000 + Math.random() * 9000)}
+        </span>
       </div>
 
       {/* Badges Grid */}
       <div ref={badgeSectionRef} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {/* Operational Status Card */}
         <div
-          className={`p-3.5 rounded-xl border ${opStyle.bg} ${opStyle.border} flex items-center justify-between transition-all`}
+          className={`p-3.5 rounded-xl border ${opStyle.bg} ${opStyle.border} flex items-center justify-between transition-all shadow-inner`}
         >
-          <div className="space-y-0.5">
-            <span className="text-[10px] font-bold text-[#967A53] block uppercase tracking-wider">
-              Operational Status
+          <div className="space-y-1">
+            <span className="text-[10px] font-extrabold text-[#047857] block uppercase tracking-wider font-['Fira_Code',monospace]">
+              Operational State
             </span>
-            <span className={`text-xs font-extrabold ${opStyle.text}`}>
-              {operationalLabels[operationalStatus] ||
-                operationalStatus ||
-                "Unknown"}
+            <span className={`text-xs font-black ${opStyle.text}`}>
+              {operationalLabels[operationalStatus] || operationalStatus || "Unknown"}
             </span>
           </div>
           <span className="relative flex h-3 w-3">
             {operationalStatus === "ACTIVE" && (
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34D399] opacity-75" />
             )}
-            <span
-              className={`relative inline-flex rounded-full h-3 w-3 ${opStyle.dot}`}
-            />
+            <span className={`relative inline-flex rounded-full h-3 w-3 ${opStyle.dot}`} />
           </span>
         </div>
 
         {/* Verification Status Card */}
         <div
-          className={`p-3.5 rounded-xl border ${verStyle.bg} ${verStyle.border} flex items-center justify-between transition-all`}
+          className={`p-3.5 rounded-xl border ${verStyle.bg} ${verStyle.border} flex items-center justify-between transition-all shadow-inner`}
         >
-          <div className="space-y-0.5">
-            <span className="text-[10px] font-bold text-[#967A53] block uppercase tracking-wider">
-              Verification Status
+          <div className="space-y-1">
+            <span className="text-[10px] font-extrabold text-[#047857] block uppercase tracking-wider font-['Fira_Code',monospace]">
+              Verification Audit
             </span>
-            <span className={`text-xs font-extrabold ${verStyle.text}`}>
-              {verificationLabels[verificationStatus] ||
-                verificationStatus ||
-                "Unknown"}
+            <span className={`text-xs font-black ${verStyle.text}`}>
+              {verificationLabels[verificationStatus] || verificationStatus || "Unknown"}
             </span>
           </div>
-          <span className={`text-xs font-extrabold px-2 py-0.5 rounded-md border ${verStyle.border} ${verStyle.text}`}>
+          <span className={`text-xs font-extrabold px-2.5 py-1 rounded-lg border ${verStyle.border} ${verStyle.text} ${verStyle.badgeBg} font-['Fira_Code',monospace]`}>
             {verStyle.icon}
           </span>
         </div>
       </div>
 
-      {/* Dynamic Descriptive Banner */}
+      {/* Telemetry Secondary Info Banner */}
+      <div
+        ref={metricsRef}
+        className="grid grid-cols-2 gap-2 bg-[#0B1610] p-3 rounded-xl border border-[rgba(16,185,129,0.15)] text-xs font-['Fira_Code',monospace]"
+      >
+        <div>
+          <span className="text-[9px] font-bold text-[#047857] block uppercase tracking-wider">
+            Last Audit Cycle
+          </span>
+          <span className="font-bold text-[#A7F3D0] text-[11px]">{lastAuditDate}</span>
+        </div>
+        <div>
+          <span className="text-[9px] font-bold text-[#047857] block uppercase tracking-wider">
+            Ecosystem Score
+          </span>
+          <span className="font-bold text-[#34D399] text-[11px]">{complianceScore}</span>
+        </div>
+      </div>
+
+      {/* Dynamic Descriptive Banners */}
       {operationalStatus === "ACTIVE" && verificationStatus === "VERIFIED" && (
         <div
           ref={calloutRef}
-          className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 font-semibold flex items-center gap-2.5"
+          className="p-3 bg-[#022C22]/60 border border-[#10B981]/30 rounded-xl text-xs text-[#ECFDF5] font-medium flex items-center justify-between gap-2.5"
         >
-          <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shrink-0">
-            ✓
+          <div className="flex items-center gap-2.5">
+            <div className="w-5 h-5 rounded-md bg-[#10B981]/20 border border-[#10B981]/40 text-[#34D399] flex items-center justify-center font-black text-xs shrink-0">
+              ✓
+            </div>
+            <p className="text-[11px]">
+              Facility is verified and accepting bio-material routing.
+            </p>
           </div>
-          <p>Facility is active and fully verified to process biomass materials.</p>
+          {onActionClick && (
+            <button
+              onClick={onActionClick}
+              className="text-[10px] font-bold text-[#D97706] hover:text-[#F59E0B] underline font-['Fira_Code',monospace] shrink-0"
+            >
+              View Route Plan
+            </button>
+          )}
         </div>
       )}
 
       {operationalStatus === "FULL" && (
         <div
           ref={calloutRef}
-          className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-semibold flex items-center gap-2.5"
+          className="p-3 bg-[#12221A] border border-[#D97706]/40 rounded-xl text-xs text-[#ECFDF5] font-medium flex items-center gap-2.5"
         >
-          <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xs shrink-0">
+          <div className="w-5 h-5 rounded-md bg-[#D97706]/20 border border-[#D97706]/40 text-[#F59E0B] flex items-center justify-center font-black text-xs shrink-0 font-['Fira_Code',monospace]">
             !
           </div>
-          <p>Facility has reached its maximum current processing capacity.</p>
+          <p className="text-[11px]">
+            Capacity threshold met. Intake queues are held until next dispatch cycle.
+          </p>
         </div>
       )}
 
       {operationalStatus === "TEMPORARILY_CLOSED" && (
         <div
           ref={calloutRef}
-          className="p-3 bg-orange-50 border border-orange-200 rounded-xl text-xs text-orange-900 font-semibold flex items-center gap-2.5"
+          className="p-3 bg-red-950/20 border border-red-500/30 rounded-xl text-xs text-[#ECFDF5] font-medium flex items-center gap-2.5"
         >
-          <div className="w-5 h-5 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-black text-xs shrink-0">
+          <div className="w-5 h-5 rounded-md bg-red-500/20 border border-red-500/40 text-red-400 flex items-center justify-center font-black text-xs shrink-0 font-['Fira_Code',monospace]">
             !
           </div>
-          <p>Facility is temporarily unavailable for new waste intake.</p>
+          <p className="text-[11px]">
+            Offline for scheduled operational maintenance.
+          </p>
         </div>
       )}
 
       {verificationStatus === "PENDING" && (
         <div
           ref={calloutRef}
-          className="p-3 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs text-[#422D0B] font-medium flex items-center gap-2.5"
+          className="p-3 bg-[#0B1610] border border-[#D97706]/30 rounded-xl text-xs text-[#ECFDF5] font-medium flex items-center gap-2.5"
         >
-          <div className="w-5 h-5 rounded-full bg-[#FFA800]/20 text-[#422D0B] flex items-center justify-center font-black text-xs shrink-0">
+          <div className="w-5 h-5 rounded-md bg-[#D97706]/20 text-[#F59E0B] flex items-center justify-center font-black text-xs shrink-0 font-['Fira_Code',monospace]">
             ⏳
           </div>
-          <p>Facility verification is currently under review by compliance managers.</p>
+          <p className="text-[11px]">
+            Verification under compliance review. Secondary verification pending.
+          </p>
         </div>
       )}
 
       {verificationStatus === "REJECTED" && (
         <div
           ref={calloutRef}
-          className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-900 font-semibold flex items-center gap-2.5"
+          className="p-3 bg-red-950/30 border border-red-500/40 rounded-xl text-xs text-red-200 font-medium flex items-center justify-between gap-2.5"
         >
-          <div className="w-5 h-5 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-black text-xs shrink-0">
-            ✕
+          <div className="flex items-center gap-2.5">
+            <div className="w-5 h-5 rounded-md bg-red-500/20 text-red-400 flex items-center justify-center font-black text-xs shrink-0 font-['Fira_Code',monospace]">
+              ✕
+            </div>
+            <p className="text-[11px]">
+              Audit failed. Compliance requirements not met.
+            </p>
           </div>
-          <p>Facility verification was rejected. Please review documentation and re-submit.</p>
+          {onActionClick && (
+            <button
+              onClick={onActionClick}
+              className="text-[10px] font-bold text-red-400 hover:text-red-300 underline font-['Fira_Code',monospace] shrink-0"
+            >
+              Re-submit
+            </button>
+          )}
         </div>
       )}
     </div>

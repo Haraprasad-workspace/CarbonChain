@@ -64,14 +64,14 @@ const CarbonSummary = () => {
   // Loading State
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-['Plus_Jakarta_Sans',sans-serif]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-sans">
         {[1, 2, 3].map((item) => (
           <div
             key={item}
-            className="bg-[#FAFBF9] border border-[#E1E6DE] rounded-2xl p-5 space-y-3 animate-pulse shadow-sm"
+            className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-5 space-y-3 animate-pulse shadow-sm"
           >
-            <div className="h-3 w-24 bg-[#E1E6DE] rounded-full" />
-            <div className="h-7 w-32 bg-[#E1E6DE]/70 rounded-lg" />
+            <div className="h-3 w-24 bg-[#E8DDCB] rounded-full" />
+            <div className="h-7 w-32 bg-[#E8DDCB]/70 rounded-lg" />
           </div>
         ))}
       </div>
@@ -81,9 +81,9 @@ const CarbonSummary = () => {
   // Error State
   if (error) {
     return (
-      <div className="bg-[#FDF2F2] border border-[#F8D7DA] rounded-2xl p-4 flex items-center justify-between text-xs font-['Plus_Jakarta_Sans',sans-serif]">
-        <div className="flex items-center gap-2 text-[#A94442]">
-          <svg className="w-4 h-4 text-[#A94442] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-center justify-between text-xs font-sans">
+        <div className="flex items-center gap-2 text-red-800">
+          <svg className="w-4 h-4 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span className="font-bold">{error}</span>
@@ -91,7 +91,7 @@ const CarbonSummary = () => {
         <button
           type="button"
           onClick={fetchSummary}
-          className="text-xs font-black text-[#143B36] underline hover:text-[#204E4A] transition-colors cursor-pointer"
+          className="text-xs font-black text-[#FFA800] underline hover:text-[#FFC24A] transition-colors cursor-pointer"
         >
           Retry
         </button>
@@ -100,61 +100,80 @@ const CarbonSummary = () => {
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-['Plus_Jakarta_Sans',sans-serif]"
-    >
-      {/* Metric 1: Waste Processed */}
-      <div className="bg-[#FAFBF9] border border-[#E1E6DE] hover:border-[#73A892] rounded-2xl p-5 shadow-sm transition-all duration-300 space-y-2 group">
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6B7D76]">
-            Waste Processed
-          </span>
-          <div className="w-7 h-7 rounded-lg bg-[#D6ECE8] border border-[#C2E0DA] text-[#1F5953] flex items-center justify-center text-xs font-black">
-            ♻️
+    <div className="space-y-6 font-sans text-[#422D0B]">
+      {/* Metric Cards Grid */}
+      <div
+        ref={containerRef}
+        className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+      >
+        {/* Metric 1: Waste Processed */}
+        <div className="bg-[#FFFBF5] border border-[#E8DDCB] hover:border-[#FFA800] rounded-2xl p-5 shadow-sm transition-all duration-300 space-y-2 group">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+              Waste Processed
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-[#FFC24A]/20 border border-[#FFA800]/30 text-[#422D0B] flex items-center justify-center text-xs font-black">
+              ♻️
+            </div>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl font-black text-[#422D0B] tracking-tight">
+              {summary.totalWasteProcessed?.toLocaleString() ?? 0}
+            </span>
+            <span className="text-xs font-extrabold text-[#FFA800]">TON</span>
           </div>
         </div>
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-2xl font-black text-[#162925] tracking-tight">
-            {summary.totalWasteProcessed?.toLocaleString() ?? 0}
-          </span>
-          <span className="text-xs font-extrabold text-[#204E4A]">TON</span>
+
+        {/* Metric 2: CO2e Avoided */}
+        <div className="bg-[#FFFBF5] border border-[#E8DDCB] hover:border-[#FFA800] rounded-2xl p-5 shadow-sm transition-all duration-300 space-y-2 group">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+              CO₂e Avoided
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-[#FFC24A]/20 border border-[#FFA800]/30 text-[#422D0B] flex items-center justify-center text-xs font-black">
+              🌱
+            </div>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl font-black text-[#422D0B] tracking-tight">
+              {summary.totalCo2eAvoided?.toLocaleString() ?? 0}
+            </span>
+            <span className="text-xs font-extrabold text-[#FFA800]">TON</span>
+          </div>
+        </div>
+
+        {/* Metric 3: Carbon Records */}
+        <div className="bg-[#FFFBF5] border border-[#E8DDCB] hover:border-[#FFA800] rounded-2xl p-5 shadow-sm transition-all duration-300 space-y-2 group">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+              Carbon Records
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-[#FFFBF5] border border-[#E8DDCB] text-[#967A53] flex items-center justify-center text-xs font-black">
+              📋
+            </div>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl font-black text-[#422D0B] tracking-tight">
+              {summary.totalRecords?.toLocaleString() ?? 0}
+            </span>
+            <span className="text-xs font-extrabold text-[#967A53]">LOGS</span>
+          </div>
         </div>
       </div>
 
-      {/* Metric 2: CO2e Avoided */}
-      <div className="bg-[#FAFBF9] border border-[#E1E6DE] hover:border-[#73A892] rounded-2xl p-5 shadow-sm transition-all duration-300 space-y-2 group">
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6B7D76]">
-            CO₂e Avoided
-          </span>
-          <div className="w-7 h-7 rounded-lg bg-[#D8EEDF] border border-[#C2E3CD] text-[#1E5E38] flex items-center justify-center text-xs font-black">
-            🌱
-          </div>
+      {/* Informational Context Banner */}
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-5 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="space-y-1 max-w-2xl">
+          <h4 className="text-xs font-black text-[#422D0B] uppercase tracking-wider">
+            Morning Marigold Impact Verification
+          </h4>
+          <p className="text-xs text-[#967A53] leading-relaxed">
+            All registered biomass and waste conversions are audited step-by-step. By converting organic residue into biochar, compost, or biogas, your organization helps offset atmospheric carbon and promotes circular economy initiatives across regional networks.
+          </p>
         </div>
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-2xl font-black text-[#162925] tracking-tight">
-            {summary.totalCo2eAvoided?.toLocaleString() ?? 0}
-          </span>
-          <span className="text-xs font-extrabold text-[#204E4A]">TON</span>
-        </div>
-      </div>
-
-      {/* Metric 3: Carbon Records */}
-      <div className="bg-[#FAFBF9] border border-[#E1E6DE] hover:border-[#73A892] rounded-2xl p-5 shadow-sm transition-all duration-300 space-y-2 group">
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6B7D76]">
-            Carbon Records
-          </span>
-          <div className="w-7 h-7 rounded-lg bg-[#F4F6F0] border border-[#E1E6DE] text-[#6B7D76] flex items-center justify-center text-xs font-black">
-            📋
-          </div>
-        </div>
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-2xl font-black text-[#162925] tracking-tight">
-            {summary.totalRecords?.toLocaleString() ?? 0}
-          </span>
-          <span className="text-xs font-extrabold text-[#6B7D76]">LOGS</span>
+        <div className="shrink-0 flex items-center gap-2 px-3 py-1.5 bg-[#FFC24A]/20 border border-[#FFA800]/30 rounded-xl text-[11px] font-bold text-[#422D0B]">
+          <span className="w-2 h-2 rounded-full bg-[#FFA800] animate-pulse" />
+          Real-time Audit Active
         </div>
       </div>
     </div>

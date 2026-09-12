@@ -36,11 +36,9 @@ const NegotiationDetails = () => {
         async (showLoader = true) => {
             try {
                 if (showLoader) setLoading(true);
-
                 setError("");
 
                 const data = await getNegotiation(id);
-
                 setNegotiation(data.negotiation);
             } catch (err) {
                 setError(
@@ -65,38 +63,25 @@ const NegotiationDetails = () => {
 
         const onConnect = () => setIsConnected(true);
         const onDisconnect = () => setIsConnected(false);
+        const handleDataSync = () => fetchNegotiation(false);
 
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
+        socket.on("offerReceived", handleDataSync);
+        socket.on("negotiationAccepted", handleDataSync);
+        socket.on("negotiationRejected", handleDataSync);
 
         // Join negotiation room
         socket.emit("joinNegotiation", id);
-
-        // Real-time event handlers
-        const handleOfferReceived = () => {
-            fetchNegotiation(false);
-        };
-
-        const handleAccepted = () => {
-            fetchNegotiation(false);
-        };
-
-        const handleRejected = () => {
-            fetchNegotiation(false);
-        };
-
-        socket.on("offerReceived", handleOfferReceived);
-        socket.on("negotiationAccepted", handleAccepted);
-        socket.on("negotiationRejected", handleRejected);
 
         return () => {
             socket.emit("leaveNegotiation", id);
 
             socket.off("connect", onConnect);
             socket.off("disconnect", onDisconnect);
-            socket.off("offerReceived", handleOfferReceived);
-            socket.off("negotiationAccepted", handleAccepted);
-            socket.off("negotiationRejected", handleRejected);
+            socket.off("offerReceived", handleDataSync);
+            socket.off("negotiationAccepted", handleDataSync);
+            socket.off("negotiationRejected", handleDataSync);
         };
     }, [id, fetchNegotiation]);
 
@@ -104,16 +89,18 @@ const NegotiationDetails = () => {
     useEffect(() => {
         if (!loading && !error && negotiation) {
             const ctx = gsap.context(() => {
-                gsap.fromTo(
-                    headerRef.current,
-                    { opacity: 0, y: -15 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.45,
-                        ease: "power2.out",
-                    }
-                );
+                if (headerRef.current) {
+                    gsap.fromTo(
+                        headerRef.current,
+                        { opacity: 0, y: -15 },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.45,
+                            ease: "power2.out",
+                        }
+                    );
+                }
 
                 if (gridRef.current?.children) {
                     gsap.fromTo(
@@ -194,7 +181,6 @@ const NegotiationDetails = () => {
         return (
             <div className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] flex flex-col items-center justify-center p-6 text-[#1E332B]">
                 <div className="w-12 h-12 border-4 border-[#E6EDE8] border-t-[#143B36] rounded-full animate-spin mb-4" />
-
                 <p className="text-xs font-bold uppercase tracking-widest text-[#63786E] animate-pulse">
                     Connecting to Real-time Room...
                 </p>
@@ -210,17 +196,14 @@ const NegotiationDetails = () => {
                     <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
                         ✕
                     </div>
-
                     <div className="space-y-1">
                         <h3 className="text-base font-bold text-red-900">
                             Unable to Load Thread
                         </h3>
-
                         <p className="text-xs text-[#63786E] leading-relaxed">
                             {error}
                         </p>
                     </div>
-
                     <button
                         type="button"
                         onClick={handleBack}
@@ -241,18 +224,14 @@ const NegotiationDetails = () => {
                     <div className="w-12 h-12 bg-[#F4F6F0] border border-[#E6EDE8] text-[#143B36] rounded-full flex items-center justify-center mx-auto text-xl font-bold">
                         ?
                     </div>
-
                     <div className="space-y-1">
                         <h3 className="text-base font-bold text-[#1E332B]">
                             Negotiation Not Found
                         </h3>
-
                         <p className="text-xs text-[#63786E] leading-relaxed">
-                            This negotiation thread could not be found or has
-                            been closed.
+                            This negotiation thread could not be found or has been closed.
                         </p>
                     </div>
-
                     <button
                         type="button"
                         onClick={handleBack}
@@ -281,7 +260,6 @@ const NegotiationDetails = () => {
             className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] p-4 sm:p-[28px] selection:bg-[#143B36] selection:text-white"
         >
             <div className="max-w-6xl mx-auto space-y-6">
-
                 {/* Navigation & Header */}
                 <header
                     ref={headerRef}
@@ -307,12 +285,9 @@ const NegotiationDetails = () => {
                                         d="M15 19l-7-7 7-7"
                                     />
                                 </svg>
-
                                 <span>Negotiations</span>
                             </button>
-
                             <span className="text-[#DFE6E1]">•</span>
-
                             <span className="text-[10px] font-bold uppercase tracking-widest text-[#8EA097]">
                                 Live Room
                             </span>
@@ -338,10 +313,7 @@ const NegotiationDetails = () => {
                                             : "bg-[#875218]"
                                     }`}
                                 />
-
-                                {isConnected
-                                    ? "Live Sync"
-                                    : "Connecting..."}
+                                {isConnected ? "Live Sync" : "Connecting..."}
                             </span>
                         </div>
                     </div>
@@ -364,7 +336,6 @@ const NegotiationDetails = () => {
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
                             />
                         </svg>
-
                         <span>Back to All Deals</span>
                     </button>
                 </header>
@@ -373,7 +344,6 @@ const NegotiationDetails = () => {
                 {error && (
                     <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-800 flex items-center justify-between">
                         <span>{error}</span>
-
                         <button
                             type="button"
                             onClick={() => setError("")}
@@ -385,32 +355,25 @@ const NegotiationDetails = () => {
                 )}
 
                 {/* Workspace Layout */}
-                <div
-                    ref={gridRef}
-                    className="grid grid-cols-1 lg:grid-cols-3 gap-6"
-                >
+                <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Main Column */}
                     <div className="lg:col-span-2 space-y-6">
-
                         {/* Waste Batch Summary */}
                         <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] space-y-4">
                             <div className="flex items-center justify-between border-b border-[#E8EFEA] pb-3">
                                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
                                     Waste Batch Overview
                                 </span>
-
                                 <span className="px-2.5 py-0.5 bg-[#F4F6F0] border border-[#E6EDE8] text-[#1E332B] text-[10px] font-bold rounded-full">
                                     ID: {waste?._id?.slice(-6) || "N/A"}
                                 </span>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-
                                 <div className="space-y-0.5">
                                     <p className="text-[10px] font-semibold uppercase tracking-wider text-[#8EA097]">
                                         Waste Type
                                     </p>
-
                                     <p className="text-sm font-bold text-[#1E332B]">
                                         {waste?.wasteType || "Not Specified"}
                                     </p>
@@ -420,7 +383,6 @@ const NegotiationDetails = () => {
                                     <p className="text-[10px] font-semibold uppercase tracking-wider text-[#8EA097]">
                                         Quantity
                                     </p>
-
                                     <p className="text-sm font-bold text-[#1E332B]">
                                         {waste?.quantity?.value != null
                                             ? `${waste.quantity.value} ${
@@ -434,14 +396,12 @@ const NegotiationDetails = () => {
                                     <p className="text-[10px] font-semibold uppercase tracking-wider text-[#8EA097]">
                                         Current Stand Offer
                                     </p>
-
                                     <p className="text-sm font-extrabold text-[#143B36]">
                                         ₹
                                         {negotiation.currentOffer?.toLocaleString() ??
                                             "0"}
                                     </p>
                                 </div>
-
                             </div>
                         </div>
 
@@ -450,12 +410,10 @@ const NegotiationDetails = () => {
                             offers={negotiation.offers}
                             currentUserId={user?._id}
                         />
-
                     </div>
 
                     {/* Right Column */}
                     <div className="space-y-6">
-
                         <NegotiationStatus
                             status={negotiation.status}
                             agreedPrice={negotiation.agreedPrice}
@@ -464,13 +422,10 @@ const NegotiationDetails = () => {
                         {/* Active Negotiation */}
                         {negotiation.status === "ACTIVE" && (
                             <div className="space-y-6">
-
                                 {/* Counter Offer */}
                                 <OfferForm
                                     negotiationId={id}
-                                    onUpdate={() =>
-                                        fetchNegotiation(false)
-                                    }
+                                    onUpdate={() => fetchNegotiation(false)}
                                 />
 
                                 {/* Decision Actions */}
@@ -479,14 +434,12 @@ const NegotiationDetails = () => {
                                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
                                             Decision Actions
                                         </span>
-
                                         <h4 className="text-sm font-bold text-[#1E332B]">
                                             Finalize or Reject Current Offer
                                         </h4>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
                                         <button
                                             type="button"
                                             onClick={handleAccept}
@@ -506,7 +459,6 @@ const NegotiationDetails = () => {
                                                     d="M5 13l4 4L19 7"
                                                 />
                                             </svg>
-
                                             <span>
                                                 {actionLoading
                                                     ? "Processing..."
@@ -533,51 +485,40 @@ const NegotiationDetails = () => {
                                                     d="M6 18L18 6M6 6l12 12"
                                                 />
                                             </svg>
-
                                             <span>
                                                 {actionLoading
                                                     ? "Processing..."
                                                     : "Reject Offer"}
                                             </span>
                                         </button>
-
                                     </div>
                                 </div>
                             </div>
                         )}
 
-                        {/* ==================== PAYMENT ==================== */}
-
-                        {isGenerator &&
-                            negotiation.status === "ACCEPTED" && (
-                                <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)]">
-
-                                    <div className="space-y-1 border-b border-[#E8EFEA] pb-4">
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
-                                            Payment
-                                        </span>
-
-                                        <h4 className="text-base font-bold text-[#1E332B]">
-                                            Complete Transaction
-                                        </h4>
-
-                                        <p className="text-xs text-[#63786E] leading-relaxed">
-                                            Your offer has been accepted.
-                                            Complete the payment to proceed
-                                            with the transaction.
-                                        </p>
-                                    </div>
-
+                        {/* Payment Section */}
+                        {isGenerator && negotiation.status === "ACCEPTED" && (
+                            <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)]">
+                                <div className="space-y-1 border-b border-[#E8EFEA] pb-4">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
+                                        Payment
+                                    </span>
+                                    <h4 className="text-base font-bold text-[#1E332B]">
+                                        Complete Transaction
+                                    </h4>
+                                    <p className="text-xs text-[#63786E] leading-relaxed">
+                                        Your offer has been accepted. Complete the
+                                        payment to proceed with the transaction.
+                                    </p>
+                                </div>
+                                <div className="pt-4">
                                     <PaymentButton
                                         negotiation={negotiation}
-                                        onSuccess={() => {
-                                            fetchNegotiation(false);
-                                        }}
+                                        onSuccess={() => fetchNegotiation(false)}
                                     />
-
                                 </div>
-                            )}
-
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

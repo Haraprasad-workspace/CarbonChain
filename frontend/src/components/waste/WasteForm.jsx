@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
 import { createWasteBatch } from "../../services/wasteService";
 
 const WasteForm = () => {
   const navigate = useNavigate();
+  const formRef = useRef(null);
+  const containerRef = useRef(null);
 
   const [formData, setFormData] = useState({
     wasteType: "",
@@ -25,6 +28,16 @@ const WasteForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    if (containerRef.current) {
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+      );
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -82,6 +95,14 @@ const WasteForm = () => {
         askingPrice: "",
         description: "",
       });
+
+      if (formRef.current) {
+        gsap.fromTo(
+          formRef.current,
+          { scale: 0.99 },
+          { scale: 1, duration: 0.3, ease: "back.out(1.7)" }
+        );
+      }
     } catch (err) {
       setError(
         err.response?.data?.message || "Failed to register waste."
@@ -92,26 +113,32 @@ const WasteForm = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F4F6F0] text-[#1E332B] font-['Plus_Jakarta_Sans',sans-serif] p-4 sm:p-[28px] flex justify-center selection:bg-[#143B36] selection:text-white">
+    <div 
+      ref={containerRef}
+      className="min-h-screen w-full bg-[#0B1610] text-[#ECFDF5] font-['Montserrat',sans-serif] p-4 sm:p-[28px] flex justify-center backdrop-blur-[16px] selection:bg-[#10B981] selection:text-[#050B07]"
+    >
       <div className="w-full max-w-3xl space-y-6">
         
         {/* Header Title Section */}
-        <div className="border-b border-[#E8EFEA] pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="border-b border-[rgba(16,185,129,0.15)] pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E332B] tracking-tight">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#065F46]">
+              Batch Registration Portal
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#ECFDF5] tracking-tight mt-0.5">
               Register Waste Batch
             </h2>
-            <p className="text-xs text-[#63786E] mt-1">
+            <p className="text-xs text-[#A7F3D0]/70 mt-1 font-medium">
               List available organic or industrial byproducts for recycling and carbon credit mapping.
             </p>
           </div>
           <button
             type="button"
             onClick={() => navigate("/generator/waste")}
-            className="self-start sm:self-auto px-4 py-2 bg-white text-[#1E332B] border border-[#E6EDE8] text-xs font-semibold rounded-xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] hover:border-[#73A892] transition-colors flex items-center gap-2 cursor-pointer"
+            className="self-start sm:self-auto px-4 py-2 bg-[#12221A] text-[#ECFDF5] border border-[rgba(16,185,129,0.15)] text-xs font-bold rounded-xl shadow-xs hover:border-[#10B981]/40 transition-colors flex items-center gap-2 cursor-pointer"
           >
             <span>View My Waste</span>
-            <svg className="w-4 h-4 text-[#63786E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -119,8 +146,8 @@ const WasteForm = () => {
 
         {/* Feedback Notifications */}
         {error && (
-          <div className="p-4 rounded-xl text-xs font-semibold bg-red-50 border border-red-200 text-red-700 flex items-center gap-2">
-            <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <div className="p-4 rounded-xl text-xs font-semibold bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center gap-2 shadow-[0_0_10px_rgba(244,63,94,0.15)]">
+            <svg className="w-4 h-4 shrink-0 text-rose-400" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
             <span>{error}</span>
@@ -128,8 +155,8 @@ const WasteForm = () => {
         )}
 
         {success && (
-          <div className="p-4 rounded-xl text-xs font-semibold bg-[#D8EEDF] border border-[#D8EEDF] text-[#1E5E38] flex items-center gap-2">
-            <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <div className="p-4 rounded-xl text-xs font-semibold bg-[#10B981]/10 border border-[#10B981]/30 text-[#34D399] flex items-center gap-2 shadow-[0_0_10px_rgba(16,185,129,0.15)]">
+            <svg className="w-4 h-4 shrink-0 text-[#34D399]" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
             <span>{success}</span>
@@ -137,17 +164,21 @@ const WasteForm = () => {
         )}
 
         {/* Main Form Body */}
-        <form onSubmit={handleSubmit} className="bg-white border border-[#E6EDE8] rounded-2xl shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] p-6 sm:p-8 space-y-6">
+        <form 
+          ref={formRef}
+          onSubmit={handleSubmit} 
+          className="bg-[#0B1610] border border-[rgba(16,185,129,0.15)] rounded-2xl shadow-[0_4px_24px_-4px_rgba(2,44,34,0.6)] p-6 sm:p-8 space-y-6"
+        >
           
           {/* Section 1: Classification & Volume */}
           <div className="space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#63786E]">
+            <h3 className="text-[10px] font-extrabold uppercase tracking-widest text-[#065F46] border-b border-[rgba(16,185,129,0.15)] pb-2">
               1. Waste Specs & Quantity
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Waste Type / Category *
                 </label>
                 <input
@@ -157,12 +188,12 @@ const WasteForm = () => {
                   value={formData.wasteType}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Quality / Grade
                 </label>
                 <input
@@ -171,14 +202,14 @@ const WasteForm = () => {
                   placeholder="e.g. Dry Grade A, Untreated"
                   value={formData.quality}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2">
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Quantity *
                 </label>
                 <input
@@ -190,19 +221,19 @@ const WasteForm = () => {
                   value={formData.quantity}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Unit *
                 </label>
                 <select
                   name="unit"
                   value={formData.unit}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 >
                   <option value="TON">Ton</option>
                   <option value="KG">KG</option>
@@ -211,16 +242,16 @@ const WasteForm = () => {
             </div>
           </div>
 
-          <hr className="border-[#E8EFEA]" />
+          <hr className="border-[rgba(16,185,129,0.15)]" />
 
           {/* Section 2: Location Details */}
           <div className="space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#63786E]">
+            <h3 className="text-[10px] font-extrabold uppercase tracking-widest text-[#065F46] border-b border-[rgba(16,185,129,0.15)] pb-2">
               2. Origin & Dispatch Location
             </h3>
 
             <div>
-              <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+              <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                 Street Address
               </label>
               <input
@@ -229,13 +260,13 @@ const WasteForm = () => {
                 placeholder="Facility address or site marker"
                 value={formData.address}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   City
                 </label>
                 <input
@@ -244,12 +275,12 @@ const WasteForm = () => {
                   placeholder="City"
                   value={formData.city}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   State
                 </label>
                 <input
@@ -258,12 +289,12 @@ const WasteForm = () => {
                   placeholder="State"
                   value={formData.state}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Pincode
                 </label>
                 <input
@@ -272,14 +303,14 @@ const WasteForm = () => {
                   placeholder="Postal Code"
                   value={formData.pincode}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Latitude (Optional)
                 </label>
                 <input
@@ -289,12 +320,12 @@ const WasteForm = () => {
                   step="any"
                   value={formData.latitude}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Longitude (Optional)
                 </label>
                 <input
@@ -304,23 +335,23 @@ const WasteForm = () => {
                   step="any"
                   value={formData.longitude}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
             </div>
           </div>
 
-          <hr className="border-[#E8EFEA]" />
+          <hr className="border-[rgba(16,185,129,0.15)]" />
 
           {/* Section 3: Availability & Commercial Terms */}
           <div className="space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#63786E]">
+            <h3 className="text-[10px] font-extrabold uppercase tracking-widest text-[#065F46] border-b border-[rgba(16,185,129,0.15)] pb-2">
               3. Timing & Pricing Terms
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Availability Date *
                 </label>
                 <input
@@ -329,12 +360,12 @@ const WasteForm = () => {
                   value={formData.availabilityDate}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Pricing Model *
                 </label>
                 <select
@@ -342,7 +373,7 @@ const WasteForm = () => {
                   value={formData.pricingType}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 >
                   <option value="SELL">Sell</option>
                   <option value="FREE_PICKUP">Free Pickup</option>
@@ -352,7 +383,7 @@ const WasteForm = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+                <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                   Asking Price (INR)
                 </label>
                 <input
@@ -363,13 +394,13 @@ const WasteForm = () => {
                   step="any"
                   value={formData.askingPrice}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                  className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#1E332B] mb-1.5">
+              <label className="block text-xs font-bold text-[#ECFDF5] mb-1.5">
                 Additional Batch Description
               </label>
               <textarea
@@ -378,17 +409,17 @@ const WasteForm = () => {
                 value={formData.description}
                 onChange={handleChange}
                 rows="4"
-                className="w-full px-4 py-2.5 text-sm bg-white border border-[#DFE6E1] rounded-xl text-[#1E332B] placeholder-[#8EA097] focus:outline-none focus:ring-2 focus:ring-[#143B36] transition-all"
+                className="w-full px-4 py-2.5 text-xs bg-[#12221A] border border-[rgba(16,185,129,0.15)] rounded-xl text-[#ECFDF5] placeholder-[#A7F3D0]/40 focus:outline-none focus:ring-2 focus:ring-[#10B981] transition-all font-medium"
               />
             </div>
           </div>
 
           {/* Form Controls */}
-          <div className="pt-4 flex items-center justify-end gap-3">
+          <div className="pt-4 flex items-center justify-end gap-3 border-t border-[rgba(16,185,129,0.15)]">
             <button
               type="button"
               onClick={() => navigate("/generator/waste")}
-              className="px-5 py-2.5 text-xs font-semibold text-[#63786E] hover:text-[#1E332B] transition-colors cursor-pointer"
+              className="px-5 py-2.5 text-xs font-bold text-[#A7F3D0]/70 hover:text-[#ECFDF5] transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -396,11 +427,11 @@ const WasteForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 bg-[#143B36] hover:bg-[#0D2925] text-white font-semibold text-xs rounded-xl shadow-xs transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
+              className="px-6 py-2.5 bg-[#10B981] hover:bg-[#059669] text-[#050B07] font-black text-xs rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-[#050B07] border-t-transparent rounded-full animate-spin" />
                   <span>Registering Batch...</span>
                 </>
               ) : (

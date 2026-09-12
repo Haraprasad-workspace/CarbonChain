@@ -22,7 +22,7 @@ const MatchCard = ({ match, onUpdate }) => {
     }
   }, []);
 
-  // Card Hover Animations
+  // Card Hover Animations using Morning Marigold Palette
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {
       y: -6,
@@ -125,7 +125,7 @@ const MatchCard = ({ match, onUpdate }) => {
 
   if (!facility) {
     return (
-      <div className="bg-white border border-[#E8DDCB] rounded-2xl p-6 font-['Montserrat',sans-serif] text-center space-y-2">
+      <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-6 font-['Montserrat',sans-serif] text-center space-y-2">
         <p className="text-xs font-bold text-[#967A53]">
           Facility details unavailable for this match.
         </p>
@@ -138,10 +138,10 @@ const MatchCard = ({ match, onUpdate }) => {
       ref={cardRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-5 transition-colors font-['Montserrat',sans-serif] text-[#422D0B] relative overflow-hidden"
+      className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-5 transition-colors font-['Montserrat',sans-serif] text-[#422D0B] relative overflow-hidden"
     >
-      {/* Decorative Accent Background Glow */}
-      <div className="absolute top-0 right-0 w-28 h-28 bg-[#FFA800]/5 rounded-bl-full pointer-events-none" />
+      {/* Morning Marigold Decorative Accent Glow */}
+      <div className="absolute top-0 right-0 w-28 h-28 bg-[#FFA800]/10 rounded-bl-full pointer-events-none" />
 
       {/* Header & Match Score Badge */}
       <div className="space-y-3">
@@ -185,7 +185,7 @@ const MatchCard = ({ match, onUpdate }) => {
       </div>
 
       {/* Match Specifications Grid */}
-      <div className="space-y-2.5 pt-3 border-t border-[#E8DDCB]/60 text-xs">
+      <div className="space-y-2.5 pt-3 border-t border-[#E8DDCB] text-xs">
         {/* Distance */}
         <div className="flex items-center justify-between">
           <span className="text-[#967A53] font-medium flex items-center gap-1.5">
@@ -299,11 +299,11 @@ const MatchCard = ({ match, onUpdate }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="space-y-2 pt-3 border-t border-[#E8DDCB]/60">
+      <div className="space-y-2 pt-3 border-t border-[#E8DDCB]">
         <button
           type="button"
           onClick={() => navigate(`/facility/${facility._id}`)}
-          className="w-full py-2.5 px-4 bg-[#FFFBF5] border border-[#E8DDCB] hover:border-[#FFA800] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 active:scale-95"
+          className="w-full py-2.5 px-4 bg-white border border-[#E8DDCB] hover:border-[#FFA800] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
         >
           <span>View Facility Details</span>
           <svg className="w-3.5 h-3.5 text-[#FFA800]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -317,13 +317,13 @@ const MatchCard = ({ match, onUpdate }) => {
               type="button"
               onClick={handleAccept}
               disabled={loadingAction !== null}
-              className="flex-1 py-2.5 px-3 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-50"
+              className="flex-1 py-2.5 px-3 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               {loadingAction === "accept" ? (
                 <div className="w-4 h-4 border-2 border-[#422D0B] border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[#422D0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                   </svg>
                   <span>Accept Match</span>
@@ -335,7 +335,7 @@ const MatchCard = ({ match, onUpdate }) => {
               type="button"
               onClick={handleReject}
               disabled={loadingAction !== null}
-              className="py-2.5 px-3 bg-white hover:bg-red-50 text-red-600 border border-[#E8DDCB] hover:border-red-200 font-extrabold text-xs rounded-xl transition-all flex items-center justify-center gap-1 active:scale-95 disabled:opacity-50"
+              className="py-2.5 px-3 bg-white hover:bg-red-50 text-red-600 border border-[#E8DDCB] hover:border-red-200 font-extrabold text-xs rounded-xl transition-all flex items-center justify-center gap-1 active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               {loadingAction === "reject" ? (
                 <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />

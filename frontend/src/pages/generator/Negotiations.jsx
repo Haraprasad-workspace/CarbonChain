@@ -8,11 +8,13 @@ const Negotiations = () => {
   // GSAP Entrance Animation
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        pageRef.current,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }
-      );
+      if (pageRef.current) {
+        gsap.fromTo(
+          pageRef.current,
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }
+        );
+      }
     }, pageRef);
 
     return () => ctx.revert();
@@ -21,34 +23,40 @@ const Negotiations = () => {
   return (
     <div
       ref={pageRef}
-      className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] py-8 px-4 sm:px-6 lg:px-[28px] selection:bg-[#143B36] selection:text-white"
+      className="min-h-screen bg-[#0C1C18] font-['Plus_Jakarta_Sans',sans-serif] text-[#F4F6F0] py-8 px-4 sm:px-6 lg:px-[28px] selection:bg-[#2D6B4E] selection:text-white relative"
     >
-      <div className="max-w-6xl mx-auto space-y-8">
+      {/* Background Decorative Ambient Glows */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#2D6B4E]/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 -right-40 w-96 h-96 bg-[#143B36]/30 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-6xl mx-auto space-y-8 relative z-10">
         {/* Page Banner Header */}
-        <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 sm:p-8 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-[#143B36] border border-[#235349] rounded-2xl p-6 sm:p-8 shadow-[0px_4px_24px_rgba(10,28,24,0.4)] relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
           {/* Decorative Background Blur */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-[#E4EFE9]/60 rounded-bl-full pointer-events-none blur-xl" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-[#1E5247]/40 rounded-bl-full pointer-events-none blur-xl" />
 
           {/* Left Content */}
           <div className="space-y-2 max-w-2xl relative z-10">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#73A892] animate-pulse" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#8EA097]">
                 Facility Intake & Offers
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E332B] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F4F6F0] tracking-tight">
               Incoming Negotiations
             </h1>
-            <p className="text-xs sm:text-sm text-[#63786E] font-medium leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#8EA097] font-medium leading-relaxed">
               Review, accept, or counter price offers submitted by waste generators looking to process material at your facility.
             </p>
           </div>
 
           {/* Right Quick Info Badge */}
           <div className="shrink-0 relative z-10">
-            <div className="inline-flex items-center gap-3 bg-[#F4F6F0] border border-[#E6EDE8] px-4 py-3 rounded-xl shadow-xs">
-              <div className="w-9 h-9 bg-[#DCE9DF] border border-[#DCE9DF] rounded-xl flex items-center justify-center text-[#1E3B30]">
+            <div className="inline-flex items-center gap-3 bg-[#0C1C18] border border-[#235349] px-4 py-3 rounded-xl shadow-sm">
+              <div className="w-9 h-9 bg-[#1E5247] border border-[#2D6B4E] rounded-xl flex items-center justify-center text-[#73A892]">
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -67,7 +75,7 @@ const Negotiations = () => {
                 <span className="block text-[10px] font-semibold uppercase tracking-wider text-[#8EA097]">
                   Intake Role
                 </span>
-                <span className="block text-xs font-bold text-[#1E332B]">
+                <span className="block text-xs font-bold text-[#F4F6F0]">
                   Processing Facility
                 </span>
               </div>
