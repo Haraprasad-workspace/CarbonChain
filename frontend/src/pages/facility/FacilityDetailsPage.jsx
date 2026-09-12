@@ -2,65 +2,63 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import gsap from "gsap";
 
-import WasteDetails from "../../components/waste/WasteDetails";
-import WasteStatus from "../../components/waste/WasteStatus";
-import { getWasteBatch } from "../../services/wasteService";
+import FacilityDetails from "../../components/facility/FacilityDetails";
+import FacilityStatus from "../../components/facility/FacilityStatus";
+import { getFacility } from "../../services/facilityService";
 
-const WasteDetailsPage = () => {
+const FacilityDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [waste, setWaste] = useState(null);
+  const [facility, setFacility] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   // Animation Refs
   const pageRef = useRef(null);
   const headerRef = useRef(null);
-  const contentSectionsRef = useRef(null);
+  const mainContentRef = useRef(null);
 
   useEffect(() => {
-    const fetchWaste = async () => {
+    const fetchFacility = async () => {
       try {
         setLoading(true);
         setError("");
 
-        const data = await getWasteBatch(id);
-        setWaste(data.wasteBatch);
+        const data = await getFacility(id);
+        setFacility(data.facility);
       } catch (err) {
         setError(
           err.response?.data?.message ||
-            "Failed to fetch waste batch details. Please try again."
+            "Failed to fetch facility details. Please try again."
         );
       } finally {
         setLoading(false);
       }
     };
 
-    fetchWaste();
+    fetchFacility();
   }, [id]);
 
   // GSAP Entrance Effect on Data Load
   useEffect(() => {
-    if (!loading && !error && waste) {
+    if (!loading && !error && facility) {
       const ctx = gsap.context(() => {
-        // Header entrance
         gsap.fromTo(
           headerRef.current,
           { opacity: 0, y: -15 },
           { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
         );
 
-        // Content cards stagger entrance
-        if (contentSectionsRef.current?.children) {
+        if (mainContentRef.current?.children) {
           gsap.fromTo(
-            contentSectionsRef.current.children,
+            mainContentRef.current.children,
             { opacity: 0, y: 20 },
             {
               opacity: 1,
               y: 0,
               duration: 0.5,
-              stagger: 0.12,
+              stagger: 0.15,
               ease: "power2.out",
               delay: 0.1,
             }
@@ -70,23 +68,14 @@ const WasteDetailsPage = () => {
 
       return () => ctx.revert();
     }
-  }, [loading, error, waste]);
+  }, [loading, error, facility]);
 
   const handleBack = () => {
     gsap.to(pageRef.current, {
       opacity: 0,
       y: 10,
       duration: 0.2,
-      onComplete: () => navigate("/generator/waste"),
-    });
-  };
-
-  const handleNavigateToMatches = () => {
-    gsap.to(pageRef.current, {
-      opacity: 0,
-      y: -10,
-      duration: 0.2,
-      onComplete: () => navigate(`/generator/waste/${id}/matches`),
+      onComplete: () => navigate("/facility/my"),
     });
   };
 
@@ -96,7 +85,7 @@ const WasteDetailsPage = () => {
       <div className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] flex flex-col items-center justify-center p-6 text-[#422D0B]">
         <div className="w-12 h-12 border-4 border-[#E8DDCB] border-t-[#FFA800] rounded-full animate-spin mb-4" />
         <p className="text-xs font-extrabold uppercase tracking-widest text-[#967A53] animate-pulse">
-          Retrieving Waste Batch Details...
+          Retrieving Facility Profile...
         </p>
       </div>
     );
@@ -112,7 +101,7 @@ const WasteDetailsPage = () => {
           </div>
           <div className="space-y-1">
             <h3 className="text-base font-extrabold text-red-900">
-              Unable to Load Batch
+              Unable to Load Facility
             </h3>
             <p className="text-xs text-[#967A53] leading-relaxed">{error}</p>
           </div>
@@ -121,35 +110,7 @@ const WasteDetailsPage = () => {
             onClick={handleBack}
             className="w-full py-2.5 px-4 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl transition-all shadow-xs active:scale-95 cursor-pointer"
           >
-            Back to My Waste
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Not Found State UI
-  if (!waste) {
-    return (
-      <div className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] flex items-center justify-center p-6 text-[#422D0B]">
-        <div className="max-w-md w-full bg-white border border-[#E8DDCB] rounded-2xl p-6 text-center space-y-4 shadow-sm">
-          <div className="w-12 h-12 bg-[#FFFBF5] border border-[#E8DDCB] text-[#FFA800] rounded-full flex items-center justify-center mx-auto text-xl font-black">
-            ?
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-base font-extrabold text-[#422D0B]">
-              Waste Batch Not Found
-            </h3>
-            <p className="text-xs text-[#967A53] leading-relaxed">
-              The requested waste batch record does not exist or has been removed.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={handleBack}
-            className="w-full py-2.5 px-4 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl transition-all shadow-xs active:scale-95 cursor-pointer"
-          >
-            Back to My Waste
+            Back to My Facilities
           </button>
         </div>
       </div>
@@ -162,7 +123,7 @@ const WasteDetailsPage = () => {
       className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] text-[#422D0B] p-4 sm:p-8 selection:bg-[#FFA800] selection:text-white"
     >
       <div className="max-w-4xl mx-auto space-y-6">
-        {/* Navigation & Page Header */}
+        {/* Navigation Bar */}
         <header
           ref={headerRef}
           className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DDCB] pb-5"
@@ -187,16 +148,16 @@ const WasteDetailsPage = () => {
                     d="M15 19l-7-7 7-7"
                   />
                 </svg>
-                <span>My Waste</span>
+                <span>My Facilities</span>
               </button>
               <span className="text-[#E8DDCB]">•</span>
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
-                Batch Profile
+                Facility Details
               </span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-black text-[#422D0B] tracking-tight">
-              {waste?.wasteType ? `${waste.wasteType} Batch` : "Waste Details"}
+              {facility?.facilityName || "Facility Overview"}
             </h1>
           </div>
 
@@ -218,67 +179,27 @@ const WasteDetailsPage = () => {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            <span>Back to Inventory</span>
+            <span>Back to Directory</span>
           </button>
         </header>
 
-        {/* Content Sections Wrapper */}
-        <main ref={contentSectionsRef} className="space-y-6">
-          {/* Status Overview Card */}
-          <WasteStatus status={waste.status} />
+        {/* Main Content Sections */}
+        <main ref={mainContentRef} className="space-y-6">
+          {/* Status Bar */}
+          <FacilityStatus
+            operationalStatus={facility?.operationalStatus}
+            verificationStatus={facility?.verificationStatus}
+          />
 
-          {/* Details Overview Card */}
+          {/* Facility Specification Card */}
           <div className="bg-white border border-[#E8DDCB] rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFA800]/5 rounded-bl-full pointer-events-none" />
-            <WasteDetails waste={waste} />
+            <FacilityDetails facility={facility} />
           </div>
-
-          {/* Facility Matchmaking Action Card (If Active) */}
-          {waste.status !== "CANCELLED" && waste.status !== "PROCESSED" && (
-            <div className="bg-white border border-[#E8DDCB] hover:border-[#FFA800] rounded-2xl p-6 sm:p-8 shadow-sm transition-all relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 group">
-              <div className="space-y-2 max-w-xl">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#FFA800] animate-ping" />
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
-                    AI Recommended Action
-                  </span>
-                </div>
-                <h3 className="text-lg font-black text-[#422D0B]">
-                  Find Processing Facility
-                </h3>
-                <p className="text-xs text-[#967A53] leading-relaxed">
-                  Discover top suitable biomass processing plants based on waste
-                  composition, transport distance, capacity limits, and operational
-                  status.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleNavigateToMatches}
-                className="px-6 py-3 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95 cursor-pointer"
-              >
-                <span>Find Matching Facilities</span>
-                <svg
-                  className="w-4 h-4 text-[#422D0B] group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
         </main>
       </div>
     </div>
   );
 };
 
-export default WasteDetailsPage;
+export default FacilityDetailsPage;
