@@ -65,7 +65,7 @@ const MatchCard = ({ match, onUpdate }) => {
         error.response?.data?.message ||
           "Failed to accept match. Please try again."
       );
-    } font-sans {
+    } finally {
       setLoadingAction(null);
     }
   };

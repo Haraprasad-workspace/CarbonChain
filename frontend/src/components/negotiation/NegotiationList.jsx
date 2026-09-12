@@ -16,7 +16,6 @@ const NegotiationList = () => {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("ALL");
 
-  // GSAP Animation Refs
   const containerRef = useRef(null);
   const headerRef = useRef(null);
   const cardsGridRef = useRef(null);
@@ -43,7 +42,7 @@ const NegotiationList = () => {
         err.response?.data?.message ||
           "Failed to fetch negotiations. Please try again."
       );
-    } font-sans finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -54,18 +53,21 @@ const NegotiationList = () => {
     }
   }, [user?.role]);
 
-  // GSAP Stagger Entrance Effect
+  // GSAP Animation
   useEffect(() => {
     if (!loading && !error) {
       const ctx = gsap.context(() => {
-        // Header Reveal
         gsap.fromTo(
           headerRef.current,
           { opacity: 0, y: -15 },
-          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          }
         );
 
-        // Staggered Cards Reveal
         if (cardsGridRef.current?.children) {
           gsap.fromTo(
             cardsGridRef.current.children,
@@ -86,20 +88,42 @@ const NegotiationList = () => {
     }
   }, [loading, error, negotiations, activeTab]);
 
-  // Filter Negotiations by Tab
+  // Filter Negotiations
   const filteredNegotiations = negotiations.filter((item) => {
-    if (activeTab === "ALL") return true;
-    if (activeTab === "PENDING") return item.status === "PENDING" || item.status === "COUNTERED";
-    if (activeTab === "ACCEPTED") return item.status === "ACCEPTED";
-    if (activeTab === "REJECTED") return item.status === "REJECTED" || item.status === "CANCELLED";
+    if (activeTab === "ALL") {
+      return true;
+    }
+
+    if (activeTab === "PENDING") {
+      return (
+        item.status === "ACTIVE" ||
+        item.status === "NEGOTIATING" ||
+        item.status === "PENDING" ||
+        item.status === "COUNTERED"
+      );
+    }
+
+    if (activeTab === "ACCEPTED") {
+      return item.status === "ACCEPTED";
+    }
+
+    if (activeTab === "REJECTED") {
+      return (
+        item.status === "REJECTED" ||
+        item.status === "CANCELLED" ||
+        item.status === "EXPIRED"
+      );
+    }
+
     return true;
   });
 
-  // Loading State UI
+  // Loading State
   if (loading) {
     return (
       <div className="min-h-[400px] flex flex-col items-center justify-center p-8 text-[#422D0B]">
         <div className="w-10 h-10 border-4 border-[#E8DDCB] border-t-[#FFA800] rounded-full animate-spin mb-3" />
+
         <p className="text-xs font-extrabold uppercase tracking-widest text-[#967A53] animate-pulse">
           Loading Active Negotiations...
         </p>
@@ -107,19 +131,22 @@ const NegotiationList = () => {
     );
   }
 
-  // Error State UI
+  // Error State
   if (error) {
     return (
       <div className="bg-white border border-red-200 rounded-2xl p-6 text-center space-y-4 shadow-xs my-4">
         <div className="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto font-black text-sm">
           ✕
         </div>
+
         <div className="space-y-1">
           <h3 className="text-sm font-extrabold text-red-900">
             Error Loading Negotiations
           </h3>
+
           <p className="text-xs text-[#967A53]">{error}</p>
         </div>
+
         <button
           type="button"
           onClick={fetchNegotiations}
@@ -136,7 +163,7 @@ const NegotiationList = () => {
       ref={containerRef}
       className="space-y-6 font-['Montserrat',sans-serif] text-[#422D0B]"
     >
-      {/* Top Header & Filter Controls */}
+      {/* Header */}
       <div
         ref={headerRef}
         className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DDCB] pb-4"
@@ -144,16 +171,18 @@ const NegotiationList = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#FFA800]" />
+
             <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
               Deals & Offers
             </span>
           </div>
+
           <h2 className="text-xl sm:text-2xl font-black text-[#422D0B] tracking-tight mt-0.5">
             Negotiations
           </h2>
         </div>
 
-        {/* Status Filter Tabs */}
+        {/* Status Tabs */}
         <div className="flex items-center bg-[#FFFBF5] border border-[#E8DDCB] p-1 rounded-xl self-start sm:self-auto overflow-x-auto">
           {[
             { key: "ALL", label: "All" },
@@ -177,7 +206,7 @@ const NegotiationList = () => {
         </div>
       </div>
 
-      {/* Empty State */}
+      {/* Empty State / List */}
       {filteredNegotiations.length === 0 ? (
         <div className="bg-white border border-[#E8DDCB] rounded-2xl p-8 sm:p-12 text-center space-y-3 relative overflow-hidden">
           <div className="w-14 h-14 bg-[#FFFBF5] border border-[#E8DDCB] text-[#FFA800] rounded-2xl flex items-center justify-center mx-auto text-xl shadow-xs">
@@ -195,16 +224,19 @@ const NegotiationList = () => {
               />
             </svg>
           </div>
+
           <div className="space-y-1">
             <h3 className="text-base font-extrabold text-[#422D0B]">
               No Negotiations Found
             </h3>
+
             <p className="text-xs text-[#967A53] max-w-sm mx-auto leading-relaxed">
               {activeTab === "ALL"
                 ? "There are currently no active negotiations or deal offers linked to your account."
                 : `No negotiations matching the "${activeTab.toLowerCase()}" filter.`}
             </p>
           </div>
+
           {activeTab !== "ALL" && (
             <button
               type="button"
@@ -216,8 +248,10 @@ const NegotiationList = () => {
           )}
         </div>
       ) : (
-        /* Negotiations List Grid */
-        <div ref={cardsGridRef} className="grid grid-cols-1 gap-4">
+        <div
+          ref={cardsGridRef}
+          className="grid grid-cols-1 gap-4"
+        >
           {filteredNegotiations.map((negotiation) => (
             <NegotiationCard
               key={negotiation._id}

@@ -31,7 +31,7 @@ const ShipmentDetailsPage = () => {
       setError(
         err.response?.data?.message || "Failed to fetch shipment details."
       );
-    } font-sans finally {
+    } finally {
       setLoading(false);
     }
   };

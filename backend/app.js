@@ -88,7 +88,7 @@ app.use(
     require("./routes/negotiationRoutes")
 );
 app.use("/api/shipments", require("./routes/shipmentRoutes"));
-
+app.use("/api/carbon", require("./routes/carbonRoutes"));
 // ==================== HEALTH CHECK ====================
 
 app.get("/", (req, res) => {
