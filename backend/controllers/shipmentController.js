@@ -1,11 +1,25 @@
 const Shipment = require("../models/Shipment");
 const WasteBatch = require("../models/WasteBatch");
 const Negotiation = require("../models/Negotiation");
+const User = require("../models/User");
+const Facility = require("../models/Facility");
 const { optimizeRoute } = require("../utils/routeOptimizer");
+
+
+// ============================================================
+// CREATE SHIPMENT
+// ============================================================
 
 const createShipment = async (req, res) => {
     try {
         const { negotiationId, pickupDate } = req.body;
+
+        if (!negotiationId) {
+            return res.status(400).json({
+                success: false,
+                message: "Negotiation ID is required"
+            });
+        }
 
         const negotiation = await Negotiation.findById(negotiationId)
             .populate("wasteBatch")
@@ -25,6 +39,7 @@ const createShipment = async (req, res) => {
             });
         }
 
+        // Only the waste generator can create the shipment
         if (
             negotiation.generator.toString() !==
             req.user._id.toString()
@@ -38,16 +53,35 @@ const createShipment = async (req, res) => {
         const waste = negotiation.wasteBatch;
         const facility = negotiation.facility;
 
-        if (!waste?.location?.latitude || !waste?.location?.longitude) {
+        if (!waste) {
+            return res.status(404).json({
+                success: false,
+                message: "Waste batch not found"
+            });
+        }
+
+        if (!facility) {
+            return res.status(404).json({
+                success: false,
+                message: "Facility not found"
+            });
+        }
+
+        // Validate pickup coordinates
+        if (
+            waste.location?.latitude === undefined ||
+            waste.location?.longitude === undefined
+        ) {
             return res.status(400).json({
                 success: false,
                 message: "Waste pickup location coordinates are missing"
             });
         }
 
+        // Validate delivery coordinates
         if (
-            !facility?.location?.latitude ||
-            !facility?.location?.longitude
+            facility.location?.latitude === undefined ||
+            facility.location?.longitude === undefined
         ) {
             return res.status(400).json({
                 success: false,
@@ -55,13 +89,7 @@ const createShipment = async (req, res) => {
             });
         }
 
-        // Calculate route and estimated travel time
-        const route = optimizeRoute(
-            waste.location,
-            facility.location
-        );
-
-        // Prevent duplicate shipment for the same negotiation
+        // Prevent duplicate shipment
         const existingShipment = await Shipment.findOne({
             negotiation: negotiation._id
         });
@@ -73,6 +101,12 @@ const createShipment = async (req, res) => {
                 shipment: existingShipment
             });
         }
+
+        // Calculate route
+        const route = optimizeRoute(
+            waste.location,
+            facility.location
+        );
 
         const shipment = await Shipment.create({
             wasteBatch: waste._id,
@@ -103,13 +137,15 @@ const createShipment = async (req, res) => {
                 estimatedTime: route.estimatedTime
             },
 
-            pickupDate,
-            status: "CREATED"
+            pickupDate: pickupDate || null,
+            status: pickupDate
+                ? "PICKUP_SCHEDULED"
+                : "CREATED"
         });
 
-        // Update waste status
-        waste.status = "COLLECTED";
-        await waste.save();
+        // IMPORTANT:
+        // Do NOT mark waste as COLLECTED here.
+        // Waste becomes COLLECTED only when pickup actually happens.
 
         res.status(201).json({
             success: true,
@@ -118,51 +154,95 @@ const createShipment = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Create shipment error:", error.message);
+        console.error(
+            "Create shipment error:",
+            error.message
+        );
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Failed to create shipment"
         });
     }
 };
 
 
+// ============================================================
+// GET MY SHIPMENTS
+// ============================================================
+
 const getMyShipments = async (req, res) => {
     try {
-        const shipments = await Shipment.find({
-            $or: [
-                { generator: req.user._id },
-                { logisticsProvider: req.user._id }
-            ]
-        })
+        let query = {};
+
+        if (req.user.role === "WASTE_GENERATOR") {
+            query.generator = req.user._id;
+        }
+
+        else if (req.user.role === "LOGISTICS_PROVIDER") {
+            query.logisticsProvider = req.user._id;
+        }
+
+        else if (req.user.role === "FACILITY") {
+
+            const facilities = await Facility.find({
+                owner: req.user._id
+            }).select("_id");
+
+            const facilityIds = facilities.map(
+                (facility) => facility._id
+            );
+
+            query.facility = { $in: facilityIds };
+        }
+
+        else if (req.user.role === "ADMIN") {
+            query = {};
+        }
+
+        else {
+            return res.status(403).json({
+                success: false,
+                message: "Not authorized to view shipments"
+            });
+        }
+
+        const shipments = await Shipment.find(query)
             .populate("wasteBatch")
             .populate("facility")
             .populate(
                 "generator",
-                "name organization phone"
+                "name organization phone email"
             )
             .populate(
                 "logisticsProvider",
-                "name phone"
+                "name phone organization email"
             )
             .sort({ createdAt: -1 });
 
         res.status(200).json({
             success: true,
+            count: shipments.length,
             shipments
         });
 
     } catch (error) {
-        console.error("Get shipments error:", error.message);
+        console.error(
+            "Get shipments error:",
+            error.message
+        );
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Failed to retrieve shipments"
         });
     }
 };
 
+
+// ============================================================
+// GET SINGLE SHIPMENT
+// ============================================================
 
 const getShipment = async (req, res) => {
     try {
@@ -171,11 +251,11 @@ const getShipment = async (req, res) => {
             .populate("facility")
             .populate(
                 "generator",
-                "name organization phone"
+                "name organization phone email"
             )
             .populate(
                 "logisticsProvider",
-                "name phone"
+                "name phone organization email"
             );
 
         if (!shipment) {
@@ -185,21 +265,75 @@ const getShipment = async (req, res) => {
             });
         }
 
+        let authorized = false;
+
+        // Generator
+        if (
+            req.user.role === "WASTE_GENERATOR" &&
+            shipment.generator?._id.toString() ===
+            req.user._id.toString()
+        ) {
+            authorized = true;
+        }
+
+        // Logistics provider
+        if (
+            req.user.role === "LOGISTICS_PROVIDER" &&
+            shipment.logisticsProvider?._id.toString() ===
+            req.user._id.toString()
+        ) {
+            authorized = true;
+        }
+
+        // Facility owner
+        if (req.user.role === "FACILITY") {
+            const facility = await Facility.findOne({
+                _id: shipment.facility?._id,
+                owner: req.user._id
+            });
+
+            if (facility) {
+                authorized = true;
+            }
+        }
+
+        // Municipality/Admin access
+        if (
+            req.user.role === "MUNICIPALITY" ||
+            req.user.role === "ADMIN"
+        ) {
+            authorized = true;
+        }
+
+        if (!authorized) {
+            return res.status(403).json({
+                success: false,
+                message: "Not authorized to view this shipment"
+            });
+        }
+
         res.status(200).json({
             success: true,
             shipment
         });
 
     } catch (error) {
-        console.error("Get shipment error:", error.message);
+        console.error(
+            "Get shipment error:",
+            error.message
+        );
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Failed to retrieve shipment"
         });
     }
 };
 
+
+// ============================================================
+// ASSIGN LOGISTICS PROVIDER
+// ============================================================
 
 const assignLogisticsProvider = async (req, res) => {
     try {
@@ -217,7 +351,9 @@ const assignLogisticsProvider = async (req, res) => {
             });
         }
 
-        const shipment = await Shipment.findById(req.params.id);
+        const shipment = await Shipment.findById(
+            req.params.id
+        );
 
         if (!shipment) {
             return res.status(404).json({
@@ -226,17 +362,87 @@ const assignLogisticsProvider = async (req, res) => {
             });
         }
 
-        shipment.logisticsProvider = logisticsProviderId;
-        shipment.vehicleNumber = vehicleNumber;
-        shipment.driverName = driverName;
-        shipment.driverPhone = driverPhone;
+        // Only generator, facility or admin can assign
+        if (
+            req.user.role !== "ADMIN" &&
+            req.user.role !== "WASTE_GENERATOR" &&
+            req.user.role !== "FACILITY"
+        ) {
+            return res.status(403).json({
+                success: false,
+                message: "Not authorized to assign logistics provider"
+            });
+        }
+
+        // Verify logistics provider
+        const provider = await User.findOne({
+            _id: logisticsProviderId,
+            role: "LOGISTICS_PROVIDER",
+            accountStatus: { $ne: "SUSPENDED" }
+        });
+
+        if (!provider) {
+            return res.status(404).json({
+                success: false,
+                message: "Valid logistics provider not found"
+            });
+        }
+
+        // Generator ownership check
+        if (req.user.role === "WASTE_GENERATOR") {
+            if (
+                shipment.generator.toString() !==
+                req.user._id.toString()
+            ) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Not authorized to assign this shipment"
+                });
+            }
+        }
+
+        // Facility ownership check
+        if (req.user.role === "FACILITY") {
+            const facility = await Facility.findOne({
+                _id: shipment.facility,
+                owner: req.user._id
+            });
+
+            if (!facility) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Not authorized to assign this shipment"
+                });
+            }
+        }
+
+        shipment.logisticsProvider = provider._id;
+
+        if (vehicleNumber !== undefined) {
+            shipment.vehicleNumber = vehicleNumber;
+        }
+
+        if (driverName !== undefined) {
+            shipment.driverName = driverName;
+        }
+
+        if (driverPhone !== undefined) {
+            shipment.driverPhone = driverPhone;
+        }
+
         shipment.status = "ASSIGNED";
 
         await shipment.save();
 
-        const updatedShipment = await Shipment.findById(shipment._id)
+        const updatedShipment = await Shipment.findById(
+            shipment._id
+        )
             .populate("wasteBatch")
             .populate("facility")
+            .populate(
+                "generator",
+                "name organization phone"
+            )
             .populate(
                 "logisticsProvider",
                 "name phone organization"
@@ -256,11 +462,15 @@ const assignLogisticsProvider = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Failed to assign logistics provider"
         });
     }
 };
 
+
+// ============================================================
+// UPDATE SHIPMENT STATUS
+// ============================================================
 
 const updateShipmentStatus = async (req, res) => {
     try {
@@ -283,7 +493,9 @@ const updateShipmentStatus = async (req, res) => {
             });
         }
 
-        const shipment = await Shipment.findById(req.params.id);
+        const shipment = await Shipment.findById(
+            req.params.id
+        );
 
         if (!shipment) {
             return res.status(404).json({
@@ -292,45 +504,115 @@ const updateShipmentStatus = async (req, res) => {
             });
         }
 
+        // Only assigned logistics provider or admin
+        if (req.user.role === "LOGISTICS_PROVIDER") {
+            if (
+                !shipment.logisticsProvider ||
+                shipment.logisticsProvider.toString() !==
+                req.user._id.toString()
+            ) {
+                return res.status(403).json({
+                    success: false,
+                    message: "This shipment is not assigned to you"
+                });
+            }
+        }
+
+        else if (req.user.role !== "ADMIN") {
+            return res.status(403).json({
+                success: false,
+                message: "Not authorized to update shipment status"
+            });
+        }
+
+        // Logical status transition validation
+        const currentStatus = shipment.status;
+
+        const transitions = {
+            CREATED: ["ASSIGNED", "PICKUP_SCHEDULED", "CANCELLED"],
+            ASSIGNED: ["PICKUP_SCHEDULED", "PICKED_UP", "CANCELLED"],
+            PICKUP_SCHEDULED: ["PICKED_UP", "CANCELLED"],
+            PICKED_UP: ["IN_TRANSIT", "CANCELLED"],
+            IN_TRANSIT: ["DELIVERED"],
+            DELIVERED: [],
+            CANCELLED: []
+        };
+
+        if (
+            currentStatus !== status &&
+            !transitions[currentStatus]?.includes(status)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot change shipment status from ${currentStatus} to ${status}`
+            });
+        }
+
         shipment.status = status;
 
-        // Update waste lifecycle
+        // Pickup completed
         if (status === "PICKED_UP") {
             await WasteBatch.findByIdAndUpdate(
                 shipment.wasteBatch,
-                { status: "COLLECTED" }
+                {
+                    status: "COLLECTED"
+                }
             );
         }
 
+        // Waste is in transportation
         if (status === "IN_TRANSIT") {
             await WasteBatch.findByIdAndUpdate(
                 shipment.wasteBatch,
-                { status: "IN_TRANSIT" }
+                {
+                    status: "IN_TRANSIT"
+                }
             );
         }
 
+        // Waste delivered to facility
         if (status === "DELIVERED") {
             shipment.deliveredDate = new Date();
 
             await WasteBatch.findByIdAndUpdate(
                 shipment.wasteBatch,
-                { status: "RECEIVED" }
+                {
+                    facility: shipment.facility,
+                    status: "RECEIVED"
+                }
             );
         }
 
+        // Shipment cancelled
         if (status === "CANCELLED") {
             await WasteBatch.findByIdAndUpdate(
                 shipment.wasteBatch,
-                { status: "CANCELLED" }
+                {
+                    status: "CANCELLED"
+                }
             );
         }
 
         await shipment.save();
 
+        const updatedShipment = await Shipment.findById(
+            shipment._id
+        )
+            .populate("wasteBatch")
+            .populate("facility")
+            .populate(
+                "generator",
+                "name organization phone"
+            )
+            .populate(
+                "logisticsProvider",
+                "name phone organization"
+            );
+
         res.status(200).json({
             success: true,
             message: "Shipment status updated successfully",
-            shipment
+            shipment: updatedShipment
         });
 
     } catch (error) {
@@ -341,7 +623,7 @@ const updateShipmentStatus = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Failed to update shipment status"
         });
     }
 };

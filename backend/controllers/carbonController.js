@@ -198,7 +198,43 @@ const getFacilityCarbonRecords = async (req, res) => {
 
 const getCarbonSummary = async (req, res) => {
     try {
-        const records = await CarbonRecord.find();
+        let records = [];
+
+        if (req.user.role === "WASTE_GENERATOR") {
+            const wasteBatches = await WasteBatch.find({
+                generator: req.user.id
+            }).select("_id");
+
+            const wasteIds = wasteBatches.map(
+                (waste) => waste._id
+            );
+
+            records = await CarbonRecord.find({
+                wasteBatch: { $in: wasteIds }
+            });
+
+        } else if (req.user.role === "FACILITY") {
+            const facilities = await Facility.find({
+                owner: req.user.id
+            }).select("_id");
+
+            const facilityIds = facilities.map(
+                (facility) => facility._id
+            );
+
+            records = await CarbonRecord.find({
+                facility: { $in: facilityIds }
+            });
+
+        } else if (req.user.role === "ADMIN") {
+            records = await CarbonRecord.find();
+
+        } else {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to view carbon summary"
+            });
+        }
 
         const totalWaste = records.reduce(
             (sum, record) => {

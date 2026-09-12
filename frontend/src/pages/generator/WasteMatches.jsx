@@ -65,23 +65,23 @@ const WasteMatches = () => {
   return (
     <div
       ref={pageRef}
-      className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] text-[#422D0B] p-4 sm:p-8 selection:bg-[#FFA800] selection:text-white"
+      className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] p-4 sm:p-[28px] selection:bg-[#143B36] selection:text-white"
     >
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Navigation & Page Header */}
         <header
           ref={headerRef}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DDCB] pb-5"
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8EFEA] pb-5"
         >
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleBack}
-                className="text-[#967A53] hover:text-[#422D0B] text-xs font-bold transition-colors flex items-center gap-1 group cursor-pointer"
+                className="text-[#63786E] hover:text-[#1E332B] text-xs font-semibold transition-colors flex items-center gap-1 group cursor-pointer"
               >
                 <svg
-                  className="w-4 h-4 text-[#FFA800] group-hover:-translate-x-1 transition-transform"
+                  className="w-4 h-4 text-[#73A892] group-hover:-translate-x-1 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -95,13 +95,13 @@ const WasteMatches = () => {
                 </svg>
                 <span>Waste Profile</span>
               </button>
-              <span className="text-[#E8DDCB]">•</span>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+              <span className="text-[#DFE6E1]">•</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#8EA097]">
                 AI Matchmaking
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-black text-[#422D0B] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E332B] tracking-tight">
               Matching Processing Facilities
             </h1>
           </div>
@@ -109,10 +109,10 @@ const WasteMatches = () => {
           <button
             type="button"
             onClick={handleBack}
-            className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#FFFBF5] text-[#422D0B] border border-[#E8DDCB] hover:border-[#FFA800] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
+            className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#F4F6F0] text-[#1E332B] border border-[#E6EDE8] hover:border-[#73A892] font-semibold text-xs rounded-xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
           >
             <svg
-              className="w-3.5 h-3.5 text-[#967A53]"
+              className="w-3.5 h-3.5 text-[#63786E]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -131,9 +131,9 @@ const WasteMatches = () => {
         {/* Informational Callout Banner */}
         <section
           ref={bannerRef}
-          className="p-4 sm:p-5 bg-white border border-[#E8DDCB] rounded-2xl shadow-xs flex items-start gap-4 relative overflow-hidden"
+          className="p-4 sm:p-5 bg-white border border-[#E6EDE8] rounded-2xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] flex items-start gap-4 relative overflow-hidden"
         >
-          <div className="w-10 h-10 rounded-xl bg-[#FFFBF5] border border-[#E8DDCB] text-[#FFA800] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#DCE9DF] border border-[#DCE9DF] text-[#1E3B30] flex items-center justify-center shrink-0">
             <svg
               className="w-5 h-5"
               fill="none"
@@ -150,10 +150,10 @@ const WasteMatches = () => {
           </div>
 
           <div className="space-y-1">
-            <h3 className="text-xs font-extrabold text-[#422D0B] uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-[#1E332B] uppercase tracking-wider">
               Smart Facility Matchmaking
             </h3>
-            <p className="text-xs text-[#967A53] leading-relaxed">
+            <p className="text-xs text-[#63786E] leading-relaxed">
               We dynamically rank facilities based on compatible biomass waste
               types, optimal transport proximity, available processing capacity,
               and operational verification status.
@@ -164,10 +164,10 @@ const WasteMatches = () => {
         {/* Dynamic Match List Container */}
         <main
           ref={matchesWrapperRef}
-          className="bg-white border border-[#E8DDCB] rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden"
+          className="bg-white border border-[#E6EDE8] rounded-2xl p-6 sm:p-8 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] relative overflow-hidden"
         >
           {/* Subtle Background Glow Accent */}
-          <div className="absolute top-0 right-0 w-36 h-36 bg-[#FFA800]/5 rounded-bl-full pointer-events-none" />
+          <div className="absolute top-0 right-0 w-36 h-36 bg-[#E4EFE9]/40 rounded-bl-full pointer-events-none" />
 
           <MatchList wasteId={id} />
         </main>

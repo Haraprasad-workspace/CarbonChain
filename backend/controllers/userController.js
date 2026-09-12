@@ -104,9 +104,28 @@ const changePassword = async (req, res) => {
     }
 };
 
+// Get Active Logistics Providers
+const getLogisticsProviders = async (req, res) => {
+    try {
+        const providers = await User.find({
+            role: "LOGISTICS_PROVIDER",
+            accountStatus: "ACTIVE"
+        }).select("-password");
 
+        res.status(200).json({
+            providers
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to fetch logistics providers",
+            error: error.message
+        });
+    }
+};
 module.exports = {
     getProfile,
     updateProfile,
-    changePassword
+    changePassword,
+    getLogisticsProviders
 };

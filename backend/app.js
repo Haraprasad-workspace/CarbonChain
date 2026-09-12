@@ -87,8 +87,31 @@ app.use(
     "/api/negotiations",
     require("./routes/negotiationRoutes")
 );
-app.use("/api/shipments", require("./routes/shipmentRoutes"));
-app.use("/api/carbon", require("./routes/carbonRoutes"));
+
+// Shipment & Logistics
+app.use(
+    "/api/shipments",
+    require("./routes/shipmentRoutes")
+);
+
+// Carbon Tracking
+app.use(
+    "/api/carbon",
+    require("./routes/carbonRoutes")
+);
+
+// Payment & Transactions
+app.use(
+    "/api/payments",
+    require("./routes/paymentRoutes")
+);
+
+// Digital Waste Passport & Tracking
+app.use(
+    "/api/tracking",
+    require("./routes/trackingRoutes")
+);
+
 // ==================== HEALTH CHECK ====================
 
 app.get("/", (req, res) => {

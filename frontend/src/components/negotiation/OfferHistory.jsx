@@ -30,8 +30,8 @@ const OfferHistory = ({ offers = [], currentUserId }) => {
   // Empty State
   if (offers.length === 0) {
     return (
-      <div className="bg-white border border-[#E8DDCB] rounded-2xl p-8 text-center space-y-3 font-['Montserrat',sans-serif]">
-        <div className="w-12 h-12 bg-[#FFFBF5] border border-[#E8DDCB] text-[#FFA800] rounded-xl flex items-center justify-center mx-auto text-lg shadow-2xs">
+      <div className="bg-[#FAFBF9] border border-[#E1E6DE] rounded-2xl p-8 text-center space-y-3 font-['Plus_Jakarta_Sans',sans-serif]">
+        <div className="w-12 h-12 bg-[#F4F6F0] border border-[#E1E6DE] text-[#204E4A] rounded-xl flex items-center justify-center mx-auto text-lg shadow-sm">
           <svg
             className="w-6 h-6"
             fill="none"
@@ -47,10 +47,10 @@ const OfferHistory = ({ offers = [], currentUserId }) => {
           </svg>
         </div>
         <div className="space-y-1">
-          <h4 className="text-sm font-extrabold text-[#422D0B]">
+          <h4 className="text-sm font-extrabold text-[#162925]">
             No Offers Made Yet
           </h4>
-          <p className="text-xs text-[#967A53]">
+          <p className="text-xs text-[#6B7D76]">
             Submit a proposal above to kickstart the negotiation thread.
           </p>
         </div>
@@ -61,19 +61,19 @@ const OfferHistory = ({ offers = [], currentUserId }) => {
   return (
     <div
       ref={containerRef}
-      className="bg-white border border-[#E8DDCB] rounded-2xl p-6 sm:p-8 shadow-xs font-['Montserrat',sans-serif] text-[#422D0B] space-y-6"
+      className="bg-[#FAFBF9] border border-[#E1E6DE] rounded-2xl p-6 sm:p-8 shadow-sm font-['Plus_Jakarta_Sans',sans-serif] text-[#162925] space-y-6"
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#E8DDCB] pb-4">
+      <div className="flex items-center justify-between border-b border-[#E1E6DE] pb-4">
         <div className="space-y-0.5">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6B7D76]">
             Audit Log
           </span>
-          <h3 className="text-lg font-black text-[#422D0B] tracking-tight">
+          <h3 className="text-lg font-black text-[#162925] tracking-tight">
             Offer History
           </h3>
         </div>
-        <span className="px-2.5 py-1 bg-[#FFFBF5] border border-[#E8DDCB] text-[#422D0B] text-xs font-extrabold rounded-full">
+        <span className="px-2.5 py-1 bg-[#F4F6F0] border border-[#E1E6DE] text-[#162925] text-xs font-extrabold rounded-full">
           {offers.length} {offers.length === 1 ? "Offer" : "Offers"}
         </span>
       </div>
@@ -81,7 +81,7 @@ const OfferHistory = ({ offers = [], currentUserId }) => {
       {/* Timeline Chat List */}
       <div ref={timelineRef} className="space-y-4 relative">
         {/* Subtle Vertical Connector Line */}
-        <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-[#E8DDCB] hidden sm:block pointer-events-none" />
+        <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-[#E1E6DE] hidden sm:block pointer-events-none" />
 
         {offers.map((offer, index) => {
           const senderId = offer.sender?._id || offer.sender;
@@ -114,8 +114,8 @@ const OfferHistory = ({ offers = [], currentUserId }) => {
               <div
                 className={`hidden sm:flex w-8 h-8 rounded-full border items-center justify-center text-xs font-black shrink-0 z-10 ${
                   isMine
-                    ? "bg-[#FFA800] border-[#FFC24A] text-[#422D0B]"
-                    : "bg-[#FFFBF5] border-[#E8DDCB] text-[#967A53]"
+                    ? "bg-[#143B36] border-[#143B36] text-[#FAFBF9]"
+                    : "bg-[#F4F6F0] border-[#E1E6DE] text-[#6B7D76]"
                 }`}
               >
                 {isMine ? "Y" : "O"}
@@ -125,46 +125,46 @@ const OfferHistory = ({ offers = [], currentUserId }) => {
               <div
                 className={`max-w-xl w-full border rounded-2xl p-4 space-y-3 transition-all ${
                   isMine
-                    ? "bg-[#FFFBF5] border-[#E8DDCB] hover:border-[#FFA800]/60 self-end"
-                    : "bg-white border-[#E8DDCB] hover:border-[#FFA800]/60 self-start"
+                    ? "bg-[#F4F6F0] border-[#E1E6DE] hover:border-[#73A892] self-end"
+                    : "bg-white border-[#E1E6DE] hover:border-[#73A892] self-start"
                 }`}
               >
                 {/* Bubble Header */}
-                <div className="flex items-center justify-between gap-2 border-b border-[#E8DDCB]/60 pb-2">
+                <div className="flex items-center justify-between gap-2 border-b border-[#E1E6DE] pb-2">
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-xs font-black ${
-                        isMine ? "text-[#422D0B]" : "text-[#967A53]"
+                        isMine ? "text-[#162925]" : "text-[#6B7D76]"
                       }`}
                     >
                       {senderName}
                     </span>
                     {isMine && (
-                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 bg-[#FFA800]/20 text-[#422D0B] rounded-md">
+                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 bg-[#D2E7D6] text-[#204E4A] rounded-md">
                         Sent
                       </span>
                     )}
                   </div>
 
                   {/* Offer Amount Tag */}
-                  <span className="text-sm font-black text-[#FFA800]">
+                  <span className="text-sm font-black text-[#204E4A]">
                     ₹{offer.amount?.toLocaleString() ?? "0"}
                   </span>
                 </div>
 
                 {/* Optional Message */}
                 {offer.message && (
-                  <p className="text-xs text-[#422D0B] leading-relaxed bg-white/70 p-2.5 rounded-xl border border-[#E8DDCB]/40 italic">
+                  <p className="text-xs text-[#162925] leading-relaxed bg-[#FAFBF9] p-2.5 rounded-xl border border-[#E1E6DE] italic">
                     "{offer.message}"
                   </p>
                 )}
 
                 {/* Footer Meta */}
-                <div className="flex items-center justify-between text-[10px] text-[#967A53] pt-1">
+                <div className="flex items-center justify-between text-[10px] text-[#6B7D76] pt-1">
                   {offer.status && (
                     <span className="font-extrabold uppercase tracking-wider">
                       Status:{" "}
-                      <span className="text-[#422D0B]">{offer.status}</span>
+                      <span className="text-[#162925]">{offer.status}</span>
                     </span>
                   )}
                   {formattedTime && (

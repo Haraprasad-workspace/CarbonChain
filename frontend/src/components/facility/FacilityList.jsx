@@ -190,7 +190,7 @@ const FacilityList = () => {
         </div>
 
         <button
-          onClick={() => navigate("/facility/new")}
+          onClick={() => navigate("/facility/register")}
           className="self-start sm:self-auto px-5 py-3 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-2 group active:scale-95"
         >
           <svg
@@ -277,7 +277,7 @@ const FacilityList = () => {
 
           {facilities.length === 0 ? (
             <button
-              onClick={() => navigate("/facility/new")}
+              onClick={() => navigate("/facility/register")}
               className="px-6 py-3 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-sm hover:shadow transition-all active:scale-95 inline-flex items-center gap-2"
             >
               <span>Add Your First Facility</span>

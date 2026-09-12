@@ -15,21 +15,43 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-// Generator creates shipment after successful negotiation
+
+// ============================================================
+// CREATE SHIPMENT
+// ============================================================
+// Only waste generator can create shipment after negotiation
+
 router.post(
     "/",
     roleMiddleware("WASTE_GENERATOR"),
     createShipment
 );
 
-// Generator / Logistics provider views their shipments
+
+// ============================================================
+// GET MY SHIPMENTS
+// ============================================================
+// Generator -> own shipments
+// Facility -> incoming shipments
+// Logistics Provider -> assigned shipments
+// Admin -> all shipments
+
 router.get(
     "/my",
-    roleMiddleware("WASTE_GENERATOR", "LOGISTICS_PROVIDER"),
+    roleMiddleware(
+        "WASTE_GENERATOR",
+        "FACILITY",
+        "LOGISTICS_PROVIDER",
+        "ADMIN"
+    ),
     getMyShipments
 );
 
-// View a specific shipment
+
+// ============================================================
+// GET SINGLE SHIPMENT
+// ============================================================
+
 router.get(
     "/:id",
     roleMiddleware(
@@ -42,18 +64,36 @@ router.get(
     getShipment
 );
 
-// Assign logistics provider
+
+// ============================================================
+// ASSIGN LOGISTICS PROVIDER
+// ============================================================
+// Generator / Facility / Admin
+
 router.put(
     "/:id/assign",
-    roleMiddleware("WASTE_GENERATOR", "FACILITY", "ADMIN"),
+    roleMiddleware(
+        "WASTE_GENERATOR",
+        "FACILITY",
+        "ADMIN"
+    ),
     assignLogisticsProvider
 );
 
-// Update shipment status
+
+// ============================================================
+// UPDATE SHIPMENT STATUS
+// ============================================================
+// Logistics provider / Admin
+
 router.put(
     "/:id/status",
-    roleMiddleware("LOGISTICS_PROVIDER", "ADMIN"),
+    roleMiddleware(
+        "LOGISTICS_PROVIDER",
+        "ADMIN"
+    ),
     updateShipmentStatus
 );
+
 
 module.exports = router;

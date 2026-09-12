@@ -7,6 +7,10 @@ const wasteBatchSchema = new mongoose.Schema(
             ref: "User",
             required: true
         },
+        facility: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Facility"
+        },
 
         wasteType: {
             type: String,

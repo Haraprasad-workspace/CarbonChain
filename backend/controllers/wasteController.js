@@ -1,4 +1,5 @@
 const WasteBatch = require("../models/WasteBatch");
+const Facility = require("../models/Facility");
 
 // Create Waste Batch
 const createWasteBatch = async (req, res) => {
@@ -37,9 +38,44 @@ const createWasteBatch = async (req, res) => {
             description
         });
 
+        // ==================== CREATE DIGITAL PASSPORT ====================
+
+        const WastePassport = require("../models/WastePassport");
+        const {
+            generatePassportId
+        } = require("../utils/trackingUtils");
+
+        const passport = await WastePassport.create({
+            wasteBatch: wasteBatch._id,
+            generator: req.user.id,
+            passportId: generatePassportId(),
+            wasteType: wasteBatch.wasteType,
+            quantity: {
+                value: wasteBatch.quantity.value,
+                unit: wasteBatch.quantity.unit
+            },
+            lifecycleStatus: "REGISTERED",
+            origin: {
+                address: location?.address,
+                city: location?.city,
+                state: location?.state,
+                pincode: location?.pincode,
+                latitude: location?.latitude,
+                longitude: location?.longitude
+            },
+            events: [
+                {
+                    status: "REGISTERED",
+                    description:
+                        "Waste batch registered on CarbonChain"
+                }
+            ]
+        });
+
         res.status(201).json({
             message: "Waste batch registered successfully",
-            wasteBatch
+            wasteBatch,
+            passport
         });
 
     } catch (error) {
@@ -49,7 +85,6 @@ const createWasteBatch = async (req, res) => {
         });
     }
 };
-
 
 // Get All Waste Batches of Current Generator
 const getMyWasteBatches = async (req, res) => {
@@ -173,11 +208,39 @@ const cancelWasteBatch = async (req, res) => {
     }
 };
 
+const getReceivedWasteBatches = async (req, res) => {
+    try {
+        const facilities = await Facility.find({
+            owner: req.user.id
+        }).select("_id");
+
+        const facilityIds = facilities.map(
+            (facility) => facility._id
+        );
+
+        const wasteBatches = await WasteBatch.find({
+            facility: { $in: facilityIds },
+            status: "RECEIVED"
+        }).sort({ updatedAt: -1 });
+
+        res.status(200).json({
+            count: wasteBatches.length,
+            wasteBatches
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to fetch received waste batches",
+            error: error.message
+        });
+    }
+};
 
 module.exports = {
     createWasteBatch,
     getMyWasteBatches,
     getWasteBatch,
     updateWasteBatch,
-    cancelWasteBatch
+    cancelWasteBatch,
+    getReceivedWasteBatches
 };

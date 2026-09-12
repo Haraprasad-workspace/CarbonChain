@@ -55,10 +55,10 @@ const AadhaarVerification = ({ onVerified }) => {
   };
 
   return (
-    <div className="w-full bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl shadow-md p-6 font-['Montserrat',sans-serif]">
+    <div className="w-full bg-[#FAFBF9] border border-[#E1E6DE] rounded-2xl shadow-sm p-6 font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
-        <div className="w-10 h-10 rounded-xl bg-[#FFA800]/20 flex items-center justify-center text-[#422D0B]">
+        <div className="w-10 h-10 rounded-xl bg-[#D2E7D6] flex items-center justify-center text-[#204E4A]">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
@@ -69,8 +69,8 @@ const AadhaarVerification = ({ onVerified }) => {
           </svg>
         </div>
         <div>
-          <h3 className="text-base font-bold text-[#422D0B]">Identity Verification</h3>
-          <p className="text-xs text-[#967A53]">
+          <h3 className="text-base font-bold text-[#162925]">Identity Verification</h3>
+          <p className="text-xs text-[#6B7D76]">
             Verify government identity to unlock direct trading access
           </p>
         </div>
@@ -78,7 +78,7 @@ const AadhaarVerification = ({ onVerified }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-[#422D0B] uppercase tracking-wider mb-2">
+          <label className="block text-xs font-semibold text-[#162925] uppercase tracking-wider mb-2">
             Aadhaar Number
           </label>
           <div className="relative">
@@ -90,7 +90,7 @@ const AadhaarVerification = ({ onVerified }) => {
               value={aadhaarNumber}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 text-sm font-mono tracking-widest bg-white text-[#422D0B] placeholder-[#967A53]/50 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+              className="w-full px-4 py-3 text-sm font-mono tracking-widest bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
             />
           </div>
         </div>
@@ -100,8 +100,8 @@ const AadhaarVerification = ({ onVerified }) => {
           <div
             className={`p-3.5 rounded-xl text-xs font-medium flex items-center gap-2 ${
               isError
-                ? "bg-red-50 border border-red-200 text-red-700"
-                : "bg-emerald-50 border border-emerald-200 text-emerald-800"
+                ? "bg-[#FDF2F2] border border-[#F8D7DA] text-[#A94442]"
+                : "bg-[#D8EEDF] border border-[#C2E3CD] text-[#1E5E38]"
             }`}
           >
             {isError ? (
@@ -120,11 +120,11 @@ const AadhaarVerification = ({ onVerified }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-bold text-sm rounded-xl shadow transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-3 px-4 bg-[#143B36] hover:bg-[#0E2C28] text-[#FAFBF9] font-bold text-sm rounded-xl shadow-none hover:shadow transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {loading ? (
             <>
-              <div className="w-4 h-4 border-2 border-[#422D0B] border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               <span>Verifying Identity...</span>
             </>
           ) : (

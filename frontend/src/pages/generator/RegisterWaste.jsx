@@ -5,14 +5,14 @@ const RegisterWaste = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6 font-['Montserrat',sans-serif] text-[#422D0B] selection:bg-[#FFA800] selection:text-white">
+    <div className="w-full max-w-4xl mx-auto space-y-6 font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] selection:bg-[#143B36] selection:text-white">
       {/* Navigation & Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DDCB] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8EFEA] pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#422D0B] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E332B] tracking-tight">
             Register New Waste
           </h1>
-          <p className="text-xs text-[#967A53] mt-1">
+          <p className="text-xs text-[#63786E] mt-1">
             Fill out the details below to list a new biomass or waste batch for processing.
           </p>
         </div>
@@ -20,9 +20,9 @@ const RegisterWaste = () => {
         <button
           type="button"
           onClick={() => navigate("/generator")}
-          className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#FFFBF5] text-[#422D0B] border border-[#E8DDCB] hover:border-[#FFA800] font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2"
+          className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#F4F6F0] text-[#1E332B] border border-[#E6EDE8] hover:border-[#73A892] font-semibold text-xs rounded-xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] transition-all flex items-center gap-2 cursor-pointer"
         >
-          <svg className="w-4 h-4 text-[#FFA800]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-[#73A892]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           <span>Back to Dashboard</span>
@@ -30,7 +30,7 @@ const RegisterWaste = () => {
       </div>
 
       {/* Main Form Container */}
-      <div className="bg-white border border-[#E8DDCB] rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 sm:p-8 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)]">
         <WasteForm />
       </div>
     </div>

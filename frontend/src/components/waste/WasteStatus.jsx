@@ -13,21 +13,21 @@ const WasteStatus = ({ status }) => {
   const currentIndex = statusSteps.indexOf(status);
 
   return (
-    <div className="w-full bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm font-['Montserrat',sans-serif] text-[#422D0B] space-y-6">
+    <div className="w-full bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] space-y-6">
       
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#E8DDCB] pb-4">
+      <div className="flex items-center justify-between border-b border-[#E8EFEA] pb-4">
         <div>
-          <h3 className="text-base font-extrabold text-[#422D0B] tracking-tight">
+          <h3 className="text-base font-extrabold text-[#1E332B] tracking-tight">
             Waste Lifecycle Status
           </h3>
-          <p className="text-xs text-[#967A53] mt-0.5">
+          <p className="text-xs text-[#63786E] mt-0.5">
             Real-time tracking of waste batch progression
           </p>
         </div>
 
         {isCancelled && (
-          <span className="px-3 py-1 bg-red-100 text-red-800 border border-red-300 rounded-full text-xs font-bold tracking-wider uppercase">
+          <span className="px-3 py-1 bg-red-50 text-red-700 border border-red-200 rounded-full text-xs font-semibold tracking-wider uppercase">
             Batch Cancelled
           </span>
         )}
@@ -36,7 +36,7 @@ const WasteStatus = ({ status }) => {
       {/* Cancelled State Banner */}
       {isCancelled ? (
         <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 text-red-800 text-xs">
-          <div className="w-8 h-8 rounded-full bg-red-200 flex items-center justify-center font-bold text-red-700 shrink-0">
+          <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center font-bold text-red-700 shrink-0">
             ✕
           </div>
           <div>
@@ -64,10 +64,10 @@ const WasteStatus = ({ status }) => {
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                       isCurrent
-                        ? "bg-[#FFA800] text-[#422D0B] ring-4 ring-[#FFA800]/20 shadow-md scale-110"
+                        ? "bg-[#143B36] text-white ring-4 ring-[#143B36]/15 shadow-sm scale-110"
                         : isCompleted
-                        ? "bg-[#422D0B] text-[#FFFBF5]"
-                        : "bg-[#FFFBF5] border border-[#E8DDCB] text-[#967A53]"
+                        ? "bg-[#D8EEDF] text-[#1E5E38] border border-[#D8EEDF]"
+                        : "bg-[#F4F6F0] border border-[#DFE6E1] text-[#8EA097]"
                     }`}
                   >
                     {isCompleted ? (
@@ -75,7 +75,7 @@ const WasteStatus = ({ status }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     ) : isCurrent ? (
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#422D0B] animate-pulse" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
                     ) : (
                       index + 1
                     )}
@@ -84,17 +84,17 @@ const WasteStatus = ({ status }) => {
                   {/* Step Label */}
                   <div className="space-y-0.5">
                     <p
-                      className={`text-[11px] font-extrabold uppercase leading-tight ${
+                      className={`text-[11px] font-bold uppercase leading-tight ${
                         isCurrent
-                          ? "text-[#FFA800]"
+                          ? "text-[#143B36]"
                           : isCompleted
-                          ? "text-[#422D0B]"
-                          : "text-[#967A53]"
+                          ? "text-[#1E332B]"
+                          : "text-[#8EA097]"
                       }`}
                     >
                       {step.replaceAll("_", " ")}
                     </p>
-                    <p className="text-[10px] text-[#967A53]">
+                    <p className="text-[10px] text-[#8EA097]">
                       {isCompleted ? "Completed" : isCurrent ? "Active Step" : "Pending"}
                     </p>
                   </div>

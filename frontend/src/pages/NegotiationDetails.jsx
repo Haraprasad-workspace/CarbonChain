@@ -14,6 +14,7 @@ import socket from "../services/socket";
 import OfferForm from "../components/negotiation/OfferForm";
 import OfferHistory from "../components/negotiation/OfferHistory";
 import NegotiationStatus from "../components/negotiation/NegotiationStatus";
+import PaymentButton from "../components/payment/PaymentButton";
 
 const NegotiationDetails = () => {
     const { id } = useParams();
@@ -35,9 +36,11 @@ const NegotiationDetails = () => {
         async (showLoader = true) => {
             try {
                 if (showLoader) setLoading(true);
+
                 setError("");
 
                 const data = await getNegotiation(id);
+
                 setNegotiation(data.negotiation);
             } catch (err) {
                 setError(
@@ -189,10 +192,10 @@ const NegotiationDetails = () => {
     // Loading State
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] flex flex-col items-center justify-center p-6 text-[#422D0B]">
-                <div className="w-12 h-12 border-4 border-[#E8DDCB] border-t-[#FFA800] rounded-full animate-spin mb-4" />
+            <div className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] flex flex-col items-center justify-center p-6 text-[#1E332B]">
+                <div className="w-12 h-12 border-4 border-[#E6EDE8] border-t-[#143B36] rounded-full animate-spin mb-4" />
 
-                <p className="text-xs font-extrabold uppercase tracking-widest text-[#967A53] animate-pulse">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#63786E] animate-pulse">
                     Connecting to Real-time Room...
                 </p>
             </div>
@@ -202,18 +205,18 @@ const NegotiationDetails = () => {
     // Error State
     if (error && !negotiation) {
         return (
-            <div className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] flex items-center justify-center p-6 text-[#422D0B]">
-                <div className="max-w-md w-full bg-white border border-red-200 rounded-2xl p-6 text-center space-y-4 shadow-sm">
-                    <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto text-xl font-black">
+            <div className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-6 text-[#1E332B]">
+                <div className="max-w-md w-full bg-white border border-red-200 rounded-2xl p-6 text-center space-y-4 shadow-[0px_1px_3px_rgba(0,0,0,0.03)]">
+                    <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
                         ✕
                     </div>
 
                     <div className="space-y-1">
-                        <h3 className="text-base font-extrabold text-red-900">
+                        <h3 className="text-base font-bold text-red-900">
                             Unable to Load Thread
                         </h3>
 
-                        <p className="text-xs text-[#967A53] leading-relaxed">
+                        <p className="text-xs text-[#63786E] leading-relaxed">
                             {error}
                         </p>
                     </div>
@@ -221,7 +224,7 @@ const NegotiationDetails = () => {
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="w-full py-2.5 px-4 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-sm active:scale-95 cursor-pointer"
+                        className="w-full py-2.5 px-4 bg-[#143B36] hover:bg-[#0D2925] text-white font-semibold text-xs rounded-xl shadow-xs active:scale-95 cursor-pointer transition-all"
                     >
                         Return to Negotiations
                     </button>
@@ -233,18 +236,18 @@ const NegotiationDetails = () => {
     // Not Found State
     if (!negotiation) {
         return (
-            <div className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] flex items-center justify-center p-6 text-[#422D0B]">
-                <div className="max-w-md w-full bg-white border border-[#E8DDCB] rounded-2xl p-6 text-center space-y-4 shadow-sm">
-                    <div className="w-12 h-12 bg-[#FFFBF5] border border-[#E8DDCB] text-[#FFA800] rounded-full flex items-center justify-center mx-auto text-xl font-black">
+            <div className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] flex items-center justify-center p-6 text-[#1E332B]">
+                <div className="max-w-md w-full bg-white border border-[#E6EDE8] rounded-2xl p-6 text-center space-y-4 shadow-[0px_1px_3px_rgba(0,0,0,0.03)]">
+                    <div className="w-12 h-12 bg-[#F4F6F0] border border-[#E6EDE8] text-[#143B36] rounded-full flex items-center justify-center mx-auto text-xl font-bold">
                         ?
                     </div>
 
                     <div className="space-y-1">
-                        <h3 className="text-base font-extrabold text-[#422D0B]">
+                        <h3 className="text-base font-bold text-[#1E332B]">
                             Negotiation Not Found
                         </h3>
 
-                        <p className="text-xs text-[#967A53] leading-relaxed">
+                        <p className="text-xs text-[#63786E] leading-relaxed">
                             This negotiation thread could not be found or has
                             been closed.
                         </p>
@@ -253,7 +256,7 @@ const NegotiationDetails = () => {
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="w-full py-2.5 px-4 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-sm active:scale-95 cursor-pointer"
+                        className="w-full py-2.5 px-4 bg-[#143B36] hover:bg-[#0D2925] text-white font-semibold text-xs rounded-xl shadow-xs active:scale-95 cursor-pointer transition-all"
                     >
                         Back to Overview
                     </button>
@@ -275,24 +278,24 @@ const NegotiationDetails = () => {
     return (
         <div
             ref={pageRef}
-            className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] text-[#422D0B] p-4 sm:p-8 selection:bg-[#FFA800] selection:text-white"
+            className="min-h-screen bg-[#F4F6F0] font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B] p-4 sm:p-[28px] selection:bg-[#143B36] selection:text-white"
         >
             <div className="max-w-6xl mx-auto space-y-6">
 
                 {/* Navigation & Header */}
                 <header
                     ref={headerRef}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DDCB] pb-5"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8EFEA] pb-5"
                 >
                     <div className="space-y-1">
                         <div className="flex items-center gap-2">
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="text-[#967A53] hover:text-[#422D0B] text-xs font-bold transition-colors flex items-center gap-1 group cursor-pointer"
+                                className="text-[#63786E] hover:text-[#1E332B] text-xs font-semibold transition-colors flex items-center gap-1 group cursor-pointer"
                             >
                                 <svg
-                                    className="w-4 h-4 text-[#FFA800] group-hover:-translate-x-1 transition-transform"
+                                    className="w-4 h-4 text-[#73A892] group-hover:-translate-x-1 transition-transform"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -308,31 +311,31 @@ const NegotiationDetails = () => {
                                 <span>Negotiations</span>
                             </button>
 
-                            <span className="text-[#E8DDCB]">•</span>
+                            <span className="text-[#DFE6E1]">•</span>
 
-                            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#8EA097]">
                                 Live Room
                             </span>
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <h1 className="text-2xl sm:text-3xl font-black text-[#422D0B] tracking-tight">
+                            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E332B] tracking-tight">
                                 {partnerName}
                             </h1>
 
                             {/* Live Connection Badge */}
                             <span
-                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border ${
                                     isConnected
-                                        ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-                                        : "bg-amber-50 text-amber-800 border-amber-200"
+                                        ? "bg-[#D8EEDF] text-[#1E5E38] border-[#D8EEDF]"
+                                        : "bg-[#FDEED9] text-[#875218] border-[#FDEED9]"
                                 }`}
                             >
                                 <span
                                     className={`w-1.5 h-1.5 rounded-full ${
                                         isConnected
-                                            ? "bg-emerald-500 animate-pulse"
-                                            : "bg-amber-500"
+                                            ? "bg-[#2D6B4E] animate-pulse"
+                                            : "bg-[#875218]"
                                     }`}
                                 />
 
@@ -346,10 +349,10 @@ const NegotiationDetails = () => {
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#FFFBF5] text-[#422D0B] border border-[#E8DDCB] hover:border-[#FFA800] font-extrabold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
+                        className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-[#F4F6F0] text-[#1E332B] border border-[#E6EDE8] hover:border-[#73A892] font-semibold text-xs rounded-xl shadow-[0px_1px_3px_rgba(0,0,0,0.03)] transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
                     >
                         <svg
-                            className="w-3.5 h-3.5 text-[#967A53]"
+                            className="w-3.5 h-3.5 text-[#63786E]"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -368,13 +371,13 @@ const NegotiationDetails = () => {
 
                 {/* Error Toast */}
                 {error && (
-                    <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-xs font-bold text-rose-800 flex items-center justify-between">
+                    <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-800 flex items-center justify-between">
                         <span>{error}</span>
 
                         <button
                             type="button"
                             onClick={() => setError("")}
-                            className="text-rose-600 hover:text-rose-900 cursor-pointer font-black"
+                            className="text-rose-600 hover:text-rose-900 cursor-pointer font-bold"
                         >
                             ✕
                         </button>
@@ -390,13 +393,13 @@ const NegotiationDetails = () => {
                     <div className="lg:col-span-2 space-y-6">
 
                         {/* Waste Batch Summary */}
-                        <div className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm space-y-4">
-                            <div className="flex items-center justify-between border-b border-[#E8DDCB] pb-3">
-                                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+                        <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] space-y-4">
+                            <div className="flex items-center justify-between border-b border-[#E8EFEA] pb-3">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
                                     Waste Batch Overview
                                 </span>
 
-                                <span className="px-2.5 py-0.5 bg-[#FFFBF5] border border-[#E8DDCB] text-[#422D0B] text-[10px] font-extrabold rounded-full">
+                                <span className="px-2.5 py-0.5 bg-[#F4F6F0] border border-[#E6EDE8] text-[#1E332B] text-[10px] font-bold rounded-full">
                                     ID: {waste?._id?.slice(-6) || "N/A"}
                                 </span>
                             </div>
@@ -404,21 +407,21 @@ const NegotiationDetails = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
                                 <div className="space-y-0.5">
-                                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
+                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#8EA097]">
                                         Waste Type
                                     </p>
 
-                                    <p className="text-sm font-black text-[#422D0B]">
+                                    <p className="text-sm font-bold text-[#1E332B]">
                                         {waste?.wasteType || "Not Specified"}
                                     </p>
                                 </div>
 
                                 <div className="space-y-0.5">
-                                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
+                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#8EA097]">
                                         Quantity
                                     </p>
 
-                                    <p className="text-sm font-black text-[#422D0B]">
+                                    <p className="text-sm font-bold text-[#1E332B]">
                                         {waste?.quantity?.value != null
                                             ? `${waste.quantity.value} ${
                                                   waste.quantity.unit || ""
@@ -428,11 +431,11 @@ const NegotiationDetails = () => {
                                 </div>
 
                                 <div className="space-y-0.5">
-                                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
+                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#8EA097]">
                                         Current Stand Offer
                                     </p>
 
-                                    <p className="text-sm font-black text-[#FFA800]">
+                                    <p className="text-sm font-extrabold text-[#143B36]">
                                         ₹
                                         {negotiation.currentOffer?.toLocaleString() ??
                                             "0"}
@@ -447,6 +450,7 @@ const NegotiationDetails = () => {
                             offers={negotiation.offers}
                             currentUserId={user?._id}
                         />
+
                     </div>
 
                     {/* Right Column */}
@@ -457,6 +461,7 @@ const NegotiationDetails = () => {
                             agreedPrice={negotiation.agreedPrice}
                         />
 
+                        {/* Active Negotiation */}
                         {negotiation.status === "ACTIVE" && (
                             <div className="space-y-6">
 
@@ -469,13 +474,13 @@ const NegotiationDetails = () => {
                                 />
 
                                 {/* Decision Actions */}
-                                <div className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-sm space-y-4">
-                                    <div className="space-y-1 border-b border-[#E8DDCB] pb-3">
-                                        <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+                                <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)] space-y-4">
+                                    <div className="space-y-1 border-b border-[#E8EFEA] pb-3">
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
                                             Decision Actions
                                         </span>
 
-                                        <h4 className="text-sm font-black text-[#422D0B]">
+                                        <h4 className="text-sm font-bold text-[#1E332B]">
                                             Finalize or Reject Current Offer
                                         </h4>
                                     </div>
@@ -486,7 +491,7 @@ const NegotiationDetails = () => {
                                             type="button"
                                             onClick={handleAccept}
                                             disabled={actionLoading}
-                                            className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-200 text-white font-extrabold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                                            className="w-full py-2.5 px-4 bg-[#143B36] hover:bg-[#0D2925] disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:cursor-not-allowed"
                                         >
                                             <svg
                                                 className="w-4 h-4 shrink-0"
@@ -513,7 +518,7 @@ const NegotiationDetails = () => {
                                             type="button"
                                             onClick={handleReject}
                                             disabled={actionLoading}
-                                            className="w-full py-3 px-4 bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 hover:border-rose-300 font-extrabold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+                                            className="w-full py-2.5 px-4 bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 hover:border-rose-300 font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                                         >
                                             <svg
                                                 className="w-4 h-4 shrink-0"
@@ -540,6 +545,39 @@ const NegotiationDetails = () => {
                                 </div>
                             </div>
                         )}
+
+                        {/* ==================== PAYMENT ==================== */}
+
+                        {isGenerator &&
+                            negotiation.status === "ACCEPTED" && (
+                                <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03),0px_4px_12px_rgba(22,41,37,0.03)]">
+
+                                    <div className="space-y-1 border-b border-[#E8EFEA] pb-4">
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
+                                            Payment
+                                        </span>
+
+                                        <h4 className="text-base font-bold text-[#1E332B]">
+                                            Complete Transaction
+                                        </h4>
+
+                                        <p className="text-xs text-[#63786E] leading-relaxed">
+                                            Your offer has been accepted.
+                                            Complete the payment to proceed
+                                            with the transaction.
+                                        </p>
+                                    </div>
+
+                                    <PaymentButton
+                                        negotiation={negotiation}
+                                        onSuccess={() => {
+                                            fetchNegotiation(false);
+                                        }}
+                                    />
+
+                                </div>
+                            )}
+
                     </div>
                 </div>
             </div>

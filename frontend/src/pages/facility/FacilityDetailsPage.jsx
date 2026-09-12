@@ -75,7 +75,7 @@ const FacilityDetailsPage = () => {
       opacity: 0,
       y: 10,
       duration: 0.2,
-      onComplete: () => navigate("/facility/my"),
+      onComplete: () => navigate("/facility/my-facilities"),
     });
   };
 

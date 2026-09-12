@@ -77,20 +77,20 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
   return (
     <div
       ref={cardRef}
-      className="bg-white border border-[#E8DDCB] hover:border-[#FFA800]/50 rounded-2xl p-6 sm:p-8 shadow-xs hover:shadow-sm transition-all duration-300 font-['Montserrat',sans-serif] text-[#422D0B] relative overflow-hidden"
+      className="bg-[#FAFBF9] border border-[#E1E6DE] hover:border-[#73A892] rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300 font-['Plus_Jakarta_Sans',sans-serif] text-[#162925] relative overflow-hidden"
     >
       {/* Decorative Warm Accent Blur */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFA800]/5 rounded-bl-full pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[#7A9E8D]/10 rounded-bl-full pointer-events-none" />
 
       {/* Header */}
-      <div className="space-y-1 mb-6 border-b border-[#E8DDCB] pb-4">
+      <div className="space-y-1 mb-6 border-b border-[#E1E6DE] pb-4">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#FFA800] animate-pulse" />
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+          <span className="w-2 h-2 rounded-full bg-[#204E4A] animate-pulse" />
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6B7D76]">
             Submit Counter / New Deal
           </span>
         </div>
-        <h3 className="text-xl font-black text-[#422D0B] tracking-tight">
+        <h3 className="text-xl font-black text-[#162925] tracking-tight">
           Make an Offer
         </h3>
       </div>
@@ -99,10 +99,10 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
       {error && (
         <div
           ref={alertRef}
-          className="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs font-bold text-rose-800 flex items-center gap-2.5"
+          className="mb-5 p-3.5 bg-[#FDF2F2] border border-[#F8D7DA] rounded-xl text-xs font-bold text-[#A94442] flex items-center gap-2.5"
         >
           <svg
-            className="w-4 h-4 text-rose-600 shrink-0"
+            className="w-4 h-4 text-[#A94442] shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -121,10 +121,10 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
       {success && (
         <div
           ref={alertRef}
-          className="mb-5 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-800 flex items-center gap-2.5"
+          className="mb-5 p-3.5 bg-[#D8EEDF] border border-[#C2E3CD] rounded-xl text-xs font-bold text-[#1E5E38] flex items-center gap-2.5"
         >
           <svg
-            className="w-4 h-4 text-emerald-600 shrink-0"
+            className="w-4 h-4 text-[#1E5E38] shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -144,11 +144,11 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Amount Input */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#967A53]">
-            Offer Amount <span className="text-[#FFA800]">*</span>
+          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#6B7D76]">
+            Offer Amount <span className="text-[#204E4A]">*</span>
           </label>
-          <div className="relative rounded-xl overflow-hidden shadow-2xs">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#967A53] font-black text-sm">
+          <div className="relative rounded-xl overflow-hidden shadow-xs">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#6B7D76] font-black text-sm">
               ₹
             </div>
             <input
@@ -159,14 +159,14 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
-              className="w-full pl-8 pr-4 py-3 bg-[#FFFBF5] border border-[#E8DDCB] focus:border-[#FFA800] focus:bg-white rounded-xl text-sm font-extrabold text-[#422D0B] placeholder-[#967A53]/50 outline-none transition-all"
+              className="w-full pl-8 pr-4 py-3 bg-white border border-[#E1E6DE] focus:border-[#204E4A] focus:ring-2 focus:ring-[#204E4A]/20 focus:bg-white rounded-xl text-sm font-extrabold text-[#162925] placeholder-[#94A39D] outline-none transition-all"
             />
           </div>
         </div>
 
         {/* Message Input */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#967A53]">
+          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#6B7D76]">
             Message or Terms <span className="text-[10px] lowercase font-normal">(optional)</span>
           </label>
           <textarea
@@ -174,7 +174,7 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows="3"
-            className="w-full p-3.5 bg-[#FFFBF5] border border-[#E8DDCB] focus:border-[#FFA800] focus:bg-white rounded-xl text-xs font-semibold text-[#422D0B] placeholder-[#967A53]/50 outline-none transition-all resize-none"
+            className="w-full p-3.5 bg-white border border-[#E1E6DE] focus:border-[#204E4A] focus:ring-2 focus:ring-[#204E4A]/20 focus:bg-white rounded-xl text-xs font-semibold text-[#162925] placeholder-[#94A39D] outline-none transition-all resize-none"
           />
         </div>
 
@@ -182,18 +182,18 @@ const OfferForm = ({ negotiationId, onUpdate }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 px-6 bg-[#FFA800] hover:bg-[#FFC24A] disabled:bg-[#E8DDCB] disabled:text-[#967A53] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:active:scale-100 disabled:cursor-not-allowed"
+          className="w-full py-3.5 px-6 bg-[#143B36] hover:bg-[#0E2C28] disabled:bg-[#E1E6DE] disabled:text-[#94A39D] text-[#FAFBF9] font-extrabold text-xs rounded-xl shadow-none hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:active:scale-100 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>
-              <div className="w-4 h-4 border-2 border-[#422D0B] border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               <span>Submitting Offer...</span>
             </>
           ) : (
             <>
               <span>Submit Offer</span>
               <svg
-                className="w-4 h-4 text-[#422D0B]"
+                className="w-4 h-4 text-[#FAFBF9]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

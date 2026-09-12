@@ -18,24 +18,24 @@ const ShipmentStatus = ({ status }) => {
   }, [status]);
 
   return (
-    <div className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-xs space-y-6 font-['Montserrat',sans-serif] text-[#422D0B]">
+    <div className="bg-white border border-[#E6EDE8] rounded-2xl p-6 shadow-[0px_1px_3px_rgba(0,0,0,0.03)] space-y-6 font-['Plus_Jakarta_Sans',sans-serif] text-[#1E332B]">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#E8DDCB] pb-4">
+      <div className="flex items-center justify-between border-b border-[#E8EFEA] pb-4">
         <div className="space-y-0.5">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-[#63786E]">
             Tracking Timeline
           </span>
-          <h3 className="text-base font-black text-[#422D0B]">
+          <h3 className="text-base font-extrabold text-[#1E332B]">
             Shipment Status
           </h3>
         </div>
 
         {/* Current State Pill */}
         <span
-          className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${
+          className={`px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border ${
             isCancelled
               ? "bg-rose-50 text-rose-800 border-rose-200"
-              : "bg-[#FFFBF5] text-[#FFA800] border-[#E8DDCB]"
+              : "bg-[#F4F6F0] text-[#1E5E38] border-[#D8EEDF]"
           }`}
         >
           {isCancelled ? "Cancelled" : STEPS[activeIndex]?.label || status}
@@ -45,7 +45,7 @@ const ShipmentStatus = ({ status }) => {
       {/* Cancelled Banner State */}
       {isCancelled ? (
         <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-1">
-          <div className="flex items-center gap-2 text-rose-800 font-extrabold text-xs">
+          <div className="flex items-center gap-2 text-rose-800 font-bold text-xs">
             <svg
               className="w-4 h-4 text-rose-600"
               fill="none"
@@ -67,7 +67,7 @@ const ShipmentStatus = ({ status }) => {
         </div>
       ) : (
         /* Progress Timeline List */
-        <div className="relative pl-6 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-[#E8DDCB]">
+        <div className="relative pl-6 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-[#E8EFEA]">
           {STEPS.map((step, idx) => {
             const isCompleted = activeIndex > idx;
             const isCurrent = activeIndex === idx;
@@ -76,12 +76,12 @@ const ShipmentStatus = ({ status }) => {
               <div key={step.key} className="relative flex items-start gap-4 group">
                 {/* Timeline Indicator Badge */}
                 <div
-                  className={`absolute -left-[24px] top-0.5 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black transition-all duration-300 ${
+                  className={`absolute -left-[24px] top-0.5 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${
                     isCompleted
-                      ? "bg-[#FFA800] text-[#422D0B] shadow-2xs ring-4 ring-[#FFFBF5]"
+                      ? "bg-[#D8EEDF] text-[#1E5E38] border border-[#D8EEDF] ring-4 ring-white"
                       : isCurrent
-                      ? "bg-[#422D0B] text-white ring-4 ring-[#FFA800]/30 animate-pulse"
-                      : "bg-[#FFFBF5] text-[#967A53] border border-[#E8DDCB]"
+                      ? "bg-[#143B36] text-white ring-4 ring-[#143B36]/15 shadow-xs animate-pulse"
+                      : "bg-[#F4F6F0] text-[#8EA097] border border-[#DFE6E1]"
                   }`}
                 >
                   {isCompleted ? (
@@ -105,12 +105,12 @@ const ShipmentStatus = ({ status }) => {
                 {/* Content */}
                 <div className="space-y-0.5">
                   <h4
-                    className={`text-xs font-black tracking-tight ${
+                    className={`text-xs font-bold tracking-tight ${
                       isCurrent
-                        ? "text-[#FFA800]"
+                        ? "text-[#143B36]"
                         : isCompleted
-                        ? "text-[#422D0B]"
-                        : "text-[#967A53]"
+                        ? "text-[#1E332B]"
+                        : "text-[#8EA097]"
                     }`}
                   >
                     {step.label}
@@ -118,8 +118,8 @@ const ShipmentStatus = ({ status }) => {
                   <p
                     className={`text-[11px] leading-relaxed ${
                       isCurrent
-                        ? "text-[#422D0B] font-bold"
-                        : "text-[#967A53]"
+                        ? "text-[#1E332B] font-medium"
+                        : "text-[#63786E]"
                     }`}
                   >
                     {step.desc}

@@ -87,13 +87,13 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#FFFBF5] px-4 py-12 font-['Montserrat',sans-serif] selection:bg-[#FFA800] selection:text-white">
-      <div className="w-full max-w-2xl bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl shadow-xl p-8 transition-all">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#F4F6F0] px-4 py-12 font-['Plus_Jakarta_Sans',sans-serif] selection:bg-[#204E4A] selection:text-white">
+      <div className="w-full max-w-2xl bg-[#FAFBF9] border border-[#E1E6DE] rounded-2xl shadow-sm p-8 transition-all">
         {/* Header & Branding */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-[#FFA800] flex items-center justify-center shadow-md mb-3">
+          <div className="w-12 h-12 rounded-xl bg-[#D2E7D6] flex items-center justify-center shadow-none mb-3">
             <svg
-              className="w-7 h-7 text-[#422D0B]"
+              className="w-7 h-7 text-[#204E4A]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -106,17 +106,17 @@ const RegisterForm = () => {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-[#422D0B]">
+          <h2 className="text-2xl font-bold tracking-tight text-[#162925]">
             Join CarbonChain Ecosystem
           </h2>
-          <p className="text-xs text-[#967A53] mt-1 font-medium">
+          <p className="text-xs text-[#6B7D76] mt-1 font-medium">
             Register your entity to start trading circular carbon assets
           </p>
         </div>
 
         {/* Error Alert Box */}
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
+          <div className="mb-6 p-4 rounded-xl bg-[#FDF2F2] border border-[#F8D7DA] text-[#A94442] text-xs font-medium flex items-center gap-2">
             <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
@@ -127,12 +127,12 @@ const RegisterForm = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Section 1: Basic Identity */}
           <div>
-            <h3 className="text-xs font-bold text-[#422D0B] uppercase tracking-wider mb-3 border-b border-[#E8DDCB] pb-1">
+            <h3 className="text-xs font-bold text-[#162925] uppercase tracking-wider mb-3 border-b border-[#E1E6DE] pb-1">
               1. Account Identity
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                <label className="block text-xs font-medium text-[#162925] mb-1">
                   Full Name *
                 </label>
                 <input
@@ -142,12 +142,12 @@ const RegisterForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                  className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                <label className="block text-xs font-medium text-[#162925] mb-1">
                   Email Address *
                 </label>
                 <input
@@ -157,12 +157,12 @@ const RegisterForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                  className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                <label className="block text-xs font-medium text-[#162925] mb-1">
                   Password *
                 </label>
                 <input
@@ -172,12 +172,12 @@ const RegisterForm = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                  className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                <label className="block text-xs font-medium text-[#162925] mb-1">
                   Phone Number *
                 </label>
                 <input
@@ -187,7 +187,7 @@ const RegisterForm = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                  className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -195,12 +195,12 @@ const RegisterForm = () => {
 
           {/* Section 2: Role & Stakeholder Info */}
           <div>
-            <h3 className="text-xs font-bold text-[#422D0B] uppercase tracking-wider mb-3 border-b border-[#E8DDCB] pb-1">
+            <h3 className="text-xs font-bold text-[#162925] uppercase tracking-wider mb-3 border-b border-[#E1E6DE] pb-1">
               2. Stakeholder Profile
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                <label className="block text-xs font-medium text-[#162925] mb-1">
                   Stakeholder Role *
                 </label>
                 <select
@@ -208,7 +208,7 @@ const RegisterForm = () => {
                   value={formData.role}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                  className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                 >
                   <option value="">Select Role</option>
                   {roles.map((role) => (
@@ -220,7 +220,7 @@ const RegisterForm = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                <label className="block text-xs font-medium text-[#162925] mb-1">
                   Organization / Entity Name
                 </label>
                 <input
@@ -229,7 +229,7 @@ const RegisterForm = () => {
                   placeholder="Green Farms / Biochar Corp"
                   value={formData.organization}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                  className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -237,12 +237,12 @@ const RegisterForm = () => {
 
           {/* Section 3: Facility / Location Details */}
           <div>
-            <h3 className="text-xs font-bold text-[#422D0B] uppercase tracking-wider mb-3 border-b border-[#E8DDCB] pb-1">
+            <h3 className="text-xs font-bold text-[#162925] uppercase tracking-wider mb-3 border-b border-[#E1E6DE] pb-1">
               3. Operational Location
             </h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                <label className="block text-xs font-medium text-[#162925] mb-1">
                   Street Address
                 </label>
                 <input
@@ -251,13 +251,13 @@ const RegisterForm = () => {
                   placeholder="Street / Industrial Area / Survey No."
                   value={formData.location.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                  className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                  <label className="block text-xs font-medium text-[#162925] mb-1">
                     City
                   </label>
                   <input
@@ -266,12 +266,12 @@ const RegisterForm = () => {
                     placeholder="Ahmedabad"
                     value={formData.location.city}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                  <label className="block text-xs font-medium text-[#162925] mb-1">
                     State
                   </label>
                   <input
@@ -280,12 +280,12 @@ const RegisterForm = () => {
                     placeholder="Gujarat"
                     value={formData.location.state}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#422D0B] mb-1">
+                  <label className="block text-xs font-medium text-[#162925] mb-1">
                     Pincode
                   </label>
                   <input
@@ -294,7 +294,7 @@ const RegisterForm = () => {
                     placeholder="380001"
                     value={formData.location.pincode}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 text-sm bg-white text-[#422D0B] placeholder-[#967A53]/60 border border-[#E8DDCB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FFA800] focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 text-sm bg-white text-[#162925] placeholder-[#94A39D] border border-[#E1E6DE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#204E4A] focus:border-transparent transition-all"
                   />
                 </div>
               </div>
@@ -305,11 +305,11 @@ const RegisterForm = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
+            className="w-full py-3.5 px-4 bg-[#143B36] hover:bg-[#0E2C28] text-[#FAFBF9] font-bold text-sm rounded-xl shadow-none hover:shadow transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
           >
             {loading ? (
               <>
-                <div className="w-4 h-4 border-2 border-[#422D0B] border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 <span>Creating Account...</span>
               </>
             ) : (
@@ -319,10 +319,10 @@ const RegisterForm = () => {
         </form>
 
         {/* Footer Link */}
-        <div className="mt-8 text-center border-t border-[#E8DDCB] pt-6">
-          <p className="text-xs text-[#967A53]">
+        <div className="mt-8 text-center border-t border-[#E1E6DE] pt-6">
+          <p className="text-xs text-[#6B7D76]">
             Already have an account?{" "}
-            <Link to="/login" className="font-semibold text-[#422D0B] hover:text-[#FFA800] transition-colors">
+            <Link to="/login" className="font-semibold text-[#143B36] hover:text-[#204E4A] transition-colors">
               Sign In Here
             </Link>
           </p>

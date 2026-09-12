@@ -43,33 +43,33 @@ const CarbonImpactForm = ({ wasteBatch, facilityId, onSuccess }) => {
   };
 
   return (
-    <div className="bg-white border border-[#E8DDCB] rounded-2xl p-6 shadow-xs space-y-6 font-['Montserrat',sans-serif] text-[#422D0B]">
+    <div className="bg-[#FAFBF9] border border-[#E1E6DE] rounded-2xl p-6 shadow-sm space-y-6 font-['Plus_Jakarta_Sans',sans-serif] text-[#162925]">
       {/* Header */}
-      <div className="border-b border-[#E8DDCB] pb-4 space-y-0.5">
-        <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+      <div className="border-b border-[#E1E6DE] pb-4 space-y-0.5">
+        <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#6B7D76]">
           Impact Accounting
         </span>
-        <h3 className="text-base font-black text-[#422D0B] tracking-tight">
+        <h3 className="text-base font-black text-[#162925] tracking-tight">
           Record Carbon Impact
         </h3>
       </div>
 
       {/* Target Waste Batch Preview Card */}
-      <div className="bg-[#FFFBF5] border border-[#E8DDCB]/80 rounded-xl p-4 grid grid-cols-2 gap-4 text-xs">
+      <div className="bg-[#F4F6F0] border border-[#E1E6DE] rounded-xl p-4 grid grid-cols-2 gap-4 text-xs">
         <div className="space-y-0.5">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6B7D76]">
             Target Waste
           </span>
-          <p className="font-extrabold text-[#422D0B] truncate">
+          <p className="font-extrabold text-[#162925] truncate">
             {wasteBatch?.wasteType || "Unspecified"}
           </p>
         </div>
 
         <div className="space-y-0.5">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6B7D76]">
             Batch Volume
           </span>
-          <p className="font-black text-[#FFA800]">
+          <p className="font-black text-[#204E4A]">
             {wasteBatch?.quantity?.value != null
               ? `${wasteBatch.quantity.value} ${wasteBatch.quantity.unit || ""}`
               : "N/A"}
@@ -79,8 +79,8 @@ const CarbonImpactForm = ({ wasteBatch, facilityId, onSuccess }) => {
 
       {/* Alert Banners */}
       {error && (
-        <div className="bg-rose-50 border border-rose-200 text-rose-800 rounded-xl p-3.5 text-xs font-bold flex items-center gap-2">
-          <svg className="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-[#FDF2F2] border border-[#F8D7DA] text-[#A94442] rounded-xl p-3.5 text-xs font-bold flex items-center gap-2">
+          <svg className="w-4 h-4 text-[#A94442] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span>{error}</span>
@@ -88,8 +88,8 @@ const CarbonImpactForm = ({ wasteBatch, facilityId, onSuccess }) => {
       )}
 
       {success && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl p-3.5 text-xs font-extrabold flex items-center gap-2">
-          <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-[#D8EEDF] border border-[#C2E3CD] text-[#1E5E38] rounded-xl p-3.5 text-xs font-extrabold flex items-center gap-2">
+          <svg className="w-4 h-4 text-[#1E5E38] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
           </svg>
           <span>{success}</span>
@@ -99,7 +99,7 @@ const CarbonImpactForm = ({ wasteBatch, facilityId, onSuccess }) => {
       {/* Form Controls */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-1.5">
-          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#967A53]">
+          <label className="block text-xs font-extrabold uppercase tracking-wider text-[#6B7D76]">
             Processing Method
           </label>
           <div className="relative">
@@ -107,7 +107,7 @@ const CarbonImpactForm = ({ wasteBatch, facilityId, onSuccess }) => {
               value={processingMethod}
               onChange={(e) => setProcessingMethod(e.target.value)}
               required
-              className="w-full bg-[#FFFBF5] border border-[#E8DDCB] text-[#422D0B] font-bold text-xs rounded-xl p-3 pr-10 focus:outline-none focus:border-[#FFA800] focus:ring-2 focus:ring-[#FFA800]/20 transition-all appearance-none cursor-pointer"
+              className="w-full bg-white border border-[#E1E6DE] text-[#162925] font-bold text-xs rounded-xl p-3 pr-10 focus:outline-none focus:border-[#204E4A] focus:ring-2 focus:ring-[#204E4A]/20 transition-all appearance-none cursor-pointer"
             >
               <option value="" disabled>
                 Select Method
@@ -118,7 +118,7 @@ const CarbonImpactForm = ({ wasteBatch, facilityId, onSuccess }) => {
               <option value="RECYCLING">Material Recycling</option>
               <option value="WASTE_TO_ENERGY">Waste-to-Energy (WtE)</option>
             </select>
-            <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[#967A53]">
+            <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[#6B7D76]">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
               </svg>
@@ -129,10 +129,10 @@ const CarbonImpactForm = ({ wasteBatch, facilityId, onSuccess }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-5 bg-[#FFA800] hover:bg-[#FFC24A] disabled:opacity-50 text-[#422D0B] font-black text-xs uppercase tracking-wider rounded-xl shadow-2xs active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-2"
+          className="w-full py-3 px-5 bg-[#143B36] hover:bg-[#0E2C28] disabled:opacity-50 text-[#FAFBF9] font-black text-xs uppercase tracking-wider rounded-xl shadow-sm hover:shadow transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
         >
           {loading && (
-            <span className="w-3.5 h-3.5 border-2 border-[#422D0B] border-t-transparent rounded-full animate-spin" />
+            <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
           )}
           <span>
             {loading ? "Calculating Offsets..." : "Calculate Carbon Impact"}

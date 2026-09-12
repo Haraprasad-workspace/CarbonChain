@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Auth Pages
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import Verification from "../pages/auth/Verification";
 
 // Generator Pages
 import GeneratorDashboard from "../pages/generator/GeneratorDashboard";
@@ -13,6 +14,7 @@ import WasteMatches from "../pages/generator/WasteMatches";
 import GeneratorNegotiations from "../pages/generator/Negotiations";
 import GeneratorShipments from "../pages/generator/Shipments";
 import GeneratorCarbonTracking from "../pages/generator/CarbonTracking";
+import GeneratorPayments from "../pages/generator/Payments";
 
 // Facility Pages
 import FacilityDashboard from "../pages/facility/FacilityDashboard";
@@ -22,11 +24,14 @@ import FacilityDetailsPage from "../pages/facility/FacilityDetailsPage";
 import FacilityNegotiations from "../pages/facility/Negotiations";
 import FacilityShipments from "../pages/facility/Shipments";
 import FacilityCarbonTracking from "../pages/facility/CarbonTracking";
+import FacilityPayments from "../pages/facility/Payments";
 
 // Common Pages
 import NegotiationDetails from "../pages/NegotiationDetails";
 import ShipmentDetailsPage from "../pages/ShipmentDetailsPage";
+import AssignLogistics from "../pages/AssignLogistics";
 
+import Tracking from "../pages/Tracking";
 
 const AppRoutes = () => {
     return (
@@ -43,6 +48,11 @@ const AppRoutes = () => {
                 <Route
                     path="/register"
                     element={<Register />}
+                />
+
+                <Route
+                    path="/verification"
+                    element={<Verification />}
                 />
 
 
@@ -88,6 +98,11 @@ const AppRoutes = () => {
                     element={<GeneratorCarbonTracking />}
                 />
 
+                <Route
+                    path="/generator/payments"
+                    element={<GeneratorPayments />}
+                />
+
 
                 {/* ==================== FACILITY ==================== */}
 
@@ -124,6 +139,11 @@ const AppRoutes = () => {
                 />
 
                 <Route
+                    path="/facility/payments"
+                    element={<FacilityPayments />}
+                />
+
+                <Route
                     path="/facility/:id"
                     element={<FacilityDetailsPage />}
                 />
@@ -140,14 +160,18 @@ const AppRoutes = () => {
                 {/* ==================== SHIPMENTS ==================== */}
 
                 <Route
+                    path="/shipments/:id/assign"
+                    element={<AssignLogistics />}
+                />
+
+                <Route
                     path="/shipments/:id"
                     element={<ShipmentDetailsPage />}
                 />
-
+                <Route path="/tracking" element={<Tracking />} />
             </Routes>
         </BrowserRouter>
     );
 };
-
 
 export default AppRoutes;

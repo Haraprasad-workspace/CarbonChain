@@ -4,276 +4,282 @@ import gsap from "gsap";
 import useAuth from "../../hooks/useAuth";
 
 const FacilityDashboard = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
+    const pageRef = useRef(null);
 
-  // GSAP Animation Refs
-  const containerRef = useRef(null);
-  const headerRef = useRef(null);
-  const profileCardRef = useRef(null);
-  const actionsGridRef = useRef(null);
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                ".dashboard-item",
+                {
+                    opacity: 0,
+                    y: 30
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.08,
+                    ease: "power3.out"
+                }
+            );
+        }, pageRef);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Top Header Fade Down
-      gsap.fromTo(
-        headerRef.current,
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
-      );
+        return () => ctx.revert();
+    }, []);
 
-      // User Profile Card Scale Entrance
-      gsap.fromTo(
-        profileCardRef.current,
-        { opacity: 0, scale: 0.95, y: 15 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.5, delay: 0.15, ease: "back.out(1.4)" }
-      );
-
-      // Quick Action Buttons Stagger Reveal
-      if (actionsGridRef.current?.children) {
-        gsap.fromTo(
-          actionsGridRef.current.children,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            stagger: 0.08,
-            delay: 0.3,
-            ease: "power2.out",
-          }
-        );
-      }
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const handleLogout = () => {
-    // Smooth exit animation before logging out
-    gsap.to(containerRef.current, {
-      opacity: 0,
-      y: -10,
-      duration: 0.25,
-      onComplete: () => {
+    const handleLogout = () => {
         logout();
         navigate("/login");
-      },
-    });
-  };
+    };
 
-  return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-[#FFFBF5] font-['Montserrat',sans-serif] text-[#422D0B] p-4 sm:p-8 selection:bg-[#FFA800] selection:text-white"
-    >
-      <div className="max-w-5xl mx-auto space-y-8">
-        {/* Navigation Bar / Top Header */}
-        <header
-          ref={headerRef}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DDCB] pb-6"
+    const actions = [
+        {
+            title: "Register Facility",
+            description: "Register your waste treatment or processing facility.",
+            icon: "🏭",
+            path: "/facility/register"
+        },
+        {
+            title: "My Facilities",
+            description: "View and manage your registered facilities.",
+            icon: "📋",
+            path: "/facility/my-facilities"
+        },
+        {
+            title: "Negotiations",
+            description: "Manage waste offers and negotiate with generators.",
+            icon: "🤝",
+            path: "/facility/negotiations"
+        },
+        {
+            title: "Shipments",
+            description: "Manage incoming waste shipments and logistics.",
+            icon: "🚚",
+            path: "/facility/shipments"
+        },
+        {
+            title: "Payments",
+            description: "Track payments and transaction history.",
+            icon: "💳",
+            path: "/facility/payments"
+        },
+        {
+            title: "Carbon Impact",
+            description: "Track carbon impact from processed waste.",
+            icon: "🌱",
+            path: "/facility/carbon"
+        },
+        {
+            title: "Verification",
+            description: "Manage Aadhaar and GST verification.",
+            icon: "✓",
+            path: "/verification"
+        }
+    ];
+
+    const workflow = [
+        {
+            step: "01",
+            title: "Match",
+            description: "Find compatible waste batches."
+        },
+        {
+            step: "02",
+            title: "Negotiate",
+            description: "Agree on treatment or purchase terms."
+        },
+        {
+            step: "03",
+            title: "Receive",
+            description: "Receive waste at your facility."
+        },
+        {
+            step: "04",
+            title: "Process",
+            description: "Convert waste through your facility."
+        },
+        {
+            step: "05",
+            title: "Carbon",
+            description: "Measure environmental impact."
+        }
+    ];
+
+    return (
+        <div
+            ref={pageRef}
+            className="min-h-screen bg-gray-50 px-4 py-8 md:px-8"
         >
-          <div>
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#967A53]">
-              Portal Management
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#422D0B] tracking-tight mt-0.5">
-              Facility Dashboard
-            </h1>
-          </div>
+            <div className="max-w-7xl mx-auto">
 
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="self-start sm:self-auto px-4 py-2.5 bg-white hover:bg-red-50 text-red-600 border border-[#E8DDCB] hover:border-red-200 font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
-          >
-            <svg
-              className="w-4 h-4 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
-            <span>Logout</span>
-          </button>
-        </header>
+                {/* ==================== HEADER ==================== */}
 
-        {/* User Profile Overview Card */}
-        <section
-          ref={profileCardRef}
-          className="bg-white border border-[#E8DDCB] rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden space-y-6"
-        >
-          {/* Decorative Corner Glow */}
-          <div className="absolute top-0 right-0 w-36 h-36 bg-[#FFA800]/10 rounded-bl-full pointer-events-none" />
+                <header className="dashboard-item flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-10">
+                    <div>
+                        <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                            CarbonChain
+                        </p>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              {/* User Avatar Circle */}
-              <div className="w-14 h-14 rounded-2xl bg-[#FFFBF5] border-2 border-[#E8DDCB] flex items-center justify-center font-black text-xl text-[#FFA800] shrink-0 shadow-xs">
-                {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
-              </div>
+                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+                            Facility Dashboard
+                        </h1>
 
-              <div>
-                <h2 className="text-xl sm:text-2xl font-black text-[#422D0B]">
-                  Welcome, {user?.name || "Facility Manager"}
-                </h2>
-                <span className="text-xs font-bold text-[#967A53] block mt-0.5">
-                  Facility Operator Account
-                </span>
-              </div>
+                        <p className="text-gray-500 mt-2">
+                            Welcome back, {user?.name || "Facility Manager"}.
+                        </p>
+                    </div>
+
+                    <button
+                        onClick={handleLogout}
+                        className="px-5 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 font-semibold hover:bg-gray-100 transition"
+                    >
+                        Logout
+                    </button>
+                </header>
+
+                {/* ==================== PROFILE ==================== */}
+
+                <section className="dashboard-item bg-white rounded-2xl border border-gray-200 p-6 mb-8">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+                        <div>
+                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                                Account
+                            </p>
+
+                            <h2 className="text-xl font-bold text-gray-900 mt-1">
+                                {user?.organization || user?.name || "Facility"}
+                            </h2>
+
+                            <p className="text-sm text-gray-500 mt-1">
+                                {user?.email || "No email available"}
+                            </p>
+                        </div>
+
+                        <div className="px-4 py-2 rounded-full bg-green-50 text-green-700 text-sm font-semibold">
+                            Facility
+                        </div>
+
+                    </div>
+                </section>
+
+                {/* ==================== ACTIONS ==================== */}
+
+                <section className="mb-10">
+                    <div className="dashboard-item mb-5">
+                        <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                            Workspace
+                        </p>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mt-1">
+                            Manage Your Facility
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+                        {actions.map((action) => (
+                            <button
+                                key={action.title}
+                                onClick={() => navigate(action.path)}
+                                className="dashboard-item text-left bg-white rounded-2xl border border-gray-200 p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                            >
+                                <div className="text-3xl mb-5">
+                                    {action.icon}
+                                </div>
+
+                                <h3 className="text-lg font-bold text-gray-900">
+                                    {action.title}
+                                </h3>
+
+                                <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+                                    {action.description}
+                                </p>
+
+                                <div className="mt-5 text-sm font-semibold text-gray-700">
+                                    Open →
+                                </div>
+                            </button>
+                        ))}
+
+                    </div>
+                </section>
+
+                {/* ==================== WORKFLOW ==================== */}
+
+                <section className="dashboard-item bg-white rounded-2xl border border-gray-200 p-6 md:p-8 mb-10">
+
+                    <div className="mb-8">
+                        <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                            Workflow
+                        </p>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mt-1">
+                            From Waste to Carbon Value
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+
+                        {workflow.map((item) => (
+                            <div
+                                key={item.step}
+                                className="relative"
+                            >
+                                <p className="text-sm font-bold text-gray-300">
+                                    {item.step}
+                                </p>
+
+                                <h3 className="font-bold text-gray-900 mt-2">
+                                    {item.title}
+                                </h3>
+
+                                <p className="text-sm text-gray-500 mt-1">
+                                    {item.description}
+                                </p>
+                            </div>
+                        ))}
+
+                    </div>
+                </section>
+
+                {/* ==================== SUPPORT ==================== */}
+
+                <section className="dashboard-item bg-gray-900 rounded-2xl p-7 md:p-8 text-white">
+
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+                        <div>
+                            <p className="text-sm text-gray-400 uppercase tracking-wider">
+                                CarbonChain Support
+                            </p>
+
+                            <h2 className="text-xl font-bold mt-2">
+                                Manage your waste processing efficiently.
+                            </h2>
+
+                            <p className="text-gray-400 text-sm mt-2">
+                                Match waste, negotiate, receive shipments,
+                                process materials and track carbon impact.
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => navigate("/verification")}
+                            className="px-5 py-3 rounded-xl bg-white text-gray-900 font-semibold hover:bg-gray-100 transition"
+                        >
+                            Check Verification →
+                        </button>
+
+                    </div>
+
+                </section>
+
             </div>
-
-            <span className="self-start sm:self-center px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-extrabold rounded-full uppercase tracking-wider">
-              System Active
-            </span>
-          </div>
-
-          {/* User Details Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[#E8DDCB]/60 text-xs">
-            <div className="bg-[#FFFBF5] p-3.5 rounded-xl border border-[#E8DDCB]/60 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#FFA800]/15 flex items-center justify-center text-[#422D0B] shrink-0">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H9" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-[10px] font-extrabold uppercase text-[#967A53] block">
-                  Organization
-                </span>
-                <span className="font-extrabold text-[#422D0B] text-sm">
-                  {user?.organization || "Not specified"}
-                </span>
-              </div>
-            </div>
-
-            <div className="bg-[#FFFBF5] p-3.5 rounded-xl border border-[#E8DDCB]/60 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#FFA800]/15 flex items-center justify-center text-[#422D0B] shrink-0">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div className="truncate">
-                <span className="text-[10px] font-extrabold uppercase text-[#967A53] block">
-                  Email Address
-                </span>
-                <span className="font-extrabold text-[#422D0B] text-sm truncate block">
-                  {user?.email || "N/A"}
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Quick Action Cards Grid */}
-        <section className="space-y-4">
-          <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#967A53]">
-            Quick Actions
-          </h3>
-
-          <div
-            ref={actionsGridRef}
-            className="grid grid-cols-1 md:grid-cols-3 gap-5"
-          >
-            {/* Action 1: Register Facility */}
-            <div className="bg-white border border-[#E8DDCB] hover:border-[#FFA800] rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 group">
-              <div className="space-y-3">
-                <div className="w-12 h-12 rounded-xl bg-[#FFFBF5] border border-[#E8DDCB] flex items-center justify-center text-[#FFA800] group-hover:scale-110 transition-transform">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="text-base font-extrabold text-[#422D0B]">
-                    Register Facility
-                  </h4>
-                  <p className="text-xs text-[#967A53] mt-1 leading-relaxed">
-                    Add a new biomass or waste processing unit to your account.
-                  </p>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => navigate("/facility/register")}
-                className="w-full py-2.5 px-4 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-              >
-                <span>Register New</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Action 2: My Facilities */}
-            <div className="bg-white border border-[#E8DDCB] hover:border-[#FFA800] rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 group">
-              <div className="space-y-3">
-                <div className="w-12 h-12 rounded-xl bg-[#FFFBF5] border border-[#E8DDCB] flex items-center justify-center text-[#FFA800] group-hover:scale-110 transition-transform">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H9" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="text-base font-extrabold text-[#422D0B]">
-                    My Facilities
-                  </h4>
-                  <p className="text-xs text-[#967A53] mt-1 leading-relaxed">
-                    View, update capacities, and manage your registered plants.
-                  </p>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => navigate("/facility/my")}
-                className="w-full py-2.5 px-4 bg-[#FFFBF5] border border-[#E8DDCB] hover:border-[#FFA800] text-[#422D0B] font-extrabold text-xs rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-              >
-                <span>Manage Facilities</span>
-                <svg className="w-4 h-4 text-[#FFA800]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Action 3: Verification */}
-            <div className="bg-white border border-[#E8DDCB] hover:border-[#FFA800] rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 group">
-              <div className="space-y-3">
-                <div className="w-12 h-12 rounded-xl bg-[#FFFBF5] border border-[#E8DDCB] flex items-center justify-center text-[#FFA800] group-hover:scale-110 transition-transform">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="text-base font-extrabold text-[#422D0B]">
-                    Verification Center
-                  </h4>
-                  <p className="text-xs text-[#967A53] mt-1 leading-relaxed">
-                    Submit compliance records and check your verification status.
-                  </p>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => navigate("/verification")}
-                className="w-full py-2.5 px-4 bg-[#FFFBF5] border border-[#E8DDCB] hover:border-[#FFA800] text-[#422D0B] font-extrabold text-xs rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-              >
-                <span>Check Verification</span>
-                <svg className="w-4 h-4 text-[#FFA800]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default FacilityDashboard;

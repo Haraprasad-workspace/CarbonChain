@@ -1,198 +1,234 @@
-import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react"
-import gsap from "gsap";
+import React from "react";
 
-import api from "../../services/api";
-import FacilityDetails from "../../components/facility/FacilityDetails";
+const FacilityDetails = ({ facility }) => {
+  if (!facility) return null;
 
-const FacilityDetailsPage = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const location = facility.location || {};
+  const capacity = facility.processingCapacity || {};
+  const pricing = facility.pricing || "NEGOTIABLE";
 
-  const [facility, setFacility] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const formatText = (value) => {
+    if (!value) return "Not specified";
 
-  const pageRef = useRef(null);
-  const contentRef = useRef(null);
-
-  useEffect(() => {
-    const fetchFacility = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const response = await api.get(`/facilities/${id}`);
-        setFacility(response.data.facility);
-      } catch (err) {
-        setError(
-          err.response?.data?.message ||
-            "Failed to load facility details."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchFacility();
-    }
-  }, [id]);
-
-  // GSAP Entrance Animation
-  useEffect(() => {
-    if (!loading && !error && facility && contentRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.fromTo(
-          contentRef.current,
-          { opacity: 0, y: 15 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-          }
-        );
-      }, pageRef);
-
-      return () => ctx.revert();
-    }
-  }, [loading, error, facility]);
-
-  // Loading Skeleton State
-  if (loading) {
-    return (
-      <div className="max-w-5xl mx-auto p-4 sm:p-6 space-y-6 font-['Montserrat',sans-serif]">
-        {/* Navigation Skeleton */}
-        <div className="h-4 w-20 bg-[#E8DDCB]/60 rounded-full animate-pulse" />
-
-        {/* Content Card Skeleton */}
-        <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xs">
-          <div className="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-[#E8DDCB] pb-6">
-            <div className="space-y-3 w-full sm:w-2/3">
-              <div className="h-4 w-28 bg-[#FFA800]/20 rounded-full animate-pulse" />
-              <div className="h-8 w-3/4 bg-[#E8DDCB] rounded-xl animate-pulse" />
-              <div className="h-4 w-1/2 bg-[#E8DDCB]/60 rounded-lg animate-pulse" />
-            </div>
-            <div className="h-10 w-32 bg-[#E8DDCB]/70 rounded-xl animate-pulse" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-            <div className="h-28 bg-[#FFFBF5] border border-[#E8DDCB]/60 rounded-2xl animate-pulse" />
-            <div className="h-28 bg-[#FFFBF5] border border-[#E8DDCB]/60 rounded-2xl animate-pulse" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Error State
-  if (error) {
-    return (
-      <div className="max-w-2xl mx-auto p-4 sm:p-6 font-['Montserrat',sans-serif]">
-        <div className="bg-[#FFFBF5] border border-rose-200 rounded-3xl p-8 text-center space-y-4 shadow-2xs">
-          <div className="w-12 h-12 mx-auto rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          </div>
-
-          <div className="space-y-1">
-            <h2 className="text-base font-black text-[#422D0B]">
-              Unable to Load Facility
-            </h2>
-            <p className="text-xs text-[#967A53] max-w-sm mx-auto leading-relaxed">
-              {error}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="px-5 py-2.5 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] rounded-xl text-xs font-black transition-all active:scale-95 shadow-2xs cursor-pointer inline-flex items-center gap-2"
-          >
-            <span>Go Back</span>
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Empty State (Facility Not Found)
-  if (!facility) {
-    return (
-      <div className="max-w-2xl mx-auto p-4 sm:p-6 font-['Montserrat',sans-serif]">
-        <div className="bg-[#FFFBF5] border border-[#E8DDCB] border-dashed rounded-3xl p-8 sm:p-12 text-center space-y-4">
-          <div className="w-12 h-12 mx-auto rounded-2xl bg-white border border-[#E8DDCB] flex items-center justify-center text-[#967A53] shadow-2xs">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-              />
-            </svg>
-          </div>
-
-          <div className="space-y-1">
-            <h2 className="text-base font-black text-[#422D0B]">
-              Facility Not Found
-            </h2>
-            <p className="text-xs text-[#967A53] max-w-xs mx-auto leading-relaxed">
-              The facility you are looking for does not exist or has been removed.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="px-5 py-2.5 bg-[#FFA800] hover:bg-[#FFC24A] text-[#422D0B] rounded-xl text-xs font-black transition-all active:scale-95 shadow-2xs cursor-pointer inline-flex items-center gap-2"
-          >
-            <span>Return Previous Page</span>
-          </button>
-        </div>
-      </div>
-    );
-  }
+    return value
+      .toString()
+      .replace(/_/g, " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   return (
-    <div
-      ref={pageRef}
-      className="max-w-5xl mx-auto p-4 sm:p-6 font-['Montserrat',sans-serif] text-[#422D0B]"
-    >
-      {/* Back Navigation Button */}
-      <button
-        type="button"
-        onClick={() => navigate(-1)}
-        className="group mb-5 text-xs font-extrabold text-[#967A53] hover:text-[#422D0B] transition-colors cursor-pointer inline-flex items-center gap-1.5"
-      >
-        <span className="text-sm transition-transform group-hover:-translate-x-1">
-          ←
-        </span>
-        <span>Back</span>
-      </button>
+    <div className="space-y-6 font-['Montserrat',sans-serif] text-[#422D0B]">
+      {/* Header Banner */}
+      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5">
+          <div className="space-y-2">
+            <span className="inline-block px-3 py-1 bg-[#FFFBF5] border border-[#E8DDCB] rounded-full text-[10px] font-extrabold uppercase tracking-widest text-[#967A53]">
+              {formatText(facility.facilityType)}
+            </span>
 
-      {/* Main Content Details */}
-      <div ref={contentRef}>
-        <FacilityDetails facility={facility} />
+            <h1 className="text-2xl sm:text-3xl font-black text-[#422D0B] tracking-tight">
+              {facility.facilityName}
+            </h1>
+
+            <p className="text-xs font-medium text-[#967A53] leading-relaxed max-w-2xl">
+              {facility.description || "No facility description available."}
+            </p>
+          </div>
+
+          <span
+            className={`px-3.5 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-wider whitespace-nowrap self-start ${
+              facility.operationalStatus === "ACTIVE"
+                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                : "bg-amber-50 text-amber-800 border-amber-200"
+            }`}
+          >
+            {formatText(facility.operationalStatus)}
+          </span>
+        </div>
+      </div>
+
+      {/* Operational Status */}
+      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs space-y-5">
+        <div className="flex items-center gap-2 border-b border-[#E8DDCB] pb-4">
+          <span className="w-2 h-2 rounded-full bg-[#FFA800] animate-pulse" />
+          <h2 className="text-xs font-extrabold uppercase tracking-widest text-[#967A53]">
+            Facility Operational Status
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InfoBox
+            label="Operational Status"
+            value={formatText(facility.operationalStatus)}
+            active={facility.operationalStatus === "ACTIVE"}
+          />
+
+          <InfoBox
+            label="Verification Status"
+            value={`Verification ${formatText(facility.verificationStatus)}`}
+          />
+        </div>
+
+        {facility.verificationStatus === "PENDING" && (
+          <div className="bg-[#FFFBF5] border border-[#E8DDCB] rounded-2xl px-4 py-3 text-xs text-[#967A53] flex items-center gap-2">
+            <span className="text-[#FFA800]">⌛</span>
+            <span>
+              Facility verification is currently under review by compliance managers.
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Facility Information */}
+      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+        <SectionTitle title="Facility Information" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InfoRow
+            label="Facility Name"
+            value={facility.facilityName}
+          />
+
+          <InfoRow
+            label="Facility Type"
+            value={formatText(facility.facilityType)}
+          />
+
+          <InfoRow
+            label="Processing Capacity"
+            value={
+              capacity.value
+                ? `${capacity.value} ${formatText(capacity.unit)}`
+                : "Not specified"
+            }
+          />
+
+          <InfoRow
+            label="Pricing Model"
+            value={formatText(pricing)}
+          />
+
+          <InfoRow
+            label="Price Per Unit"
+            value={
+              facility.pricePerUnit !== undefined
+                ? `₹${facility.pricePerUnit} / unit`
+                : "Not specified"
+            }
+          />
+
+          <InfoRow
+            label="Verification"
+            value={formatText(facility.verificationStatus)}
+          />
+        </div>
+      </div>
+
+      {/* Location */}
+      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+        <SectionTitle title="Facility Location" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InfoRow
+            label="Address"
+            value={location.address}
+          />
+
+          <InfoRow
+            label="City"
+            value={location.city}
+          />
+
+          <InfoRow
+            label="State"
+            value={location.state}
+          />
+
+          <InfoRow
+            label="Pincode"
+            value={location.pincode}
+          />
+
+          <InfoRow
+            label="Latitude"
+            value={location.latitude}
+          />
+
+          <InfoRow
+            label="Longitude"
+            value={location.longitude}
+          />
+        </div>
+      </div>
+
+      {/* Accepted Waste Types */}
+      <div className="bg-white border border-[#E8DDCB] rounded-3xl p-6 sm:p-8 shadow-2xs">
+        <SectionTitle title="Accepted Waste Types" />
+
+        {facility.acceptedWasteTypes?.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {facility.acceptedWasteTypes.map((waste, index) => (
+              <span
+                key={`${waste}-${index}`}
+                className="px-3.5 py-2 bg-[#FFFBF5] border border-[#E8DDCB] rounded-xl text-xs font-bold text-[#422D0B] shadow-2xs"
+              >
+                {waste}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="text-xs font-medium text-[#967A53]">
+            No accepted waste types specified.
+          </p>
+        )}
       </div>
     </div>
   );
 };
 
-export default FacilityDetailsPage;
+const SectionTitle = ({ title }) => {
+  return (
+    <div className="border-b border-[#E8DDCB] pb-4 mb-5">
+      <h2 className="text-xs font-extrabold uppercase tracking-widest text-[#967A53]">
+        {title}
+      </h2>
+    </div>
+  );
+};
+
+const InfoBox = ({ label, value, active = false }) => {
+  return (
+    <div
+      className={`rounded-2xl border p-4 transition-all ${
+        active
+          ? "bg-emerald-50/60 border-emerald-200"
+          : "bg-[#FFFBF5] border-[#E8DDCB]"
+      }`}
+    >
+      <span className="block text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
+        {label}
+      </span>
+
+      <span className="block mt-2 text-sm font-black text-[#422D0B]">
+        {value}
+      </span>
+    </div>
+  );
+};
+
+const InfoRow = ({ label, value }) => {
+  return (
+    <div className="bg-[#FFFBF5] border border-[#E8DDCB]/70 rounded-2xl p-4">
+      <span className="block text-[10px] font-extrabold uppercase tracking-wider text-[#967A53]">
+        {label}
+      </span>
+
+      <span className="block mt-1.5 text-sm font-bold text-[#422D0B] break-words">
+        {value || "Not specified"}
+      </span>
+    </div>
+  );
+};
+
+export default FacilityDetails;
