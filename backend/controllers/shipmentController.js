@@ -173,40 +173,83 @@ const createShipment = async (req, res) => {
 
 const getMyShipments = async (req, res) => {
     try {
+
+        console.log("\n================ SHIPMENT DEBUG ================");
+        console.log("Logged-in User ID:", req.user._id);
+        console.log("Logged-in User Role:", req.user.role);
+
         let query = {};
 
+        // WASTE GENERATOR
         if (req.user.role === "WASTE_GENERATOR") {
+
             query.generator = req.user._id;
+
+            console.log("Role: WASTE_GENERATOR");
+            console.log("Searching shipments with generator ID:");
+            console.log(req.user._id);
         }
 
+        // LOGISTICS PROVIDER
         else if (req.user.role === "LOGISTICS_PROVIDER") {
+
             query.logisticsProvider = req.user._id;
+
+            console.log("Role: LOGISTICS_PROVIDER");
+            console.log("Searching shipments with logisticsProvider ID:");
+            console.log(req.user._id);
         }
 
+        // FACILITY
         else if (req.user.role === "FACILITY") {
+
+            console.log("Role: FACILITY");
+            console.log("Searching facilities owned by:");
+            console.log(req.user._id);
 
             const facilities = await Facility.find({
                 owner: req.user._id
             }).select("_id");
 
+            console.log("Facilities found:");
+            console.log(facilities);
+
             const facilityIds = facilities.map(
                 (facility) => facility._id
             );
 
-            query.facility = { $in: facilityIds };
+            console.log("Facility IDs:");
+            console.log(facilityIds);
+
+            query.facility = {
+                $in: facilityIds
+            };
         }
 
+        // ADMIN
         else if (req.user.role === "ADMIN") {
+
             query = {};
+
+            console.log("Role: ADMIN");
+            console.log("Searching ALL shipments");
         }
 
+        // INVALID ROLE
         else {
+
+            console.log("Unauthorized role:", req.user.role);
+
             return res.status(403).json({
                 success: false,
                 message: "Not authorized to view shipments"
             });
         }
 
+        console.log("Final MongoDB Query:");
+        console.log(query);
+
+        // SEARCH SHIPMENTS
         const shipments = await Shipment.find(query)
             .populate("wasteBatch")
             .populate("facility")
@@ -220,6 +263,21 @@ const getMyShipments = async (req, res) => {
             )
             .sort({ createdAt: -1 });
 
+        console.log("Shipments Found:", shipments.length);
+        console.log("Shipment IDs:");
+
+        shipments.forEach((shipment) => {
+            console.log({
+                shipmentId: shipment._id,
+                generator: shipment.generator?._id,
+                facility: shipment.facility?._id,
+                logisticsProvider: shipment.logisticsProvider?._id,
+                status: shipment.status
+            });
+        });
+
+        console.log("================================================\n");
+
         res.status(200).json({
             success: true,
             count: shipments.length,
@@ -227,10 +285,13 @@ const getMyShipments = async (req, res) => {
         });
 
     } catch (error) {
+
         console.error(
             "Get shipments error:",
             error.message
         );
+
+        console.error("Full error:", error);
 
         res.status(500).json({
             success: false,
@@ -316,6 +377,8 @@ const getShipment = async (req, res) => {
             success: true,
             shipment
         });
+
+        console.log(shipment)
 
     } catch (error) {
         console.error(

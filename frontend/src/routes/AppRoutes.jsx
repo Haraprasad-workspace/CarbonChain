@@ -33,6 +33,8 @@ import ShipmentDetailsPage from "../pages/ShipmentDetailsPage";
 import AssignLogistics from "../pages/AssignLogistics";
 
 import Tracking from "../pages/Tracking";
+import LogisticsShipments from "../pages/logistics/Shipments";
+import LogisticsDashboard from "../pages/logistics/LogisticsDashboard";
 
 const AppRoutes = () => {
     return (
@@ -175,6 +177,16 @@ const AppRoutes = () => {
                     element={<ShipmentDetailsPage />}
                 />
                 <Route path="/tracking" element={<Tracking />} />
+                {/* ==================== LOGISTICS ==================== */}
+
+                <Route
+                    path="/logistics/shipments"
+                    element={<LogisticsShipments />}
+                />
+                <Route
+                    path="/logistics"
+                    element={<LogisticsDashboard />}
+                />
             </Routes>
         </BrowserRouter>
     );

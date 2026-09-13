@@ -17,11 +17,25 @@ const authMiddleware = (req, res, next) => {
             process.env.JWT_SECRET
         );
 
-        req.user = decoded;
+        // Make both id formats available
+        req.user = {
+            ...decoded,
+            id: decoded.id || decoded._id,
+            _id: decoded._id || decoded.id
+        };
+
+        console.log("\n========== AUTH DEBUG ==========");
+        console.log("User ID:", req.user.id);
+        console.log("User _id:", req.user._id);
+        console.log("User Role:", req.user.role);
+        console.log("================================\n");
 
         next();
 
     } catch (error) {
+
+        console.error("Authentication error:", error.message);
+
         return res.status(401).json({
             message: "Invalid or expired token"
         });
